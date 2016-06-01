@@ -39,6 +39,17 @@ class problem():
         self.I_m_mp1[i] += S[i,j]*( self.fexpl(u[j]) + self.fimpl(u[j]) )
     return None
 
+  def update_I_p(self, u):
+    assert np.shape(u)==(self.M, self.P), "u must have shape MxP"
+    for m in range(self.M):
+      S = self.coll_fast[m].Smat
+      S = S[1:,1:]
+      for i in range(self.P):
+        self.I_p_pp1[m,i] = 0.0 
+        for j in range(self.P):
+          self.I_p_pp1[m,i] += S[i,j]*( self.fexpl(u[m,j]) + self.fimpl(u[m,j]) )
+    return None
+
   def end_value(self, u, u0):
     uend = u0
     for m in range(0,self.M):
