@@ -77,3 +77,8 @@ class test_problem(unittest.TestCase):
     for m in range(0,M):
       assert np.min(err[0:5,m]/err[1:6,m])>9, "Error in values generated from sub collocation solution seems not to decay geometrically in P"
 
+  def test_get_residual(self):
+    coll = self.prob.get_coll_solution(1.0)
+    res  = self.prob.get_residual(coll, 1.0)
+    assert res<1e-14, "Residual of collocation solution is not zero"
+

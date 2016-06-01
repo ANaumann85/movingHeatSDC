@@ -74,6 +74,16 @@ class problem():
        u0 = self.end_value(np.reshape(u[m,:], (self.P, 1)), u0, self.coll_fast[m])
     return u0
 
+  def get_residual(self, u, u0, coll=None):
+    if coll==None:
+      coll = self.coll
+    M = coll.num_nodes
+    Q = coll.Qmat
+    Q = Q[1:,1:]
+    assert np.shape(u)==(M,1), "u must be (M,1) shape"
+    e = np.ones((M,1))
+    return np.linalg.norm(u - u0*e - self.lamb*Q.dot(u), np.inf)
+
   def get_coll_solution(self, u0, coll=None):
     if coll==None:
       coll = self.coll
