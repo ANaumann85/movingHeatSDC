@@ -3,7 +3,7 @@ import numpy as np
 import scipy.sparse as sp
 import numpy.polynomial.legendre as leg
 
-from pySDC.Collocation import CollBase
+from Collocation import CollBase
 
 
 class CollGaussLegendre(CollBase):
