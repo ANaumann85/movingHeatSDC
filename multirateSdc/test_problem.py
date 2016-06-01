@@ -82,3 +82,8 @@ class test_problem(unittest.TestCase):
     res  = self.prob.get_residual(coll, 1.0)
     assert res<1e-14, "Residual of collocation solution is not zero"
 
+  def test_get_residual_sub(self):
+    coll = self.prob.get_coll_solution_sub(1.0)
+    res  = self.prob.get_residual_sub(coll, 1.0)
+    assert res<1e-14, "Residuals of sub collocation solutions are not zero"
+
