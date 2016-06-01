@@ -30,13 +30,6 @@ u0     = 1.0
 uex    = np.exp((prob.lambda_fast + prob.lambda_slow)*tend)
 
 # Prediction sweep to populate u
-u[0] = imex_step(u0, prob.coll.delta_m[0], u0, u_[0], 0.0, prob)
-usub = subcycling(u0, usub, usub_, prob, 0)
-
-for m in range(1,M):
-  u[m] = imex_step(u[m-1], prob.coll.delta_m[m], u_[m-1], u_[m], 0.0, prob)
-  usub0 = prob.end_value_sub(usub, u0, m-1)
-  usub = subcycling(usub0, usub, usub_, prob, m)
 
 print prob.get_residual(u, u0)
 print prob.get_residual_sub(usub, u0)
