@@ -16,11 +16,11 @@ def subcycling(u0, usub, usub_, prob, m):
 
 M = 5 # SDC nodes for slow process
 P = 5 # SDC nodes for fast process
-K = 3 # Number of sweeps
+K = 15 # Number of sweeps
 
 tend = 1.0
 prob = problem(M,P, 0.0, tend)
-prob.print_nodes()
+#prob.print_nodes()
 
 u      = np.zeros((M,1))
 u_     = np.zeros((M,1))
@@ -38,8 +38,8 @@ for m in range(1,M):
   usub0 = prob.end_value_sub(usub, u0, m-1)
   usub = subcycling(usub0, usub, usub_, prob, m)
 
-print abs(prob.end_value(u,1.0) - uex)/abs(uex)
-print abs(prob.end_value_sub_all(usub,1.0) - uex)/abs(uex)
+print prob.get_residual(u, u0)
+print prob.get_residual_sub(usub, u0)
 
 for k in range(0,K):
 
@@ -57,8 +57,10 @@ for k in range(0,K):
     u[m] = imex_step(u[m-1], prob.coll.delta_m[m], u_[m-1], u_[m], b, prob)
     usub0 = prob.end_value_sub(usub, u0, m-1)
     usub = subcycling(usub0, usub, usub_, prob, m)
-
-  print ("**** Sweep k = %2i ****" % k)
-  print ("End value error: %5.3e" % (abs( prob.end_value(u,1.0) - uex )/abs(uex)) )
-  print ("Sub-step end value error: %5.3e" % (abs(prob.end_value_sub_all(usub, 1.0) -  uex)/abs(uex)) )
-  print "************************"
+  print prob.get_residual(u, u0)
+  print prob.get_residual_sub(usub, u0)
+  print ""
+#  print ("**** Sweep k = %2i ****" % k)
+#  print ("End value error: %5.3e" % (abs( prob.end_value(u,1.0) - uex )/abs(uex)) )
+#  print ("Sub-step end value error: %5.3e" % (abs(prob.end_value_sub_all(usub, 1.0) -  uex)/abs(uex)) )
+#  print "************************"

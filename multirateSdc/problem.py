@@ -70,7 +70,6 @@ class problem():
   def end_value_sub_all(self, u, u0):
     assert np.shape(u)==(self.M, self.P), "u must have shape MxP"    
     for m in range(self.M):      
-      for p in range(self.P):
        u0 = self.end_value(np.reshape(u[m,:], (self.P, 1)), u0, self.coll_fast[m])
     return u0
 
