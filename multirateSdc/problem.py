@@ -10,6 +10,7 @@ class problem():
     self.I_p_pp1 = np.zeros((M,P))
     self.lambda_fast = -1.0
     self.lambda_slow = -0.0
+    self.lamb = self.lambda_fast + self.lambda_slow
     self.dt = abs(tright - tleft)
     self.M = M
     self.P = P
@@ -50,18 +51,45 @@ class problem():
           self.I_p_pp1[m,i] += S[i,j]*( self.fexpl(u[m,j]) + self.fimpl(u[m,j]) )
     return None
 
-  def end_value(self, u, u0):
-    assert np.shape(u)==(self.M,1), "u must have shape Mx1"
-    for m in range(0,self.M):
-      u0 += self.coll.weights[m]*(self.fexpl(u[m]) + self.fimpl(u[m]))    
+  def end_value(self, u, u0, coll=None):
+    if coll==None:
+      coll = self.coll
+    M = coll.num_nodes    
+    assert np.shape(u)==(M,1), "u must have shape Mx1"
+    for m in range(0,M):
+      u0 += coll.weights[m]*(self.fexpl(u[m]) + self.fimpl(u[m]))    
     return u0
 
-  def end_value_sub(self, u, u0):
-    assert np.shape(u)==(self.M, self.P), "u must have shape MxP"    
-    for m in range(self.M):
-      for p in range(self.P):
-       u0 += self.coll_fast[m].weights[p]*( self.fexpl(u[m,p]) + self.fimpl(u[m,p]) )
+  def end_value_sub(self, u, u0, m):
+    assert m in range(0,self.M), "Must have 0<=m<=M-1"
+    assert np.shape(u)==(self.M, self.P), "u must have shape MxP"   
+    for i in range(0,m+1): 
+      u0 = self.end_value(np.reshape(u[i,:], (self.P, 1)), u0, self.coll_fast[i])
     return u0
+
+  def end_value_sub_all(self, u, u0):
+    assert np.shape(u)==(self.M, self.P), "u must have shape MxP"    
+    for m in range(self.M):      
+      for p in range(self.P):
+       u0 = self.end_value(np.reshape(u[m,:], (self.P, 1)), u0, self.coll_fast[m])
+    return u0
+
+  def get_coll_solution(self, u0, coll=None):
+    if coll==None:
+      coll = self.coll
+    M = coll.num_nodes
+    Q = coll.Qmat
+    Q = Q[1:,1:]
+    e = np.ones((M,1))
+    I = np.eye(M)
+    return np.linalg.solve(I - self.lamb*Q, e*u0)
+
+  def get_coll_solution_sub(self, u0):
+    u = np.zeros((self.M,self.P))
+    for m in range(self.M):
+        u[m,:] = np.reshape(self.get_coll_solution(u0, self.coll_fast[m]), (1, self.P))
+        u0     = self.end_value(np.reshape(u[m,:], (self.P,1)), u0, self.coll_fast[m])
+    return u
 
   def print_nodes(self):
     for i in range(0,self.M):
