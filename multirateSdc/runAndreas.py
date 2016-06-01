@@ -6,7 +6,7 @@ P = 3 # SDC nodes for fast process
 K = 16 # Number of sweeps
 
 tend = 1.0/pow(2,1)
-prob = problem(M,P, 0.0, tend)
+prob = problem(M,P, 0.0, tend, -1.0, -1.0) #lslow, lfast
 prob.print_nodes()
 
 u      = np.zeros((M,1))
@@ -46,7 +46,8 @@ for k in range(0,K):
     uf[0,p] += prob.I_p_pp1[0,p] #integral part
 
   prob.update_I_m(u) #integral part on coarse level
-  u[0]=prob.solve(prob.coll.delta_m[0], u0+prob.coll.delta_m[0]*(prob.fexpl(uf[0,P-1])-prob.fimpl(u[0]))+prob.I_m_mp1[0])
+  u[0]=prob.solve(prob.coll.delta_m[0], u0+prob.coll.delta_m[0]*(prob.fexpl(uf[0,P-1])-oldF[P-1]-prob.fimpl(u[0]))+prob.I_m_mp1[0])
+  #u[0]=prob.solve(prob.coll.delta_m[0], u0+prob.coll.delta_m[0]*(prob.fexpl(uf[0,P-1])-oldF[P-1]-prob.fimpl(uf[0,P-1]))+prob.I_m_mp1[0])
   for m in range(1, M):
     for p in range(0, P):
       oldF[p] = prob.fexpl(uf[m,p])
@@ -54,12 +55,14 @@ for k in range(0,K):
     #update the inner fast values
     for p in range(1, P):
       #integral term, uses u^{F,k} for u^k, see above with prob.update_I_p
-      uf[m,p]=uf[m,p-1]+prob.coll_fast[m].delta_m[p]*(prob.fexpl(uf[m,p-1])-oldF[p-1]+prob.fimpl(u[m-1])-oldG[p]) #impl terms should cancel u^k_0=u(0)
+      uf[m,p] = uf[m,p-1]+prob.coll_fast[m].delta_m[p]*(prob.fexpl(uf[m,p-1])-oldF[p-1]+prob.fimpl(u[m-1])-oldG[p]) #impl terms should cancel u^k_0=u(0)
       uf[m,p] += prob.I_p_pp1[m,p] #integral part
    #update the slow values with new fast ones
-    u[m]=prob.solve(prob.coll.delta_m[m], u[m-1]+prob.coll.delta_m[m]*(prob.fexpl(uf[m,P-1])-prob.fimpl(u[m]))+ prob.I_m_mp1[m])
+    u[m]=prob.solve(prob.coll.delta_m[m], u[m-1]+prob.coll.delta_m[m]*(prob.fexpl(uf[m,P-1])-oldF[P-1]-prob.fimpl(u[m]))+ prob.I_m_mp1[m])
+    #u[m]=prob.solve(prob.coll.delta_m[m], uf[m-1,P-1]+prob.coll.delta_m[m]*(prob.fexpl(uf[m,P-1])-oldF[P-1]-prob.fimpl(uf[m,P-1]))+ prob.I_m_mp1[m])
 #  print uf
 #  print u
 #  print abs(prob.end_value(u,1.0) - np.exp((prob.lambda_fast + prob.lambda_slow)))
-  print 'diff:',k,abs(u[M-1] - np.exp((prob.lambda_fast + prob.lambda_slow)*tend)) #, u[M-1]
+#  print 'diff:',k,abs(u[M-1] - np.exp((prob.lambda_fast + prob.lambda_slow)*tend)) #, u[M-1]
   print 'res res/res_sub:',prob.get_residual(u, 1.0),prob.get_residual_sub(uf, 1.0)
+print 'diff:',k,abs(u[M-1] - np.exp((prob.lambda_fast + prob.lambda_slow)*tend)) #, u[M-1]
