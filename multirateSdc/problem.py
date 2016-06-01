@@ -51,10 +51,17 @@ class problem():
     return None
 
   def end_value(self, u, u0):
-    uend = u0
+    assert np.shape(u)==(self.M,1), "u must have shape Mx1"
     for m in range(0,self.M):
-      uend += self.coll.weights[m]*(self.fexpl(u[m]) + self.fimpl(u[m]))    
-    return uend
+      u0 += self.coll.weights[m]*(self.fexpl(u[m]) + self.fimpl(u[m]))    
+    return u0
+
+  def end_value_sub(self, u, u0):
+    assert np.shape(u)==(self.M, self.P), "u must have shape MxP"    
+    for m in range(self.M):
+      for p in range(self.P):
+       u0 += self.coll_fast[m].weights[p]*( self.fexpl(u[m,p]) + self.fimpl(u[m,p]) )
+    return u0
 
   def print_nodes(self):
     for i in range(0,self.M):
