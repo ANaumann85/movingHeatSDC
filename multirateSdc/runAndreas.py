@@ -5,7 +5,7 @@ M = 4 # SDC nodes for slow process
 P = 3 # SDC nodes for fast process
 K = 16 # Number of sweeps
 
-tend = 1.0/pow(2,0)
+tend = 1.0/pow(2,1)
 prob = problem(M,P, 0.0, tend)
 prob.print_nodes()
 
@@ -61,4 +61,5 @@ for k in range(0,K):
 #  print uf
 #  print u
 #  print abs(prob.end_value(u,1.0) - np.exp((prob.lambda_fast + prob.lambda_slow)))
-  print 'diff:',k,abs(u[M-1] - np.exp((prob.lambda_fast + prob.lambda_slow)*tend)), u[M-1]
+  print 'diff:',k,abs(u[M-1] - np.exp((prob.lambda_fast + prob.lambda_slow)*tend)) #, u[M-1]
+  print 'res res/res_sub:',prob.get_residual(u, 1.0),prob.get_residual_sub(uf, 1.0)
