@@ -4,17 +4,19 @@ from CollocationClasses import *
 
 class problem():
 
-  def __init__(self, M, P):
+  def __init__(self, M, P, tleft, tright):
+    assert tleft<tright, "tleft must be smaller than tright"
     self.I_m_mp1 = np.zeros((M,1))
     self.I_p_pp1 = np.zeros((M,P))
     self.lambda_fast = -1.0
     self.lambda_slow = -0.0
+    self.dt = abs(tright - tleft)
     self.M = M
     self.P = P
     # Consider a single time step [0.0, 1.0]
-    self.coll = CollGaussRadau_Right(num_nodes = M, tleft = 0.0, tright = 1.0)
+    self.coll = CollGaussRadau_Right(num_nodes = M, tleft = tleft, tright = tright)
     self.coll_fast = []
-    self.coll_fast.append(CollGaussRadau_Right(num_nodes=P, tleft = 0.0, tright = self.coll.nodes[0]))
+    self.coll_fast.append(CollGaussRadau_Right(num_nodes=P, tleft = tleft, tright = self.coll.nodes[0]))
     for i in range(1,M):
       self.coll_fast.append(CollGaussRadau_Right(num_nodes=P, tleft = self.coll.nodes[i-1] , tright=self.coll.nodes[i]))
 
@@ -40,7 +42,7 @@ class problem():
   def end_value(self, u, u0):
     uend = u0
     for m in range(0,self.M):
-      uend += self.coll.weights[m]*(self.fexpl(u[m]) + self.fimpl(u[m]))
+      uend += self.coll.weights[m]*(self.fexpl(u[m]) + self.fimpl(u[m]))    
     return uend
 
   def print_nodes(self):

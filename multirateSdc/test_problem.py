@@ -8,7 +8,8 @@ class test_problem(unittest.TestCase):
     M = np.random.randint(8)+2
     P = np.random.randint(3)+2
     P = 2
-    self.prob = problem(M, P)
+    [tleft, tright] = np.sort(np.random.rand(2))
+    self.prob = problem(M, P, tleft, tright)
 
   def test_I_m_mp1_linear(self):
     # evaluate f(u(t)) = lambda*t at nodes
