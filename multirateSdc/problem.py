@@ -70,10 +70,27 @@ class problem():
   def end_value_sub_all(self, u, u0):
     assert np.shape(u)==(self.M, self.P), "u must have shape MxP"    
     for m in range(self.M):      
-      for p in range(self.P):
        u0 = self.end_value(np.reshape(u[m,:], (self.P, 1)), u0, self.coll_fast[m])
     return u0
 
+  def get_residual(self, u, u0, coll=None):
+    if coll==None:
+      coll = self.coll
+    M = coll.num_nodes
+    Q = coll.Qmat
+    Q = Q[1:,1:]
+    assert np.shape(u)==(M,1), "u must be (M,1) shape"
+    e = np.ones((M,1))
+    return np.linalg.norm(u - u0*e - self.lamb*Q.dot(u), np.inf)
+
+  def get_residual_sub(self, u, u0):
+    assert np.shape(u)==(self.M, self.P), "u must have shape MxP"   
+    res = np.zeros((self.M, 1))
+    for m in range(0,self.M):
+      res[m,0] = self.get_residual( np.reshape(u[m,:], (self.P,1)), u0, self.coll_fast[m])
+      u0 = self.end_value(np.reshape(u[m,:], (self.P,1)), u0, self.coll_fast[m])
+    return np.linalg.norm(res, np.inf)
+ 
   def get_coll_solution(self, u0, coll=None):
     if coll==None:
       coll = self.coll
