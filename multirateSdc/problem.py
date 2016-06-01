@@ -4,12 +4,12 @@ from CollocationClasses import *
 
 class problem():
 
-  def __init__(self, M, P, tleft, tright):
+  def __init__(self, M, P, tleft, tright, lambda_slow, lambda_fast):
     assert tleft<tright, "tleft must be smaller than tright"
     self.I_m_mp1 = np.zeros((M,1))
     self.I_p_pp1 = np.zeros((M,P))
-    self.lambda_fast = -1.0
-    self.lambda_slow = -0.0
+    self.lambda_fast = lambda_fast
+    self.lambda_slow = lambda_slow
     self.lamb = self.lambda_fast + self.lambda_slow
     self.dt = abs(tright - tleft)
     self.M = M

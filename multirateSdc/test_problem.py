@@ -10,7 +10,8 @@ class test_problem(unittest.TestCase):
     M = np.random.randint(8)+2
     P = np.random.randint(3)+2
     [tleft, tright] = np.sort(np.random.rand(2))
-    self.prob = problem(M, P, tleft, tright+1.0)
+    [l_slow, l_fast] = -np.sort(np.random.rand(2))
+    self.prob = problem(M, P, tleft, tright+1.0, l_slow, l_fast)
 
   '''
   '''
@@ -49,7 +50,7 @@ class test_problem(unittest.TestCase):
   def test_get_coll_solution(self):
     err = np.zeros((6,1))
     for M in range(2,8):
-      self.prob = problem(M, 2, 0.0, 1.0)
+      self.prob = problem(M, 2, 0.0, 1.0, -0.1, -1.0)
       coll = self.prob.get_coll_solution(1.0)
       uend = self.prob.end_value(coll, 1.0)
       err[M-2,0]  = abs(uend - np.exp(self.prob.lamb))
@@ -59,10 +60,10 @@ class test_problem(unittest.TestCase):
   '''
   def test_get_coll_solution_sub(self):
     M = 4
-    tend = 7.6
+    tend = 6.6
     err  = np.zeros((6,M))
     for P in range(2,8):
-      self.prob  = problem(M, P, 0.0, tend)
+      self.prob  = problem(M, P, 0.0, tend, -0.1, -1.0)
       coll = self.prob.get_coll_solution_sub(1.0)
       for m in range(0,M):
         # Compute exact starting value for interval
@@ -76,11 +77,11 @@ class test_problem(unittest.TestCase):
   '''
   '''
   def test_def_end_value_sub(self):
-    tend = 7.3
+    tend = 6.3
     M = 4
     err = np.zeros((6,M))
     for P in range(2,8):
-      self.prob  = problem(M, P, 0.0, tend)
+      self.prob  = problem(M, P, 0.0, tend, -0.1, -1.0)
       for m in range(0,M):
         # compute exact starting value for sub interval
         coll       = self.prob.get_coll_solution_sub(1.0)
@@ -106,11 +107,11 @@ class test_problem(unittest.TestCase):
   '''
   '''
   def test_end_value_sub_all(self):
-    tend = 7.1
+    tend = 6.1
     M = 4 
     err = np.zeros((6,1))
     for P in range(2,8):
-      self.prob = problem(M, P, 0.0, tend)
+      self.prob = problem(M, P, 0.0, tend, -0.1, -1.0)
       coll = self.prob.get_coll_solution_sub(1.0)
       uend = self.prob.end_value_sub_all(coll, 1.0)
       err[P-2,0] = abs(uend - np.exp(self.prob.lamb*tend))

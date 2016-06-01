@@ -14,8 +14,8 @@ def subcycling(u0, usub, usub_, prob, m):
     usub[m,p] = imex_step(usub[m,p-1], prob.coll_fast[m].delta_m[p], usub_[m,p-1], usub_[m,p], b, prob)
   return usub
 
-M = 3 # SDC nodes for slow process
-P = 3 # SDC nodes for fast process
+M = 4 # SDC nodes for slow process
+P = 2 # SDC nodes for fast process
 K = 15 # Number of sweeps
 
 tend = 1.0
