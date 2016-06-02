@@ -54,4 +54,32 @@ As $u^{k+1} - u^k \to 0$ and also $u^{k+1}_A - u^k \to 0$, we have
 	u_{p+1} &= u_{p} + I_{p}^{p+1} \left( F_A(u) + F_D(u) \right)
 \end{align*}
 so that we get convergence to the coarse and fine level collocation solutions.
+
+\paragraph{Quantities to define.}
+The Lagrange polynomials on $[T_n, T_{n+1}]$
+\begin{equation}
+	l_m(t), m = 1, \ldots, M \quad \text{with} \quad l_m(t_j) = \delta_{mj}.
+\end{equation}
+For each sub-step $[t_m, t_{m+1}]$, there are $P$ many Lagrange polynomials for the nodes $t_{m} \leq t_{m,1} < \ldots < t_{m,P} \leq t_{m+1}$:
+\begin{equation}
+	l_{m,p}(t), p=1, \ldots, P \quad \text{with} \quad l_{m,p}(t_{m,j}) = \delta_{pj}.
+\end{equation}
+Note that there are $M$ many polynomials $l_m(s)$ and $M \times P$ many $l_{m,p}$.
+Also, there are $M$ many nodes $t_m$ and $M \times P$ many nodes $t_{m,p}$.
+The ``standard" quadrature weights are
+\begin{equation}
+	s_{m,j} = \int_{t_m}^{t_{m+1}} l_j(s)~ds, \ m=1, \ldots, M; \ j=1, \ldots, M
+\end{equation}
+and
+\begin{equation}
+	s_{m,p,j} = \int_{t_{m,p}}^{t_{m,p+1}}  l_{m,j}(s)~ds, \ m=1, \ldots, M; \ p=1, \ldots, P; \ j=1, \ldots, P.
+\end{equation}
+In addition, we will need the ``mixed" weights
+\begin{equation}
+	\tilde{s}_{m,n,p} := \int_{t_{m,p}}^{t_{m,p+1}} l_{n}(s)~ds, m=1, \ldots, M; \ n=1, \ldots, M; p=1, \ldots, P
+\end{equation}
+and
+\begin{equation}
+	\hat{s}_{m,p,j} := \int_{t_{m,p}}^{t_{m,p+1}} l_{m,j}(s)~ds, m=1, \ldots, M; p=1, \ldots, P; j=1, \ldots, P.
+\end{equation}
 \end{document}
