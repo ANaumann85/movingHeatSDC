@@ -72,3 +72,9 @@ class multirateCollocation(object):
       fu = np.reshape(fu, (self.M,1))
     except:
       raise TypeError("Failed to convert argument fu into shape Mx1")
+    Smat = self.coll.Smat
+    Smat = Smat[1:,1:]
+    intvalue = 0.0
+    for j in range(self.M):
+      intvalue += Smat[m,j]*fu[j]
+    return intvalue
