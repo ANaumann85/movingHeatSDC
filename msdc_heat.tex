@@ -1,6 +1,9 @@
 \documentclass{article}
 \usepackage{amsmath,amssymb}
 \usepackage[utf8]{inputenc}
+
+\bibliographystyle{plain}
+
 \begin{document}
  \begin{enumerate}
   \item $\dot u=f(u)+g(u)$, f: schnell, g: langsam
@@ -8,7 +11,7 @@
   \item Unterteile $[t_0,t_e]$ in N Intervalle: $[t_0,t_1,\dots,t_{N+1}$
   \item Unterteile jedes Teilintervall $[t_m,t_{m+1}]$ in $N_f$ Teilintervalle ($N_{fast}$)
  \end{enumerate}
-
+ Idea stems basicly from \cite{bourlioux2003high}. There are three scales, where both fast scales are threated implicitly.
  Prediktor: (strukturell ist das (ähnlich) eines M[IF]S $\rightarrow$ andere Vorschrift)
  \begin{itemize}
   \item Berechne $u_{n,s}^F$ mit $u_{n,s+1}^F=u_{n,s}^F+\frac{\Delta t}{N_f} (f(u_{n,s}^F)+g(u_n^F))$ (expliziter Euler, mit altem Wert für langsamen Prozess)
@@ -34,7 +37,7 @@
     \begin{itemize}
      \item $u^k$ von grober Skala: $$I_{s}^{s+1}(f(u^k)+g(u^k))\approx \sum_l w_l( f(u^k(c_l))+g(u^k(c_l)))$$, $u^k(t)=\sum_m u^k_m P_m^M(t)$, $P_m^M(t)$: Lagrange polynomial through $c_m$ of degree $M-1$
      \item $u^k$ von feiner Skala: $$I_s^{s+1} (f(u^k)+g(u^k))\approx \sum_l w_l (f(u^{F,k}(c_l))+g(u^{F,k}(c_l)))$$, $u^{F,k}(t)=\sum_m u^{F,k}_m P_m^P(t)$
-     \item $u^k$ gemischt: 
+     \item $u^k$ mixed: A more detailed explaination can be found in \cite{bouzarth2010multirate}, using explicit steps for every part
       \begin{align*}
         f(u^k(\tau))=& \sum_{l=1}^P f(u^{F,k}_{l}) L_l^P(\tau) \cr
          g(u^k(\tau))=&\sum_{l=1}^M g(u^{k}_l) L_l^M(\tau) \cr
@@ -66,4 +69,5 @@ As $u^{k+1} - u^k \to 0$ and also $u^{k+1}_A - u^k \to 0$, we have
 	u_{p+1} &= u_{p} + I_{p}^{p+1} \left( F_A(u) + F_D(u) \right)
 \end{align*}
 so that we get convergence to the coarse and fine level collocation solutions.
+\bibliography{refs}
 \end{document}
