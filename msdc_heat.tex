@@ -23,13 +23,25 @@
  \end{itemize}
  bzw. iterationen:
   \begin{itemize}
-   \item $u_{m,0}^{F,k+1}=u_{m}+\Delta_{m,0} (f(u_m))$
    \item $u_{m,s+1}^{F,k+1}=u_{m,s}^{F,k+1}+\Delta_{m,s}(f(u_{m,s}^{F,k+1})-f(u_{m,s}^{F,k})+g(u_{m}^{k+1})-g(u_m^k))+I_{s}^{s+1}(f(u^k)+g(u^k))$
+   \item $u_{m,0}^{F,k+1}$:
+    \begin{itemize}
+     \item $u_{m,0}^{F,k+1}=u_{m}^{k+1}+\Delta_{m,0}(f(u_{m}^{k+1})-f(u_{m}^{k})+g(u_{m}^{k+1})-g(u_m^k))+I_{t_{m,0}}^{t_{m,1}}(f(u^k)+g(u^k))$ (besser)
+     \item $u_{m,0}^{F,k+1}=u_{m-1,N_f}^{F,k+1}+\Delta_{m,0}(f(u_{m-1,N_f}^{F,k+1})-f(u_{m,N_f}^{F,k})+g(u_{m}^{k+1})-g(u_m^k))+I_{t_{m,0}}^{t_{m,1}}(f(u^k)+g(u^k))$ (schlechter)
+    \end{itemize}
    \item $u_{m+1}^{k+1}=u_{m}^{k+1}+\Delta_{m} (f(\underbrace{u^{F,k+1}_{m+1}}_{u^{F,k+1}_{m,N_f}})-f(\underbrace{u^{F,k}_{m+1}}_{u^{F,k}_{m,N_f}})+g(u_{m+1}^{k+1})-g(u_{m+1}^k))+I_{m}^{m+1}(f(u^k)+g(u^k))$
    \item $I_s^{s+1}(\psi)=\int_{t_{m,s}}^{t_{m,s+1}} \psi(\tau) d\tau\approx \sum_l w_l \psi(c_l)$:
     \begin{itemize}
-     \item $u^k$ von grober Skala: $I_{s}^{s+1}(f(u^k)+g(u^k))\approx \sum_l w_l( f(u^k(c_l))+g(u^k(c_l)))$, $u^k(t)=\sum_m u^k_m P_m^M(t)$, $P_m^M(t)$: Lagrange polynomial through $c_m$ of degree $M-1$
-     \item $u^k$ von feiner Skala: $I_s^{s+1} (f(u^k)+g(u^k))\approx \sum_l w_l (f(u^{F,k}(c_l))+g(u^{F,k}(c_l)))$, $u^{F,k}(t)=\sum_m u^{F,k}_m P_m^P(t)$
+     \item $u^k$ von grober Skala: $$I_{s}^{s+1}(f(u^k)+g(u^k))\approx \sum_l w_l( f(u^k(c_l))+g(u^k(c_l)))$$, $u^k(t)=\sum_m u^k_m P_m^M(t)$, $P_m^M(t)$: Lagrange polynomial through $c_m$ of degree $M-1$
+     \item $u^k$ von feiner Skala: $$I_s^{s+1} (f(u^k)+g(u^k))\approx \sum_l w_l (f(u^{F,k}(c_l))+g(u^{F,k}(c_l)))$$, $u^{F,k}(t)=\sum_m u^{F,k}_m P_m^P(t)$
+     \item $u^k$ gemischt: 
+      \begin{align*}
+        f(u^k(\tau))=& \sum_{l=1}^P f(u^{F,k}_{l}) L_l^P(\tau) \cr
+         g(u^k(\tau))=&\sum_{l=1}^M g(u^{k}_l) L_l^M(\tau) \cr
+ 	I_{t_{m,s}}^{t_{m,s+1}}(f(u^k)+g(u^k))\approx & \sum_l^P w_l^P f(u^{F,k}_l) + \sum_{l}^M w_l^{M,s} g(u^k_l) \cr
+ 	w_l^{M,s}=&\int_{t_{m,s}}^{t_{m,s+1}} L_l^{M}(\tau) d\tau &\text{non classic}\cr
+ 	w_l^{P}=&\int_{t_{m,s}}^{t_{m,s+1}} L_l^P(\tau) d\tau & \text{classic}
+      \end{align*}
     \end{itemize}
   \end{itemize}
   teste an $\dot u=\lambda_fu + \lambda_s u$, $u(0)=1.0$, $t_e=1.0$
