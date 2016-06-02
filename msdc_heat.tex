@@ -34,4 +34,24 @@
   \end{itemize}
   teste an $\dot u=\lambda_fu + \lambda_s u$, $u(0)=1.0$, $t_e=1.0$
  Stabilität, Testproblem: $M\dot u = Lu+B(t)u$, L: symmetrisch \& pos. Def., B(t): symmetrisch $\rightarrow (\lambda_f, \lambda_s)\in \mathbb{R}^2$
+ 
+\paragraph{Some notes.}
+Single SDC step for slow process $F_A$, which we treat implicitly even though it is the slow process:
+\begin{equation*}
+	u_{A,m+1}^{k+1} = u_{A,m}^{k+1} + \Delta t_m \left( F_{A}(u^{k+1}_{A,m+1}) -F_{A}(u^{k}_{m+1}) \right) + I_m^{m+1}\left( F_{A}(u^k) + F_{D}(u^k) \right).
+\end{equation*}
+Note that $u^k_{m+1}$ is equal to the \emph{fine} level solution at $t_{m+1}$ and is constructed from one of the sub collocation rules.
+Single SDC step for fast process $F_D$, which we treat explicitly with small steps:
+\begin{align*}
+	u_{p+1}^{k+1} = u_{p}^{k+1} &+ \Delta t_p \left( F_{D}(u^{k+1}_{p}) - F_{D}(u^k_p) \right) \\
+							   &+ \Delta t_p \left( F_{A}(u^{k+1}_{A,m+1}) - F_{A}(u^k_m) \right) \\
+							   &+ I_p^{p+1}\left( F_A(u^k) + F_D(u^k) \right)
+\end{align*}
+The solution on the sub collocation nodes is the ``real" solution, that is $u^k$ contains all fine level solutions at $k$.
+As $u^{k+1} - u^k \to 0$ and also $u^{k+1}_A - u^k \to 0$, we have
+\begin{align*}
+	u_{m+1} &= u_{m} + I_m^{m+1} \left( F_A(u) + F_D(u) \right) \\
+	u_{p+1} &= u_{p} + I_{p}^{p+1} \left( F_A(u) + F_D(u) \right)
+\end{align*}
+so that we get convergence to the coarse and fine level collocation solutions.
 \end{document}
