@@ -23,25 +23,13 @@
  \end{itemize}
  bzw. iterationen:
   \begin{itemize}
+   \item $u_{m,0}^{F,k+1}=u_{m}+\Delta_{m,0} (f(u_m))$
    \item $u_{m,s+1}^{F,k+1}=u_{m,s}^{F,k+1}+\Delta_{m,s}(f(u_{m,s}^{F,k+1})-f(u_{m,s}^{F,k})+g(u_{m}^{k+1})-g(u_m^k))+I_{s}^{s+1}(f(u^k)+g(u^k))$
-   \item $u_{m,0}^{F,k+1}$:
-    \begin{itemize}
-     \item $u_{m,0}^{F,k+1}=u_{m}^{k+1}+\Delta_{m,0}(f(u_{m}^{k+1})-f(u_{m}^{k})+g(u_{m}^{k+1})-g(u_m^k))+I_{t_{m,0}}^{t_{m,1}}(f(u^k)+g(u^k))$ (besser)
-     \item $u_{m,0}^{F,k+1}=u_{m-1,N_f}^{F,k+1}+\Delta_{m,0}(f(u_{m-1,N_f}^{F,k+1})-f(u_{m,N_f}^{F,k})+g(u_{m}^{k+1})-g(u_m^k))+I_{t_{m,0}}^{t_{m,1}}(f(u^k)+g(u^k))$ (schlechter)
-    \end{itemize}
    \item $u_{m+1}^{k+1}=u_{m}^{k+1}+\Delta_{m} (f(\underbrace{u^{F,k+1}_{m+1}}_{u^{F,k+1}_{m,N_f}})-f(\underbrace{u^{F,k}_{m+1}}_{u^{F,k}_{m,N_f}})+g(u_{m+1}^{k+1})-g(u_{m+1}^k))+I_{m}^{m+1}(f(u^k)+g(u^k))$
    \item $I_s^{s+1}(\psi)=\int_{t_{m,s}}^{t_{m,s+1}} \psi(\tau) d\tau\approx \sum_l w_l \psi(c_l)$:
     \begin{itemize}
-     \item $u^k$ von grober Skala: $$I_{s}^{s+1}(f(u^k)+g(u^k))\approx \sum_l w_l( f(u^k(c_l))+g(u^k(c_l)))$$, $u^k(t)=\sum_m u^k_m P_m^M(t)$, $P_m^M(t)$: Lagrange polynomial through $c_m$ of degree $M-1$
-     \item $u^k$ von feiner Skala: $$I_s^{s+1} (f(u^k)+g(u^k))\approx \sum_l w_l (f(u^{F,k}(c_l))+g(u^{F,k}(c_l)))$$, $u^{F,k}(t)=\sum_m u^{F,k}_m P_m^P(t)$
-     \item $u^k$ gemischt: 
-      \begin{align*}
-        f(u^k(\tau))=& \sum_{l=1}^P f(u^{F,k}_{l}) L_l^P(\tau) \cr
-         g(u^k(\tau))=&\sum_{l=1}^M g(u^{k}_l) L_l^M(\tau) \cr
- 	I_{t_{m,s}}^{t_{m,s+1}}(f(u^k)+g(u^k))\approx & \sum_l^P w_l^P f(u^{F,k}_l) + \sum_{l}^M w_l^{M,s} g(u^k_l) \cr
- 	w_l^{M,s}=&\int_{t_{m,s}}^{t_{m,s+1}} L_l^{M}(\tau) d\tau &\text{non classic}\cr
- 	w_l^{P}=&\int_{t_{m,s}}^{t_{m,s+1}} L_l^P(\tau) d\tau & \text{classic}
-      \end{align*}
+     \item $u^k$ von grober Skala: $I_{s}^{s+1}(f(u^k)+g(u^k))\approx \sum_l w_l( f(u^k(c_l))+g(u^k(c_l)))$, $u^k(t)=\sum_m u^k_m P_m^M(t)$, $P_m^M(t)$: Lagrange polynomial through $c_m$ of degree $M-1$
+     \item $u^k$ von feiner Skala: $I_s^{s+1} (f(u^k)+g(u^k))\approx \sum_l w_l (f(u^{F,k}(c_l))+g(u^{F,k}(c_l)))$, $u^{F,k}(t)=\sum_m u^{F,k}_m P_m^P(t)$
     \end{itemize}
   \end{itemize}
   teste an $\dot u=\lambda_fu + \lambda_s u$, $u(0)=1.0$, $t_e=1.0$
@@ -80,7 +68,7 @@ Note that there are $M$ many polynomials $l_m(s)$ and $M \times P$ many $l_{m,p}
 Also, there are $M$ many nodes $t_m$ and $M \times P$ many nodes $t_{m,p}$.
 The ``standard" quadrature weights are
 \begin{equation}
-	s_{m,j} = \int_{t_m}^{t_{m+1}} l_j(s)~ds, \ m=1, \ldots, M; \ j=1, \ldots, M
+	s_{m,n} = \int_{t_m}^{t_{m+1}} l_n(s)~ds, \ m=1, \ldots, M; \ n=1, \ldots, M
 \end{equation}
 and
 \begin{equation}
@@ -90,8 +78,14 @@ In addition, we will need the ``mixed" weights
 \begin{equation}
 	\tilde{s}_{m,n,p} := \int_{t_{m,p}}^{t_{m,p+1}} l_{n}(s)~ds, m=1, \ldots, M; \ n=1, \ldots, M; p=1, \ldots, P
 \end{equation}
-and
+This leads to the following split approximations of integrals
 \begin{equation}
-	\hat{s}_{m,p,j} := \int_{t_{m,p}}^{t_{m,p+1}} l_{m,j}(s)~ds, m=1, \ldots, M; p=1, \ldots, P; j=1, \ldots, P.
+	\int_{t_{m,p}}^{t_{m,p+1}} u_1(s) + u_2(s)~ds \approx \sum_{n=1}^{M} \tilde{s}_{m,n,p} u_1(t_{n}) + \sum_{j=1}^{P} s_{m,p,j} u_2(t_{m,j})
 \end{equation}
+and
+\begin{align*}
+	\int_{t_m}^{t_{m+1}} u_1(s) + u_2(s)~ds &\approx \sum_{n=1}^{M} s_{m,n} u_1(t_n) +  \sum_{p=1}^{P} \sum_{j=1}^{P} s_{m,p,j} u_2(t_{m,j}) \\
+					&\approx  \sum_{n=1}^{M} s_{m,n} u_1(t_n) + \sum_{j=1}^{P} u_2(t_{m,j}) \left( \sum_{p=1}^{P} s_{m,j,p} \right) \\
+					&=: \sum_{n=1}^{M} s_{m,n} u_1(t_n) + \sum_{j=1}^{P} u_2(t_{m,j}) \hat{s}_{m,j}.
+\end{align*}
 \end{document}
