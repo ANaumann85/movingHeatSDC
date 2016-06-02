@@ -96,9 +96,9 @@ This leads to the following split approximations of integrals
 \end{equation}
 and
 \begin{align*}
-	\int_{t_m}^{t_{m+1}} u_1(s) + u_2(s)~ds &\approx \sum_{n=1}^{M} s_{m,n} u_1(t_n) +  \sum_{p=1}^{P} \sum_{j=1}^{P} s_{m,p,j} u_2(t_{m,j}) \\
-					&\approx  \sum_{n=1}^{M} s_{m,n} u_1(t_n) + \sum_{j=1}^{P} u_2(t_{m,j}) \left( \sum_{p=1}^{P} s_{m,j,p} \right) \\
-					&=: \sum_{n=1}^{M} s_{m,n} u_1(t_n) + \sum_{j=1}^{P} u_2(t_{m,j}) \hat{s}_{m,j}.
+	\int_{t_m}^{t_{m+1}} u_1(s) + u_2(s)~ds &\approx \sum_{n=1}^{M} s_{m,n} u_1(t_n) + \sum_{p=1}^{P} \sum_{j=1}^{P} s_{m,p,j} u_2(t_{m,j}) \\
+					&=  \sum_{n=1}^{M} s_{m,n} u_1(t_n) + \sum_{j=1}^{P} u_2(t_{m,j}) \left( \sum_{p=1}^{P} s_{m,j,p} \right) \\
+					&=: \sum_{n=1}^{M} s_{m,n} u_1(t_n) + \sum_{j=1}^{P} \hat{s}_{m,j} u_2(t_{m,j}) .
 \end{align*}
 \bibliography{refs}
 \end{document}
