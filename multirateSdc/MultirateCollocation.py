@@ -15,7 +15,7 @@ class multirateCollocation(object):
     self.M       = M
     self.P       = P
 
-    self.coll    = CollGaussRadau_Right(num_nodes = M, tleft = tleft, tright = tright)
+    self.coll     = CollGaussRadau_Right(num_nodes = M, tleft = tleft, tright = tright)
     self.coll_sub = []
     self.coll_sub.append(CollGaussRadau_Right(num_nodes=P, tleft = tleft, tright = self.coll.nodes[0]))
     for i in range(1,M):
@@ -38,7 +38,18 @@ class multirateCollocation(object):
           flag    = self.coll._evaluate_horner(nodes, coeff)
           self.S_mnp[m,n,p] = CollBase.evaluate(weights, flag)
 
+    self.Shat_mp = np.zeros((M,P))
+    for m in range(M):
+      Smat = self.coll_sub[m].Smat
+      Smat = Smat[1:,1:]
+      for j in range(P):
+        for p in range(P):
+          self.Shat_mp[m,j] += Smat[p,j]
+     
+
   '''
+  Takes function values at collocation nodes and computes corresponding approximation of integral between two sub-level quadrature points.
+  Corresponds to the first term in operator I_m_p^pp1.
   '''
   def integrate_p_pp1(self, fu, m, p):
     try:
@@ -51,21 +62,25 @@ class multirateCollocation(object):
     return intvalue
 
   '''
+  Takes function values at sub-level collocation nodes and computed approximation of integral between two sub-level quadrature nodes.
+  Corresponds to second term in operator I_m_p^pp1.
   '''
-  def integrate_p_pp1_sub(self, fu, m, p):
+  def integrate_p_pp1_sub(self, fu_sub, m, p):
     try:
-      fu = np.reshape(fu, (self.P,1))
+      fu = np.reshape(fu_sub, (self.P,1))
     except:
       raise TypeError("Failed to convert argument fu into shape Px1")
     Smat = self.coll_sub[m].Smat
     Smat = Smat[1:,1:]
     intvalue = 0.0
     for j in range(self.P):
-      intvalue += Smat[p,j]*fu[j]
+      intvalue += Smat[p,j]*fu_sub[j]
     return intvalue
       
 
   '''
+  Takes function values at collocation nodes and computes approximation of integral between two nodes.
+  Corresponds to first term in opeator I_m_mp1.
   '''
   def integrate_m_mp1(self, fu, m):
     try:
@@ -77,4 +92,16 @@ class multirateCollocation(object):
     intvalue = 0.0
     for j in range(self.M):
       intvalue += Smat[m,j]*fu[j]
+    return intvalue
+
+  '''
+  '''
+  def integrate_m_mp1_sub(self, fu_sub, m):
+    try:
+      fu_sub = np.reshape(fu_sub, (self.P, 1))
+    except:
+      raise TypeError("Failed to convert argument fu into shape Px1")
+    intvalue = 0.0
+    for j in range(self.P):
+      intvalue += self.Shat_mp[m,j]*fu_sub[j]
     return intvalue
