@@ -1,8 +1,12 @@
 \documentclass{article}
 \usepackage{amsmath,amssymb}
 \usepackage[utf8]{inputenc}
+\usepackage[ruled,algo2e,linesnumbered,algonl]{algorithm2e}
+\usepackage{color}
 
 \newtheorem{remark}{Remark}
+\newcommand{\ve}[1]{\mathbf{#1}}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO -- #1]}}
 
 \bibliographystyle{plain}
 
@@ -70,6 +74,7 @@ so that we get convergence to the coarse and fine level collocation solutions.
 
 
 \paragraph{Quantities to define.}
+\todo{The indices do not really match -- should maybe consider $t_{m-1}$ to $t_m$ and $t_{m,p-1}$ to $t_{m,p}$ instead}
 The Lagrange polynomials on $[T_n, T_{n+1}]$
 \begin{equation}
 	l_m(t), m = 1, \ldots, M \quad \text{with} \quad l_m(t_j) = \delta_{mj}.
@@ -94,17 +99,81 @@ In addition, we will need the ``mixed" weights
 \end{equation}
 This leads to the following split approximations of integrals
 \begin{equation}
-	\int_{t_{m,p}}^{t_{m,p+1}} u_1(s) + u_2(s)~ds \approx \sum_{n=1}^{M} \tilde{s}_{m,n,p} u_1(t_{n}) + \sum_{j=1}^{P} s_{m,p,j} u_2(t_{m,j}) =: I_{m,p}^{p+1}(u_1,u_2)
+	\int_{t_{m,p}}^{t_{m,p+1}} u_1(s) + u_2(s)~ds \approx \sum_{n=1}^{M} \tilde{s}_{m,n,p} u_1(t_{n}) + \sum_{j=1}^{P} s_{m,p,j} u_2(t_{m,j}) =: I_{m,p}^{p+1}(u_1,u_{m,2})
 \end{equation}
 and
 \begin{align*}
 	\int_{t_m}^{t_{m+1}} u_1(s) + u_2(s)~ds &\approx \sum_{n=1}^{M} s_{m,n} u_1(t_n) + \sum_{p=1}^{P} \sum_{j=1}^{P} s_{m,p,j} u_2(t_{m,j}) \\
 					&=  \sum_{n=1}^{M} s_{m,n} u_1(t_n) + \sum_{j=1}^{P} u_2(t_{m,j}) \left( \sum_{p=1}^{P} s_{m,p,j} \right) \\
-					&=: \sum_{n=1}^{M} s_{m,n} u_1(t_n) + \sum_{j=1}^{P} \hat{s}_{m,j} u_2(t_{m,j}) =: I_m^{m+1}(u_1, u_2)
+					&=: \sum_{n=1}^{M} s_{m,n} u_1(t_n) + \sum_{j=1}^{P} \hat{s}_{m,j} u_2(t_{m,j}) =: I_m^{m+1}(u_1, u_{m,2})
 \end{align*}
 with $u_1 \in \mathbb{R}^M$ and $u_2 \in \mathbb{R}^{MP}$.
 \begin{remark}
 The class \texttt{MultirateCollocation.py} contains the weights $s_{m,n}$, $s_{m,p,j}$ and $\tilde{s}_{m,n,p}$ and functions to evaluate the corresponding quadrature rules.
+\end{remark}
+Now consider an IVP 
+\begin{equation}
+	\dot{u}(t) = f_1(u(t)) + f_2(u(t))
+\end{equation}
+where we want to integrate $f_1$ implicitly with large and $f_2$ explicitly with small time steps.
+Denote as $\ve{u}_m \in \mathbb{R}^P$ the vector containing solutions at all sub-steps between two nodes of the coarse level collocation rule, that is $t_m \leq t_{m,1} < \ldots < t_{m,P} \leq t_{m+1}$ for $m=1, \ldots, M$.
+Furthermore, denote $\ve{u} \in \mathbb{R}^M$ the vector containing solutions at the quadrature nodes $T_{n} \leq t_{1} < \ldots < t_{M} \leq T_{n+1}$.
+Given $\ve{u}^k_m$ and $\ve{u}^k$, we first compute the entries of $\ve{u}^{k+1}$ from
+\begin{equation}
+	\label{eq:coarse_step}
+	u^{k+1}_{m+1} = u^{k+1}_m + \Delta t_m \left( f_1(u^{k+1}_{m+1}) - f_1(u^k_{m+1}) \right) + I_{m}^{m+1} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right).
+\end{equation}
+Then, we can perform the SDC sweep on the sub-step
+\begin{align}
+	\label{eq:mr_sdc_sweep}
+	u_{m,p+1}^{k+1} = u_{m,p}^{k+1} &+ \Delta t_{m,p} \left( f_1(u^{k+1}_{m+1}) - f_1(u^k_{m+1}) \right) \\
+					&+ \Delta t_{m,p} \left( f_2(u^{k+1}_{p}) - f_2(u^k_{p}) \right) \\
+					&+ I_{m,p}^{p+1}\left( f_1(\ve{u}^k) + f_2(\ve{u}_m^k) \right)
+\end{align}
+for $p=1, \ldots, P$.
+\begin{algorithm2e}[h]
+	\caption{Multirate SDC sweeps}
+	Run predictor to generate $\ve{u}^0_m$ and $\ve{u}^0$\\
+	\For{$k=1, K$}{
+		Update $I_{m,p}^{p+1}(f_1(\ve{u}^k) + f_2(\ve{u}^k_m))$\\
+		\For{$m=1, M$}{
+			Compute $u^{k+1}_{m+1}$ using~\eqref{eq:coarse_step}\\
+			Compute $f_1(u^{k+1}_{m+1})$\\
+			\For{$p=1, P$}{
+				Update $u^{k+1}_{m,p+1}$ using~\eqref{eq:mr_sdc_sweep}
+			}
+		}
+	}
+\end{algorithm2e}
+Upon convergence, as $u^{k+1}_{m} - u^k_m \to 0$ and $u^{k+1}_{m,p} - u^k_{m,p} \to 0$, the solutions approach
+\begin{equation}
+	u_{m+1} = u_{m} + I_m^{m+1} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right)
+\end{equation}
+and
+\begin{equation}
+	u_{m,p+1} = u_{m,p} + I_{m,p}^{p+1} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right).
+\end{equation}
+\begin{remark}
+Is there any reason to expect that if $t_{m,P} = t_{m+1}$ we will get $u_{m,P} = u_{m+1}$? Consider that
+\begin{equation}
+	u_{m,P} = u_{m} + \sum_{p=1}^{P} I_{m,p}^{p+1}
+\end{equation}
+(using the sub-step update recursively) and
+\begin{equation}
+	u_{m+1} = u_m + I_{m}^{m+1}
+\end{equation}
+so that
+\begin{equation}
+	u_{m+1} - u_{m,P} = I_{m}^{m+1} - \sum_{p=1}^{P} I_{m,p}^{p+1}
+\end{equation}
+The question becomes whether $\sum_{p=1}^{P} I_{m,p}^{p+1} = I_{m}^{m+1}$.
+Obviously, this is true in the continuous case.
+Also, because of the definition of the $\hat{s}_{m,j}$, it holds true for the $u_2$ part in both operators.
+For the $u_1$ part, if $t_{m,1} = t_m$ and $t_{m,P+1} = t_{m+1}$, we have
+\begin{equation}
+	s_{m,n} = \int_{t_m}^{t_{m+1}} l_n(s)~ds = \sum_{p=1}^{P} \int_{t_{m,p}}^{t_{m,p+1}} l_n(s)~ds = \sum_{p=1}^{P} \tilde{s}_{m,n,p}
+\end{equation}
+so that the condition is also satisfied for the $u_1$ term.
 \end{remark}
 \bibliography{refs}
 \end{document}
