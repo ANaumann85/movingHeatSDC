@@ -81,3 +81,22 @@ class test_problem(unittest.TestCase):
       intex   = 0.5*slope*(tb**2-ta**2) + intercept*(tb - ta)
       err     =  abs(intval - intex)
       assert err<1e-14, ("Function integrate_m_mp1_sub failed to integrate linear function excatly. Error: %5.3e" % err)
+
+  def test_integrates_match(self):
+    mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright)
+    slope     = np.random.rand(1)
+    intercept = np.random.rand(1)
+    for m in range(self.M):
+      fu      = slope*mc_coll.coll.nodes + intercept
+      if m==0:
+        ta = mc_coll.coll.tleft
+      else:
+        ta = mc_coll.coll.nodes[m-1]
+      tb   = mc_coll.coll.nodes[m]
+      int_m_mp1 = mc_coll.integrate_m_mp1(fu, m)
+      int_p_pp1 = 0.0
+      fusub = slope*mc_coll.coll_sub[m].nodes + intercept
+      for p in range(self.P):
+        int_p_pp1 += mc_coll.integrate_p_pp1_sub(fusub, m, p)
+      err = abs(int_m_mp1 - int_p_pp1)
+      assert err<1e-14, ("Sum of integrate_p_pp1 does not match integrate_m_mp1. Error: %5.3e" % err)
