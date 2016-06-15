@@ -8,8 +8,8 @@ lambda_2 = -0.0
 u0       = 1.0
 
 M = 4  # SDC nodes for slow process
-P = 2  # SDC nodes for fast process
-K = 25 # Number of sweeps
+P = 4  # SDC nodes for fast process
+K = 4 # Number of sweeps
 
 
 tend     = 0.5
@@ -80,16 +80,20 @@ for n in range(nsteps):
 
     update_I_m_mp1(u, usub, coll)
     update_I_p_pp1(u, usub, coll)
+
+    # Prepare for next iteration
+    u_    = copy.deepcopy(u)
+    usub_ = copy.deepcopy(usub)
     
     for m in range(M):
       if m==0:
         rhs  = u0_step - coll.coll.delta_m[0]*f1(u_[0]) + I_m_mp1[0]
         u[0] = solve_f1(coll.coll.delta_m[0], rhs)
       else:
-        rhs = u[m-1] - coll.coll.delta_m[m]*f1(u_[m]) + I_m_mp1[m]
+        rhs  = u[m-1] - coll.coll.delta_m[m]*f1(u_[m]) + I_m_mp1[m]
         u[m] = solve_f1(coll.coll.delta_m[m], rhs)
 
-      # Run small time step
+      # Run small time steps; f1 term remains constant
       slow = f1(u[m]) - f1(u_[m])
       for p in range(P):
         if p==0:
@@ -100,11 +104,6 @@ for n in range(nsteps):
 
       # update substep initial value
       u0sub_step = usub[m,P-1]
-
-    # Prepare for next iteration
-    u_    = copy.deepcopy(u)
-    usub_ = copy.deepcopy(usub)
-
 
   # update coarse step initial value for next time step
   u0_step = u[M-1]
