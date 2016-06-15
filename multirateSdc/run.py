@@ -3,9 +3,21 @@ import numpy as np
 import copy
 from MultirateCollocation import multirateCollocation
 
-lambda_1 = -0.0
-lambda_2 = -1.0
+lambda_1 = -1.0
+lambda_2 = -0.0
 u0       = 1.0
+
+M = 4  # SDC nodes for slow process
+P = 2  # SDC nodes for fast process
+K = 25 # Number of sweeps
+
+
+tend     = 0.5
+nsteps   = 1
+dt       = tend/float(nsteps)
+
+I_m_mp1 = np.zeros(M)
+I_p_pp1 = np.zeros((M,P))
 
 def solve_f1(a, b):
   return b/(1.0 - a*lambda_1)
@@ -19,13 +31,15 @@ def f2(u):
 def uex(t):
   return u0*np.exp((lambda_1+lambda_2)*t)
 
-M = 2 # SDC nodes for slow process
-P = 2 # SDC nodes for fast process
-K = 5 # Number of sweeps
+def update_I_m_mp1(u, usub, coll):
+  for m in range(M):
+    I_m_mp1[m] = coll.integrate_m_mp1(f1(u), m) + coll.integrate_m_mp1_sub(f2(usub[m,:]), m)
 
-tend     = 0.5
-nsteps   = 1
-dt       = tend/float(nsteps)
+def update_I_p_pp1(u, usub, coll):
+  for m in range(M):
+    for p in range(P):
+      I_p_pp1[m,p] = coll.integrate_p_pp1(f1(u), m, p) + coll.integrate_p_pp1_sub(f2(usub[m,:]), m, p)
+
 
 u  = np.zeros(M)
 u_ = np.zeros(M)
@@ -41,7 +55,7 @@ for n in range(nsteps):
   print "=============================="
   print ("Time step from %4.3f to %4.3f" % (coll.coll.tleft, coll.coll.tright))
   
-  # Run predictor
+  #### Run predictor ###
   for m in range(M):
    
     # single implicit step in f_1
@@ -53,6 +67,7 @@ for n in range(nsteps):
     # multiple explicit steps in f_2 holding f_1 term constant
     for p in range(P):
       if p==0:
+        # Sum up right hand side terms in SDC sweep
         usub[m,0] = u0sub_step + coll.coll_sub[m].delta_m[0]*( f1(u[m]) + f2(u0sub_step) )
       else:            
         usub[m,p] = usub[m,p-1] + coll.coll_sub[m].delta_m[p]*( f1(u[m]) + f2(usub[m,p-1]) )
@@ -60,12 +75,39 @@ for n in range(nsteps):
     # update substep initial value
     u0sub_step = usub[m,P-1]
 
-  # update coarse step initial value
-  u0_step = u[M-1]
+  ### Run SDC iteration ###
+  for k in range(K):
 
-  # Prepare for next time step
-  u_    = copy.deepcopy(u)
-  usub_ = copy.deepcopy(usub)
+    update_I_m_mp1(u, usub, coll)
+    update_I_p_pp1(u, usub, coll)
+    
+    for m in range(M):
+      if m==0:
+        rhs  = u0_step - coll.coll.delta_m[0]*f1(u_[0]) + I_m_mp1[0]
+        u[0] = solve_f1(coll.coll.delta_m[0], rhs)
+      else:
+        rhs = u[m-1] - coll.coll.delta_m[m]*f1(u_[m]) + I_m_mp1[m]
+        u[m] = solve_f1(coll.coll.delta_m[m], rhs)
+
+      # Run small time step
+      slow = f1(u[m]) - f1(u_[m])
+      for p in range(P):
+        if p==0:
+          # f2 term cancels out here
+          usub[m,0] = u0sub_step + coll.coll_sub[m].delta_m[0]*slow + I_p_pp1[m,0]
+        else:
+          usub[m,p] = usub[m,p-1] + coll.coll_sub[m].delta_m[p]*( slow + f2(usub[m,p-1]) - f2(usub_[m,p-1]) ) + I_p_pp1[m,p]
+
+      # update substep initial value
+      u0sub_step = usub[m,P-1]
+
+    # Prepare for next iteration
+    u_    = copy.deepcopy(u)
+    usub_ = copy.deepcopy(usub)
+
+
+  # update coarse step initial value for next time step
+  u0_step = u[M-1]
 
 print ("Error on coarse level: %4.3e" % abs(u0*np.exp(lambda_1*tend) - u[M-1]))
 print ("Error on fine level:   %4.3e" % abs(uex(tend) - usub[M-1,P-1]))
