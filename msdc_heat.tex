@@ -72,8 +72,7 @@ As $u^{k+1} - u^k \to 0$ and also $u^{k+1}_A - u^k \to 0$, we have
 \end{align*}
 so that we get convergence to the coarse and fine level collocation solutions.
 
-
-\paragraph{Quantities to define.}
+\subsection{Multi-rate SDC.}
 \todo{The indices do not really match -- should maybe consider $t_{m-1}$ to $t_m$ and $t_{m,p-1}$ to $t_{m,p}$ instead}
 The Lagrange polynomials on $[T_n, T_{n+1}]$
 \begin{equation}
@@ -175,5 +174,56 @@ For the $u_1$ part, if $t_{m,1} = t_m$ and $t_{m,P+1} = t_{m+1}$, we have
 \end{equation}
 so that the condition is also satisfied for the $u_1$ term.
 \end{remark}
+
+\subsubsection{A note on testing.}
+
+\paragraph{Coarse and fine sweep match.}
+Setting $f_2 \equiv 0$ reduces the coarse level sweep to
+\begin{equation}
+	u^{k+1}_{m+1} = u^{k}_m + \Delta t_m \left( f_1(u^{k+1}_{m+1}) - f_1(u^k_{m+1}) \right) + I_m^{m+1}(f_1(\ve{u}^k))
+\end{equation}
+and thus a standard implicit Euler SDC.
+The coarse level values should therefore show the expected convergence behaviour in this case.
+The sub-steps become
+\begin{align}
+	u^{k+1}_{m,p+1} &= u^{k+1}_{m,p} + \Delta t_{m,p} \left( f_1(u^{k+1}_{m+1}) - f_1(u^{k}_{m+1}) \right) + I_{m, p}^{p+1} (f_1(\ve{u}^k)) \\
+					&= u^{k+1}_m + \left( f_1(u^{k+1}_{m+1}) - f_1(u^{k}_{m+1}) \right) \sum_{q=1}^{p} \Delta t_{m,p} + \sum_{q=1}^{p} I_{m, p}^{p+1} (f_1(\ve{u}^k))
+\end{align}
+so that the final sub-step value should be
+\begin{equation}
+	u^{k+1}_{m,P} = u^{k+1}_{m} +  \left( f_1(u^{k+1}_{m+1}) - f_1(u^{k}_{m+1}) \right) \Delta t_{m} + I_m^{m+1} (f_1(\ve{u}^k))
+\end{equation}
+using that $\sum_{p=1}^{P} \Delta t_{m,p} = \Delta t_m$ (for Radau nodes at least) and that
+\begin{equation}
+	\sum_{p=1}^{P} I_{m,p}^{p+1} = I_{m}^{m+1}.
+\end{equation}
+Therefore, if $f_2 \equiv 0$, the sub-stepping should provide the same values at the coarse quadrature nodes as the coarse sweep.
+
+\paragraph{Coarse sweep invariance.}
+If the collocation solution is used for $\ve{u}^k$ in the coarse level sweep, it remains unchanged.
+The collocation solution satisfies
+\begin{equation}
+	u_m = u_{0} + \sum_{j=1}^{M} q_{m,j} f(u_j) = u_{m-1} + \sum_{j=1}^{M} s_{m,j} f(u_j).		
+\end{equation}
+Inserting it into the implicit Euler SDC sweep gives, assuming $u^{k+1}_{m-1} = u_{m-1}$ (induction)
+\begin{align}
+	u^{k+1}_{m} &= u^{k+1}_{m-1} + \Delta t_m \left( f_1(u^{k+1}_m) - f_1(u_m) \right) + \sum_{j=1}^{M} s_{m,j} f_1(u_j) \\
+	u^{k+1}_m - \Delta t_m f_1(u^{k+1}_{m}) &= u_m - \Delta t_m f_1(u_m)
+\end{align}
+from which it follows that $u^{k+1}_m = u_m$.
+
+\paragraph{Fine sweep invariance.}
+Assume that in each sub-step the solution is the collocation solution given by
+\begin{equation}
+	u_{m,p} = u_{m,p-1} + \sum_{j=1}^{P} s_{m,p,j} f_2(u_{m,j})
+\end{equation}
+with some given initial value $u_{m,0}$.
+If we assume that $f_1 \equiv 0$, the sub-step sweep becomes
+\begin{align*}
+	u^{k+1}_{m,p} &= u^{k+1}_{m,p-1} + \Delta t_{m,p} \left( f_2(u^{k+1}_{m,p-1}) - f_2(u_{m,p-1}) \right) + \sum_{j=1}^{P} s_{m,p,j} f_2(u_{m,j}) \\
+				  &= u_{m,p}  + \Delta t_{m,p} \left( f_2(u^{k+1}_{m,p-1}) - f_2(u_{m,p-1}) \right) \\
+				  &= u_{m,p}
+\end{align*}
+assuming that $u^{k+1}_{m,p-1} = u_{m,p-1}$ (induction).
 \bibliography{refs}
 \end{document}
