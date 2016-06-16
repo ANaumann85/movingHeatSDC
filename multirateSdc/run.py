@@ -31,10 +31,6 @@ def f2(u):
 def uex(t):
   return u0*np.exp((lambda_1+lambda_2)*t)
 
-def update_I_m_mp1(u, usub, coll):
-  for m in range(M):
-    I_m_mp1[m] = coll.integrate_m_mp1(f1(u), m) + coll.integrate_m_mp1_sub(f2(usub[m,:]), m)
-
 def update_I_p_pp1(u, usub, coll):
   for m in range(M):
     for p in range(P):
