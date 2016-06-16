@@ -239,5 +239,32 @@ Then, the residual with entries
 	r_{m,p} := u_{m,p} - u_{m,p-1} - \sum_{j=1}^{P} s_{m,p,j} f_2(u_{m,j})
 \end{equation}
 has to be zero.
+
+\paragraph{Multi-rate collocation solution.}
+Assume that we have solutions $\ve{u} \in \mathbb{R}^{M}$ and $\ve{u}_m \in \mathbb{R}^{P}$, $m=1, \ldots, M$ that satisfy
+\begin{equation}
+	u_{m,p} = u_{m,p-1} + I_{m,p}^{p+1} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right).
+\end{equation}
+Further, assume that the coarse quadrature entries satisfy
+\begin{equation}
+	u_{m} = u_{m-1} + I_{m}^{m+1} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right).
+\end{equation}
+\todo{How to generate such solutions from the given matrices?}
+As above, the coarse level sweep results in
+\begin{align*}
+	u_{m}^{k+1} &= u^{k+1}_{m-1} + \Delta t_m \left( f_1(u^{k+1}_m) - f_1(u_m) \right) + I_m^{m+1}\left( f_1(\ve{u}) + f_2(\ve{u}_m) \right) \\
+				&= u_{m} + \Delta t_m \left( f_1(u^{k+1}_m) - f_1(u_m) \right) \\
+\Rightarrow u^{k+1}_m - \Delta t_m f_1(u^{k+1}_{m}) &= u_m - \Delta t_m f_1(u_m) \\
+\Rightarrow u^{k+1}_m &= u_m
+\end{align*}
+assuming $u^{k+1}_{m-1} = u_{m-1}$ (induction).
+Therefore, for the sub-step sweep, the $f_1$ implicit Euler terms cancel out and we get
+\begin{align*}
+	u_{m,p}^{k+1} &= u_{m,p-1}^{k+1} + \Delta t_m \left( f_2(u_{m,p-1}^{k+1}) - f_2(u_{m,p-1}) \right) + I_{m,p-1}^{p} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right).
+\end{align*}
+Assuming $u^{k+1}_{m,p-1} = u_{m,p-1}$ (induction), we get
+\begin{equation}
+	u_{m,p}^{k+1} = u_{m,p-1} + I_{m,p-1}^{p} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right) = u_{m,p}
+\end{equation}
 \bibliography{refs}
 \end{document}
