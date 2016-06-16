@@ -57,6 +57,29 @@ class test_sdc_step(unittest.TestCase):
     err = np.linalg.norm(usweep - ucoll, np.inf)
     assert err<1e-14, ("Collocation solution not invariant under coarse level SDC sweep with lambda_2=0. Error: %5.3e" % err)
 
+  '''
+  '''
+  def test_collocation_residual(self):
+    #self.setUp(lambda_2=0.0)
+    u0 = np.random.rand(1)
+    Q = self.sdc.coll.coll.Qmat
+    Q = Q[1:,1:]
+    Mcoll = np.eye(self.M) - self.sdc.dt*Q*(self.prob.lambda_1 + self.prob.lambda_2)
+    ucoll = np.linalg.inv(Mcoll).dot(u0*np.ones(self.M))
+    ### HOW TO CORRECTLY COMPUTE usub???
+    self.sdc.update_I_m_mp1(ucoll, np.zeros((self.M,self.P)))
+    res = self.sdc.residual(u0, ucoll)
+    assert res<1e-14, ("Residual not zero for collocation solution. Error: %5.3e" % res)
+
+  '''
+  Make sure the collocation solution computed from matrix inversion leads to a zero residual with respect to the integral operators I_m_mp1 and I_p_pp1
+  '''
+  def test_sub_collocation_residual(self):
+    pass
+  
+  '''
+  '''
+  @unittest.skip("temporarily disabled")
   def test_subsweep_coll_invariant(self):
     self.setUp(lambda_1=0.0)
     u0 = np.random.rand(1)

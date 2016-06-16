@@ -29,6 +29,18 @@ class sdc_step():
 
   '''
   '''
+  def residual(self, u0, u):
+    res = abs(u[0] - u0 - self.I_m_mp1[0])
+    for m in range(1,self.coll.M):
+      resm = abs(u[m] - u[m-1] - self.I_m_mp1[m])
+      res  = max(res, resm)
+    return res
+
+  def sub_residual(self, usub):
+    pass
+
+  '''
+  '''
   def predict(self, u0):
     u = np.zeros(self.coll.M) 
     u[0] = self.prob.solve_f1(self.coll.coll.delta_m[0], u0)
