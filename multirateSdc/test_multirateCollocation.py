@@ -100,3 +100,12 @@ class test_problem(unittest.TestCase):
         int_p_pp1 += mc_coll.integrate_p_pp1_sub(fusub, m, p)
       err = abs(int_m_mp1 - int_p_pp1)
       assert err<1e-14, ("Sum of integrate_p_pp1 does not match integrate_m_mp1. Error: %5.3e" % err)
+
+  def test_timesteps_match(self):
+    mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright)
+    for m in range(self.M):
+      dt_sum_sub = 0.0
+      for p in range(self.P):
+        dt_sum_sub += mc_coll.coll_sub[m].delta_m[p]
+      err = abs(dt_sum_sub - mc_coll.coll.delta_m[m])
+      assert err<1e-14, ("Sum of sub-steps did not yield length of step on coarse level. Error: %5.3e" % err)
