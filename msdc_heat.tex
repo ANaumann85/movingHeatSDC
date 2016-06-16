@@ -225,5 +225,19 @@ If we assume that $f_1 \equiv 0$, the sub-step sweep becomes
 				  &= u_{m,p}
 \end{align*}
 assuming that $u^{k+1}_{m,p-1} = u_{m,p-1}$ (induction).
+
+\paragraph{Coarse sweep residual.}
+
+\paragraph{Fine sweep residual.}
+Assume the solution at sub-steps is given by
+\begin{equation}
+	u_{m,p} = u_{m,p-1} + \sum_{j=1}^{P} s_{m,p,j} f_2(u_{m,j}) = \ldots = u_{m,0} +  \sum_{j=1}^{P} q_{m,p,j} f_2(u_{m,j})
+\end{equation}
+with given initial value $u_{m,0}$.
+Then, the residual with entries
+\begin{equation}
+	r_{m,p} := u_{m,p} - u_{m,p-1} - \sum_{j=1}^{P} s_{m,p,j} f_2(u_{m,j})
+\end{equation}
+has to be zero.
 \bibliography{refs}
 \end{document}

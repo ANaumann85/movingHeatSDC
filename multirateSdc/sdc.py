@@ -36,8 +36,24 @@ class sdc_step():
       res  = max(res, resm)
     return res
 
-  def sub_residual(self, usub):
-    pass
+  def sub_residual(self, u0, usub):
+    res = 0.0
+    for m in range(self.coll.M):
+      res = max(res, self.sub_residual_m(u0, usub[m,:], m))
+      u0 = usub[m,-1]
+    return res
+
+  '''
+  '''
+  def sub_residual_m(self, u0, u, m):
+    try:
+      u = np.reshape(u, (self.coll.P,1))
+    except:
+      raise TypeError("Failed to convert argument fu into shape Px1")
+    res = abs(u[0] - u0 - self.I_p_pp1[m,0])
+    for p in range(1,self.coll.P):
+      res = max(res, abs(u[p] - u[p-1] - self.I_p_pp1[m,p]))
+    return res
 
   '''
   '''
@@ -78,7 +94,7 @@ class sdc_step():
       slow      = self.prob.f1(u[m]) - self.prob.f1(u_[m])
       # explicit f2 terms cancel here [DO THEY REALLY??]
       usub[m,0] = u0 + self.coll.coll_sub[m].delta_m[0]*slow + self.I_p_pp1[m,0]
-      print abs(usub[m,0] - usub_[m,0])
       for p in range(1,self.coll.P):
         usub[m,p] = usub[m,p-1] + self.coll.coll_sub[m].delta_m[p]*(slow + self.prob.f2(usub[m,p-1]) - self.prob.f2(usub_[m,p-1])) + self.I_p_pp1[m,p]
+      u0 = usub[m,-1]
     return usub

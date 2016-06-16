@@ -12,7 +12,7 @@ class test_sdc_step(unittest.TestCase):
       lambda_2 = -0.1
     self.prob = problem(lambda_1, lambda_2)
     self.M = 2
-    self.P = 2
+    self.P = 3
     tstart = 0.0
     tend   = 1.0
     self.sdc = sdc_step(self.M, self.P, tstart, tend, self.prob)
@@ -43,7 +43,7 @@ class test_sdc_step(unittest.TestCase):
         assert err<1e-14, ("sub_predict for lambda_1 = 0 failed to reproduce explicit Euler. Error: 5.3e" % err)
 
   '''
-  Collocation solution has to be invariant under SDC sweeps
+  Collocation solution has to be invariant under coarse level SDC sweeps
   '''
   def test_sweep_coll_invariant(self):
     self.setUp(lambda_2=0.0)
@@ -60,26 +60,53 @@ class test_sdc_step(unittest.TestCase):
   '''
   '''
   def test_collocation_residual(self):
-    #self.setUp(lambda_2=0.0)
+    self.setUp(lambda_2=0.0)
     u0 = np.random.rand(1)
     Q = self.sdc.coll.coll.Qmat
     Q = Q[1:,1:]
-    Mcoll = np.eye(self.M) - self.sdc.dt*Q*(self.prob.lambda_1 + self.prob.lambda_2)
+    Mcoll = np.eye(self.M) - self.sdc.dt*Q*self.prob.lambda_1
     ucoll = np.linalg.inv(Mcoll).dot(u0*np.ones(self.M))
-    ### HOW TO CORRECTLY COMPUTE usub???
     self.sdc.update_I_m_mp1(ucoll, np.zeros((self.M,self.P)))
     res = self.sdc.residual(u0, ucoll)
     assert res<1e-14, ("Residual not zero for collocation solution. Error: %5.3e" % res)
 
   '''
+  Make sure that for a sub-step collocation solution sub_residual_m returns zero
+  '''
+  def test_sub_collocation_residual_p(self):
+    self.setUp(lambda_1 = 0.0, lambda_2=-1.0)
+    u0 = 1.0
+    for m in range(self.M):
+      Q = self.sdc.coll.coll_sub[m].Qmat
+      Q = Q[1:,1:]
+      Mcoll = np.eye(self.P) - Q*self.prob.lambda_2
+      ucoll = np.linalg.inv(Mcoll).dot(u0*np.ones(self.P))
+      usub  = np.zeros((self.M,self.P))
+      usub[m,:] = ucoll
+      self.sdc.update_I_p_pp1(np.zeros(self.M), usub)
+      res = self.sdc.sub_residual_m(u0, ucoll, m)
+      assert res<1e-14, ("Individual sub-step collocation solution failed to result in zero sub-step residual. Error: %5.3e" % res)
+
+  '''
   Make sure the collocation solution computed from matrix inversion leads to a zero residual with respect to the integral operators I_m_mp1 and I_p_pp1
   '''
   def test_sub_collocation_residual(self):
-    pass
-  
+    self.setUp(lambda_1 = 0.0, lambda_2=-1.0)
+    u0     = np.random.rand(1)
+    usub   = np.zeros((self.M,self.P))
+    u0_sub = u0
+    for m in range(self.M):
+      Q          = self.sdc.coll.coll_sub[m].Qmat
+      Q          = Q[1:,1:]
+      Mcoll      = np.eye(self.P) - Q*self.prob.lambda_2
+      usub[m,:]  = np.linalg.inv(Mcoll).dot(u0_sub*np.ones(self.P))
+      u0_sub     = usub[m,-1]
+    self.sdc.update_I_p_pp1(np.zeros(self.M), usub)
+    res = self.sdc.sub_residual(u0, usub)
+    assert res<1e-14, ("Solution composed of sub-step collocation solutions failed to produce zero for sub_residual. Error: %5.3e" % res)
+
   '''
   '''
-  @unittest.skip("temporarily disabled")
   def test_subsweep_coll_invariant(self):
     self.setUp(lambda_1=0.0)
     u0 = np.random.rand(1)
@@ -87,12 +114,11 @@ class test_sdc_step(unittest.TestCase):
     ucoll = np.zeros((self.M, self.P))
     for m in range(self.M):
       Q          = self.sdc.coll.coll_sub[m].Qmat
-      dt         = self.sdc.coll.coll_sub[m].tright - self.sdc.coll.coll_sub[m].tleft
       Q          = Q[1:,1:]
-      Mcoll      = np.eye(self.P) - dt*Q*self.prob.lambda_2
+      Mcoll      = np.eye(self.P) - Q*self.prob.lambda_2
       ucoll[m,:] = np.linalg.inv(Mcoll).dot(u0_step*np.ones(self.P))
       u0_step    = ucoll[m,-1]
     self.sdc.update_I_p_pp1(np.zeros(self.M), ucoll)
     usweep = self.sdc.sub_sweep(u0, np.zeros(self.M), np.zeros(self.M), ucoll)
-    err = np.linalg.norm(usweep[0,:] - ucoll[0,:], np.inf)
-    print err
+    err = np.linalg.norm(usweep - ucoll, np.inf)
+    assert err<1e-14, ("Solution composed of sub-step collocation solutions not invariant under sub-step sweep. Error: %5.3e" % err)
