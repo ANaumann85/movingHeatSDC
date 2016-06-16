@@ -12,12 +12,13 @@ class sdc_step():
     self.I_m_mp1 = np.zeros(M)
     self.I_p_pp1 = np.zeros((M,P))
     self.prob    = problem
+    self.dt      = tend-tstart
 
   '''
   '''
   def update_I_m_mp1(self, u, usub):
     for m in range(self.coll.M):
-      self.I_m_mp1[m] = self.coll.integrate_m_mp1(self.prob.f1(u), m) + coll.integrate_m_mp1_sub(self.prob.f2(usub[m,:]), m)
+      self.I_m_mp1[m] = self.coll.integrate_m_mp1(self.prob.f1(u), m) + self.coll.integrate_m_mp1_sub(self.prob.f2(usub[m,:]), m)
 
   '''
   '''
@@ -48,10 +49,24 @@ class sdc_step():
 
   '''
   '''
-  def sweep(self, u0, u):
-    pass
+  def sweep(self, u0, u_):
+    u    = np.zeros(self.coll.M)
+    rhs  = u0 - self.coll.coll.delta_m[0]*self.prob.f1(u_[0]) + self.I_m_mp1[0]
+    u[0] = self.prob.solve_f1(self.coll.coll.delta_m[0], rhs)
+    for m in range(1,self.coll.M):
+      rhs  = u[m-1] - self.coll.coll.delta_m[m]*self.prob.f1(u_[m]) + self.I_m_mp1[m]
+      u[m] = self.prob.solve_f1(self.coll.coll.delta_m[m], rhs)
+    return u
 
   '''
   '''
-  def sub_sweep(self, u0, u, usub):
-    pass
+  def sub_sweep(self, u0, u, u_, usub_):
+    usub = np.zeros((self.coll.M,self.coll.P))
+    for m in range(self.coll.M):
+      slow      = self.prob.f1(u[m]) - self.prob.f1(u_[m])
+      # explicit f2 terms cancel here [DO THEY REALLY??]
+      usub[m,0] = u0 + self.coll.coll_sub[m].delta_m[0]*slow + self.I_p_pp1[m,0]
+      print abs(usub[m,0] - usub_[m,0])
+      for p in range(1,self.coll.P):
+        usub[m,p] = usub[m,p-1] + self.coll.coll_sub[m].delta_m[p]*(slow + self.prob.f2(usub[m,p-1]) - self.prob.f2(usub_[m,p-1])) + self.I_p_pp1[m,p]
+    return usub

@@ -41,3 +41,35 @@ class test_sdc_step(unittest.TestCase):
         symb *= (1.0 + self.prob.lambda_2*self.sdc.coll.coll_sub[m].delta_m[p])
         err = abs(usub[m,p] - symb*u0)
         assert err<1e-14, ("sub_predict for lambda_1 = 0 failed to reproduce explicit Euler. Error: 5.3e" % err)
+
+  '''
+  Collocation solution has to be invariant under SDC sweeps
+  '''
+  def test_sweep_coll_invariant(self):
+    self.setUp(lambda_2=0.0)
+    u0 = np.random.rand(1)
+    Q = self.sdc.coll.coll.Qmat
+    Q = Q[1:,1:]
+    Mcoll = np.eye(self.M) - self.sdc.dt*Q*self.prob.lambda_1
+    ucoll = np.linalg.inv(Mcoll).dot(u0*np.ones(self.M))
+    self.sdc.update_I_m_mp1(ucoll, np.zeros((self.M,self.P)))
+    usweep = self.sdc.sweep(u0, ucoll)
+    err = np.linalg.norm(usweep - ucoll, np.inf)
+    assert err<1e-14, ("Collocation solution not invariant under coarse level SDC sweep with lambda_2=0. Error: %5.3e" % err)
+
+  def test_subsweep_coll_invariant(self):
+    self.setUp(lambda_1=0.0)
+    u0 = np.random.rand(1)
+    u0_step = u0
+    ucoll = np.zeros((self.M, self.P))
+    for m in range(self.M):
+      Q          = self.sdc.coll.coll_sub[m].Qmat
+      dt         = self.sdc.coll.coll_sub[m].tright - self.sdc.coll.coll_sub[m].tleft
+      Q          = Q[1:,1:]
+      Mcoll      = np.eye(self.P) - dt*Q*self.prob.lambda_2
+      ucoll[m,:] = np.linalg.inv(Mcoll).dot(u0_step*np.ones(self.P))
+      u0_step    = ucoll[m,-1]
+    self.sdc.update_I_p_pp1(np.zeros(self.M), ucoll)
+    usweep = self.sdc.sub_sweep(u0, np.zeros(self.M), np.zeros(self.M), ucoll)
+    err = np.linalg.norm(usweep[0,:] - ucoll[0,:], np.inf)
+    print err

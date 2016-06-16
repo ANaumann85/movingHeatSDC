@@ -54,22 +54,8 @@ for n in range(nsteps):
   #### Run predictor ###
   for m in range(M):
    
-    # single implicit step in f_1
-    if m==0:
-      u[0] = solve_f1(coll.coll.delta_m[0], u0_step)
-    else:
-      u[m] = solve_f1(coll.coll.delta_m[m], u[m-1])
-
-    # multiple explicit steps in f_2 holding f_1 term constant
-    for p in range(P):
-      if p==0:
-        # Sum up right hand side terms in SDC sweep
-        usub[m,0] = u0sub_step + coll.coll_sub[m].delta_m[0]*( f1(u[m]) + f2(u0sub_step) )
-      else:            
-        usub[m,p] = usub[m,p-1] + coll.coll_sub[m].delta_m[p]*( f1(u[m]) + f2(usub[m,p-1]) )
-    
-    # update substep initial value
-    u0sub_step = usub[m,P-1]
+    # u = predict
+    # usub = sub_predict
 
   ### Run SDC iteration ###
   for k in range(K):
