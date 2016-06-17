@@ -2,6 +2,7 @@ from problem import problem
 from sdc import sdc_step
 import numpy as np
 import unittest
+import copy
 
 class test_sdc_step(unittest.TestCase):
 
@@ -122,3 +123,21 @@ class test_sdc_step(unittest.TestCase):
     usweep = self.sdc.sub_sweep(u0, np.zeros(self.M), np.zeros(self.M), ucoll)
     err = np.linalg.norm(usweep - ucoll, np.inf)
     assert err<1e-14, ("Solution composed of sub-step collocation solutions not invariant under sub-step sweep. Error: %5.3e" % err)
+
+  def test_converge_to_fixpoint(self):
+    self.setUp(lambda_2=0.0)   
+    u0 = 1.0
+    u_ = self.sdc.predict(u0)
+    usub_ = self.sdc.sub_predict(u0, u_)
+    for k in range(3):
+      self.sdc.update_I_m_mp1(u_, usub_)
+      self.sdc.update_I_p_pp1(u_, usub_)
+      u = self.sdc.sweep(u0, u_)
+      usub = self.sdc.sub_sweep(u0, u, u_, usub_)
+      print ("Defect: %5.3e" % np.linalg.norm(u - u_, np.inf))
+      print ("Sub-defect: %5.3e" % np.linalg.norm(usub - usub_, np.inf))
+      print ("Residual: %5.3e" % self.sdc.residual(u0, u))
+      print ("Sub-residual: %53.3e" % self.sdc.sub_residual(u0, usub))
+      u = copy.deepcopy(u_)
+      usub = copy.deepcopy(usub_)
+

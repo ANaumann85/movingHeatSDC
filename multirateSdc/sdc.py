@@ -36,6 +36,8 @@ class sdc_step():
       res  = max(res, resm)
     return res
 
+  '''
+  '''
   def sub_residual(self, u0, usub):
     res = 0.0
     for m in range(self.coll.M):

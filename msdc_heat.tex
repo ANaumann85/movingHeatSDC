@@ -242,14 +242,15 @@ has to be zero.
 
 \paragraph{Multi-rate collocation solution.}
 Assume that we have solutions $\ve{u} \in \mathbb{R}^{M}$ and $\ve{u}_m \in \mathbb{R}^{P}$, $m=1, \ldots, M$ that satisfy
-\begin{equation}
-	u_{m,p} = u_{m,p-1} + I_{m,p}^{p+1} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right).
-\end{equation}
+\begin{align*}
+	u_{m,p} &= u_{m,p-1} + I_{m,p}^{p+1} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right) \\
+			&= u_{m,0} + \sum_{q=1}^{p} I_{m,q}^{q+1} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right).
+\end{align*}
 Further, assume that the coarse quadrature entries satisfy
-\begin{equation}
-	u_{m} = u_{m-1} + I_{m}^{m+1} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right).
-\end{equation}
-\todo{How to generate such solutions from the given matrices?}
+\begin{align*}
+	u_{m} &= u_{m-1} + I_{m}^{m+1} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right) \\
+		  &= u_0 + \sum_{j=1}^{m} I_{j}^{j+1} \left( f_1(\ve{u}) + f_2(\ve{u}_m) \right)
+\end{align*}
 As above, the coarse level sweep results in
 \begin{align*}
 	u_{m}^{k+1} &= u^{k+1}_{m-1} + \Delta t_m \left( f_1(u^{k+1}_m) - f_1(u_m) \right) + I_m^{m+1}\left( f_1(\ve{u}) + f_2(\ve{u}_m) \right) \\
