@@ -100,3 +100,21 @@ class sdc_step():
         usub[m,p] = usub[m,p-1] + self.coll.coll_sub[m].delta_m[p]*(slow + self.prob.f2(usub[m,p-1]) - self.prob.f2(usub_[m,p-1])) + self.I_p_pp1[m,p]
       u0 = usub[m,-1]
     return usub
+
+  def get_collocation_solution(self, u0):  
+    Q = self.coll.coll.Qmat
+    Q = Q[1:,1:]
+    try:
+      Mcoll = np.eye(self.coll.M) - Q*self.prob.lambda_1
+    except:
+      raise
+    return np.linalg.inv(Mcoll).dot(u0*np.ones(self.coll.M))
+
+  def get_collocation_solution_sub(self, u0, m):  
+    Q = self.coll.coll_sub[m].Qmat
+    Q = Q[1:,1:]
+    try:
+      Mcoll = np.eye(self.coll.P) - Q*self.prob.lambda_2
+    except:
+      raise
+    return np.linalg.inv(Mcoll).dot(u0*np.ones(self.coll.P))

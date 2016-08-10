@@ -15,9 +15,10 @@ class test_sdc_step(unittest.TestCase):
     self.M = 2
     self.P = 3
     tstart = 0.0
-    tend   = 1.0
+    tend   = 0.5
     self.sdc = sdc_step(self.M, self.P, tstart, tend, self.prob)
 
+  # Predictor for standard nodes is implicit Euler
   def test_predict(self):
     u0 = np.random.rand(1)
     u  = self.sdc.predict(u0)
@@ -27,6 +28,7 @@ class test_sdc_step(unittest.TestCase):
       err = abs(u[m] - symb*u0)
       assert err<1e-14, ("Predict on coarse level did not reproduce implicit Euler. Error: %5.3e" % err)
 
+  # Predictor for embedded nodes is explicit Euler
   def test_predict_sub(self):
     self.setUp(lambda_1=0.0)
     u0 = np.random.rand(1)
@@ -44,45 +46,37 @@ class test_sdc_step(unittest.TestCase):
         assert err<1e-14, ("sub_predict for lambda_1 = 0 failed to reproduce explicit Euler. Error: 5.3e" % err)
 
   '''
-  Collocation solution has to be invariant under coarse level SDC sweeps
+  Standard collocation solution has to be invariant under SDC sweep across standard nodes
   '''
   def test_sweep_coll_invariant(self):
     self.setUp(lambda_2=0.0)
     u0 = np.random.rand(1)
-    Q = self.sdc.coll.coll.Qmat
-    Q = Q[1:,1:]
-    Mcoll = np.eye(self.M) - self.sdc.dt*Q*self.prob.lambda_1
-    ucoll = np.linalg.inv(Mcoll).dot(u0*np.ones(self.M))
+    ucoll = self.sdc.get_collocation_solution(u0)
     self.sdc.update_I_m_mp1(ucoll, np.zeros((self.M,self.P)))
     usweep = self.sdc.sweep(u0, ucoll)
     err = np.linalg.norm(usweep - ucoll, np.inf)
-    assert err<1e-14, ("Collocation solution not invariant under coarse level SDC sweep with lambda_2=0. Error: %5.3e" % err)
+    assert err<1e-14, ("Collocation solution not invariant under standard node SDC sweep with lambda_2=0. Error: %5.3e" % err)
 
   '''
+  Standard collocation solution must have zero residual
   '''
   def test_collocation_residual(self):
     self.setUp(lambda_2=0.0)
     u0 = np.random.rand(1)
-    Q = self.sdc.coll.coll.Qmat
-    Q = Q[1:,1:]
-    Mcoll = np.eye(self.M) - self.sdc.dt*Q*self.prob.lambda_1
-    ucoll = np.linalg.inv(Mcoll).dot(u0*np.ones(self.M))
+    ucoll = self.sdc.get_collocation_solution(u0)
     self.sdc.update_I_m_mp1(ucoll, np.zeros((self.M,self.P)))
     res = self.sdc.residual(u0, ucoll)
     assert res<1e-14, ("Residual not zero for collocation solution. Error: %5.3e" % res)
 
   '''
-  Make sure that for a sub-step collocation solution sub_residual_m returns zero
+  Embedded collocation solution must have zero residual
   '''
   def test_sub_collocation_residual_p(self):
     self.setUp(lambda_1 = 0.0, lambda_2=-1.0)
     u0 = 1.0
     for m in range(self.M):
-      Q = self.sdc.coll.coll_sub[m].Qmat
-      Q = Q[1:,1:]
-      Mcoll = np.eye(self.P) - Q*self.prob.lambda_2
-      ucoll = np.linalg.inv(Mcoll).dot(u0*np.ones(self.P))
-      usub  = np.zeros((self.M,self.P))
+      ucoll     = self.sdc.get_collocation_solution_sub(u0, m)
+      usub      = np.zeros((self.M,self.P))
       usub[m,:] = ucoll
       self.sdc.update_I_p_pp1(np.zeros(self.M), usub)
       res = self.sdc.sub_residual_m(u0, ucoll, m)
@@ -97,10 +91,7 @@ class test_sdc_step(unittest.TestCase):
     usub   = np.zeros((self.M,self.P))
     u0_sub = u0
     for m in range(self.M):
-      Q          = self.sdc.coll.coll_sub[m].Qmat
-      Q          = Q[1:,1:]
-      Mcoll      = np.eye(self.P) - Q*self.prob.lambda_2
-      usub[m,:]  = np.linalg.inv(Mcoll).dot(u0_sub*np.ones(self.P))
+      usub[m,:]  = self.sdc.get_collocation_solution_sub(u0_sub, m)
       u0_sub     = usub[m,-1]
     self.sdc.update_I_p_pp1(np.zeros(self.M), usub)
     res = self.sdc.sub_residual(u0, usub)
@@ -109,35 +100,35 @@ class test_sdc_step(unittest.TestCase):
   '''
   '''
   def test_subsweep_coll_invariant(self):
-    self.setUp(lambda_1=0.0)
+    self.setUp(lambda_1=0.0, lambda_2=-1.0)
     u0 = np.random.rand(1)
     u0_step = u0
     ucoll = np.zeros((self.M, self.P))
     for m in range(self.M):
-      Q          = self.sdc.coll.coll_sub[m].Qmat
-      Q          = Q[1:,1:]
-      Mcoll      = np.eye(self.P) - Q*self.prob.lambda_2
-      ucoll[m,:] = np.linalg.inv(Mcoll).dot(u0_step*np.ones(self.P))
+      ucoll[m,:] = self.sdc.get_collocation_solution_sub(u0_step, m)
       u0_step    = ucoll[m,-1]
     self.sdc.update_I_p_pp1(np.zeros(self.M), ucoll)
     usweep = self.sdc.sub_sweep(u0, np.zeros(self.M), np.zeros(self.M), ucoll)
     err = np.linalg.norm(usweep - ucoll, np.inf)
     assert err<1e-14, ("Solution composed of sub-step collocation solutions not invariant under sub-step sweep. Error: %5.3e" % err)
 
+  ''' 
+  '''
   def test_converge_to_fixpoint(self):
     self.setUp(lambda_2=0.0)   
-    u0 = 1.0
-    u_ = self.sdc.predict(u0)
+    u0    = 1.0
+    u_    = self.sdc.predict(u0)
     usub_ = self.sdc.sub_predict(u0, u_)
     for k in range(3):
       self.sdc.update_I_m_mp1(u_, usub_)
       self.sdc.update_I_p_pp1(u_, usub_)
-      u = self.sdc.sweep(u0, u_)
+      u    = self.sdc.sweep(u0, u_)
       usub = self.sdc.sub_sweep(u0, u, u_, usub_)
-      print ("Defect: %5.3e" % np.linalg.norm(u - u_, np.inf))
-      print ("Sub-defect: %5.3e" % np.linalg.norm(usub - usub_, np.inf))
-      print ("Residual: %5.3e" % self.sdc.residual(u0, u))
-      print ("Sub-residual: %53.3e" % self.sdc.sub_residual(u0, usub))
+      print ("Standard node update: %5.3e" % np.linalg.norm(u - u_, np.inf))
+      print ("Embedded node update: %5.3e" % np.linalg.norm(usub - usub_, np.inf))
+      print ("Standard node residual: %5.3e" % self.sdc.residual(u0, u))
+      print ("Embedded node residual: %5.3e" % self.sdc.sub_residual(u0, usub))
+      print ""
       u = copy.deepcopy(u_)
       usub = copy.deepcopy(usub_)
 

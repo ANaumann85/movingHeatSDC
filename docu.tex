@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{amsmath,amssymb}
+\usepackage{amsmath,amssymb,amsthm}
 \usepackage[utf8]{inputenc}
 \usepackage[ruled,algo2e,linesnumbered,algonl]{algorithm2e}
 \usepackage{color}
@@ -59,11 +59,12 @@ We also need the following \textbf{mixed} weights for integrating the Lagrange p
 \begin{equation}
 	\tilde{s}_{m,j,p} := \int_{t_{m,p}}^{t_{m,p+1}} l_{j}(s)~ds, \ \text{for} \ m,j=1,\ldots,M, \ p=1,\ldots,P.
 \end{equation}
-\begin{lemma}
+\begin{lemma}\label{lemma:weights_match}
 The mixed weights are consistent with the standard weights in the sense that
 \begin{equation}
 	s_{m,j} = \int_{t_m}^{t_{m+1}} l_j(s)~ds = \sum_{p=1}^{P} \int_{t_{m,p}}^{t_{m,p+1}} l_j(s)~ds = \sum_{p=1}^{P} \tilde{s}_{m,j,p}.
 \end{equation}
+Verified by \texttt{test\_weights\_match}.
 \end{lemma}
 
 \begin{table}[h]
@@ -89,6 +90,68 @@ Test \texttt{...} verifies this identity for linear functions.
 \end{remark}
 Furthermore, we can approximate the integral over an embedded sub step by
 \begin{equation}
-	\int_{t_{m,p}}^{t_{m,p+1}} u(s)~ds \approx I_{m,p}^{p+1}(\ve{u}^s, \ve{u}^{e}_{m}) := \sum_{j=1}^{M} \tilde{s}_{m,j,p} \ve{u}^{s}_{j} + \sum_{q=1}^{P} \tilde{s}_{m,p,q} \ve{u}^{e}_{m,q}.
+	\int_{t_{m,p}}^{t_{m,p+1}} u(s)~ds \approx I_{m,p}^{p+1}(\ve{u}^s, \ve{u}^{e}_{m}) := \sum_{j=1}^{M} \tilde{s}_{m,j,p} \ve{u}^{s}_{j} + \sum_{q=1}^{P} s_{m,p,q} \ve{u}^{e}_{m,q}.
 \end{equation}
+\begin{lemma}\label{lemma:quadrature_match}
+The two integration operators are consistent in the sense that
+\begin{equation}
+	I_{m}^{m+1}(\ve{u}^s, \ve{u}^{e}_{m}) = \sum_{p=1}^{P} I_{m,p}^{p+1}(\ve{u}^s, \ve{u}^{e}_{m}).
+\end{equation}
+\begin{proof}
+By definition of the operators and $\hat{s}_{m,q}$ and using Lemma~\ref{lemma:weights_match} it holds that
+\begin{align*}
+	\sum_{p=1}^{P} I_{m,p}^{p+1}(\ve{u}^s, \ve{u}^{e}_{m}) &= \sum_{p=1}^{P} \left( \sum_{j=1}^{M} \tilde{s}_{m,j,p} \ve{u}^{s}_j + \sum_{q=1}^{P} s_{m,p,q} \ve{u}^{e}_{m,q} \right) \\
+		&= \sum_{j=1}^{M} \left( \sum_{p=1}^{P} \tilde{s}_{m,j,p} \right) \ve{u}^{s}_{j} + \sum_{q=1}^{P} \left( \sum_{p=1}^{P} s_{m,p,q} \right) \ve{u}^{e}_{m,q} \\
+		&= \sum_{j=1}^{M} s_{m,j} \ve{u}^{s}_{j} + \sum_{q=1}^{P} \hat{s}_{m,q} \ve{u}^{e}_{m,q} = I_{m}^{m+1}(\ve{u}^s, \ve{u}^{e}_{m})
+\end{align*}
+\end{proof}
+\end{lemma}
+
+\subsection*{Multi-rate SDC sweeps}
+Consider an initial value problem
+\begin{equation}
+	\dot{u}(t) = f(u(t)) + g(u(t))
+\end{equation}
+where we want to integrate $f$ implicitly with a large time step and $g$ explicitly with a small time step.
+As before, denote as $\ve{u}^s$ a vector with approximate solutions at the standard nodes and as $\ve{u}^{e}$ the vector with approximate solutions at the embedded nodes.
+Given values $\ve{u}^{s,k}$, $\ve{u}^{e,k}$, the multi-rate SDC sweep then consists of
+\begin{itemize}
+\item Compute standard step
+	\begin{equation}
+		u^{k+1}_{m+1} = u^{k+1}_{m} + \Delta t_m \left( f(u^{k+1}_{m+1}) - f(u^k_{m+1}) \right) + I_{m}^{m+1} \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_m) \right)
+	\end{equation}
+\item Compute embedded steps
+	\begin{align*}
+		u_{m,p+1}^{k+1} = u_{m,p}^{k+1} &+ \Delta t_{m,p} \left( f(u^{k+1}_{m+1}) - f(u^k_{m+1}) \right) \\
+			& + \Delta t_{m,p} \left( g(u^{k+1}_{m,p}) - g(u^k_{m,p}) \right) + I_{m,p}^{p+1}  \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_m) \right)
+	\end{align*}
+	for $p=1, \ldots, P$.
+\end{itemize}
+\begin{remark}
+If the iteration converges, that is and $u^{k+1}_{m+1} - u^{k}_{m+1} \to 0$ and $u^{k+1}_{m,p} - u^{k}_{m,p} \to 0$, the sweeps reduce to the underlying collocation equations
+\begin{equation}
+	u_{m+1} = u_{m} + I_m^{m+1} \left( f(\ve{u}^{s}) , g(\ve{u}^{e}_m) \right)
+\end{equation}
+and
+\begin{equation}
+	u_{m,p+1} = u_{m,p} + I_{m,p}^{p+1} \left( f(\ve{u}^{s}) , g(\ve{u}^{e}_m) \right)
+\end{equation}
+Based on this, for given values of $\ve{u}^s$, $\ve{u}^3$, we can define the standard 
+\begin{equation}
+ r^s := \max_{m=1,\ldots,M} \left\| \ve{u}^s_{m+1} - \ve{u}^s_{m} - I_{m}^{m+1}\left( f(\ve{u}^{s}) , g(\ve{u}^{e}_m) \right) \right\|
+\end{equation}
+and embedded residual
+\begin{equation}
+	r^e := \max_{m=1,\ldots,M} \max_{p=1,\ldots,P} \left\| \ve{u}^e_{m,p+1} - \ve{u}^e_{m,p} - I_{m,p}^{p+1}\left( f(\ve{u}^{s}) , g(\ve{u}^{e}_m) \right) \right\|.
+\end{equation}
+\end{remark}
+\begin{lemma}
+The collocation solutions are consistent in the sense that
+\begin{align*}
+	u_{m+1} = u_{m,P+1} &= u_{m,P} + I_{m,P}^{P+1}\left( f(\ve{u}^{s}) , g(\ve{u}^{e}_m) \right) \\
+			&= \ldots = u_{m,1} + \sum_{p=1}^{P} I_{m,p}^{p+1}\left( f(\ve{u}^{s}) , g(\ve{u}^{e}_m) \right) \\
+			&= u_{m} + I_{m}^{m+1}\left( f(\ve{u}^{s}) , g(\ve{u}^{e}_m) \right)
+\end{align*}
+using Lemma~\ref{lemma:quadrature_match}.
+\end{lemma}
 \end{document}
