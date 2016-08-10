@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage[ruled,algo2e,linesnumbered,algonl]{algorithm2e}
+\usepackage{color}
+
+\newtheorem{remark}{Remark}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ve}[1]{\mathbf{#1}}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO -- #1]}}
+
+\bibliographystyle{plain}
+
+\bibliography{refs}
+\begin{document}
+\section*{Multi-rate spectral deferred corrections}
+Consider a single time step $[T_{n}, T_{n+1}]$.
+Now denote as $t_m$, $m=1, \ldots, M$ with $T_{n} \leq t_1 < \ldots < t_{M} \leq T_{n+1}$ a set of quadrature nodes in this time step.
+Denote as $l_m$, $m=1, \ldots, M$ the Lagrange polynomials satisfying 
+\begin{equation}
+	l_m(t_j) = \delta_{m,j} \ \text{for} \ m,j=1, \ldots, M.
+\end{equation}
+In each sub step $[t_m, t_{m+1}]$, place a set of embedded nodes $t_{m,p}$, $m=1,\ldots,M$, $p=1,\ldots,P$ with $t_{m} \leq t_{m,1} < \ldots < t_{m,P} \leq t_{m}$.
+Denote as $l_{m,p}$ the Lagrange polynomials for an embedded set of quadrature nodes satisfying
+\begin{equation}
+	l_{m,p}(t_{m,q}) = \delta_{p,q} \ \text{for} \ p,q=1,\ldots,M.
+\end{equation}
+\begin{remark}
+We refer to nodes and weights associated with $t_m$ as \textbf{standard} and use indices $m$ and $j$.
+Nodes and weights associated with an embedded quadrature rule are called \textbf{embedded} and indexed with $p$ and $q$.
+\end{remark}
+Note that there are $M$ many standard nodes, polynomials and weights and $M \times P$ many embedded nodes, polynomials and weights.
+\begin{remark}
+We assume that for both standard and embedded quadrature rules, the left endpoint is a quadrature nodes, so that $T_n = t_1$ and $t_{m} = t_{m,1}$.
+\end{remark}
+\begin{remark}
+However, to allow for Radau-type rules, we do \textbf{not} require that the right endpoint matches the last quadrature nodes and typically we will have $t_{M} < T_{n+1}$ as well as $t_{m,P} < t_{m+1}$.
+To simplify notation, we use the following conventions
+\begin{equation}
+	t_{M+1}  = t_{M,P+1} := T_{n+1} \ \text{and} \ t_{m,P+1} := t_{m+1} \ \text{for} \ m=1,\ldots,M-1.
+\end{equation}
+\end{remark}
+
+\subsection*{Weights.}
+We need three different sets of quadrature weights.
+First the standard weights
+\begin{equation}
+	s_{m,j} := \int_{t_{m}}^{t_{m+1}} l_{j}(s)~ds, \ \text{for} \ m,j=1,\ldots,M.
+\end{equation}
+For the embedded weights we need
+\begin{equation}
+	s_{m,p,q} := \int_{t_{m,p}}^{t_{m,p+1}} l_{m,q}(s)~ds, \ \text{for} \ m=1,\ldots,M, \ p,q=1,\ldots,P.
+\end{equation}
+To approximate integration of a function given at the embedded nodes over a standard sub-step, the embedded weights need to be summed up
+\begin{equation}
+	\hat{s}_{m,q} := \int_{t_{m}}^{t_{m+1}} l_{m,q}(s)~ds = \sum_{p=1}^{P} \int_{t_{m,p}}^{t_{m,p+1}} l_{m,q}(s)~ds = \sum_{p=1}^{P} s_{m,p,q}.
+\end{equation}
+We also need the following \textbf{mixed} weights for integrating the Lagrange polynomials for the standard weights over sub steps associated with embedded quadrature rules
+\begin{equation}
+	\tilde{s}_{m,j,p} := \int_{t_{m,p}}^{t_{m,p+1}} l_{j}(s)~ds, \ \text{for} \ m,j=1,\ldots,M, \ p=1,\ldots,P.
+\end{equation}
+\begin{lemma}
+The mixed weights are consistent with the standard weights in the sense that
+\begin{equation}
+	s_{m,j} = \int_{t_m}^{t_{m+1}} l_j(s)~ds = \sum_{p=1}^{P} \int_{t_{m,p}}^{t_{m,p+1}} l_j(s)~ds = \sum_{p=1}^{P} \tilde{s}_{m,j,p}.
+\end{equation}
+\end{lemma}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|cc|cc|} \hline
+\multicolumn{2}{|c|}{Function values} & \multicolumn{2}{c|}{Integral} \\ \hline
+&          & Standard        & Embedded            \\ \hline
+& Standard & $s_{m,j}$       & $\tilde{s}_{m,j,p}$ \\
+& Embedded & $\hat{s}_{m,q}$ & $s_{m,p,q}$ \\ \hline
+\end{tabular}
+\caption{Quadrature weights for integrals over standard or embedded sub steps depending on whether function values are given at standard or embedded nodes.}
+\end{table}
+
+\subsection*{Quadrature rules.}
+Denote as $\ve{u}^{s}$ (``standard'') a vector with $M$ approximate solutions at the standard nodes and as $\ve{u}^{e}$ (``embedded'') a vector composed of $M$ vectors $\ve{u}^{e}_{m}$, $m=1,\ldots,M$ with each $\ve{u}^{e}_{m}$ containing $P$ approximate solutions at the embedded nodes $t_{m,p}$, $p=1, \ldots, P$.
+We will need the following three integration operators:
+\begin{equation}
+	\int_{t_{m}}^{t_{m+1}} u(s)~ds \approx I_{m}^{m+1}(\ve{u}^s, \ve{u}^{e}_{m}) := \sum_{j=1}^{M} s_{m,j} \ve{u}^{s}_{j} + \sum_{p=1}^{P} \hat{s}_{m,p} \ve{u}^{e}_{m,p}.
+\end{equation}
+Here, $\ve{u}^{s}_{j}$ denotes the $j$\textsuperscript{th} entry in $\ve{u}^{s}$ while $\ve{u}^{e}_{m,p}$ is the $p$\textsuperscript{th} entry in $\ve{u}^{e}_{m}$.
+\begin{remark}
+Test \texttt{...} verifies this identity for linear functions.
+\end{remark}
+Furthermore, we can approximate the integral over an embedded sub step by
+\begin{equation}
+	\int_{t_{m,p}}^{t_{m,p+1}} u(s)~ds \approx I_{m,p}^{p+1}(\ve{u}^s, \ve{u}^{e}_{m}) := \sum_{j=1}^{M} \tilde{s}_{m,j,p} \ve{u}^{s}_{j} + \sum_{q=1}^{P} \tilde{s}_{m,p,q} \ve{u}^{e}_{m,q}.
+\end{equation}
+\end{document}
