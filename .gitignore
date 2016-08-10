@@ -2,3 +2,8 @@
 *.py~
 startup.sh
 *.sh~
+*.aux
+*.log
+*.bbl
+*.blg
+*.synctex.gz
