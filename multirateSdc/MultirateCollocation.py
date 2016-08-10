@@ -102,6 +102,6 @@ class multirateCollocation(object):
     except:
       raise TypeError("Failed to convert argument fu into shape Px1")
     intvalue = 0.0
-    for j in range(self.P):
-      intvalue += self.Shat_mp[m,j]*fu_sub[j]
+    for p in range(self.P):
+      intvalue += self.Shat_mp[m,p]*fu_sub[p]
     return intvalue

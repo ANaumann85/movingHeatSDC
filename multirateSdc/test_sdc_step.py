@@ -117,12 +117,17 @@ class test_sdc_step(unittest.TestCase):
   def test_converge_to_fixpoint(self):
     self.setUp(lambda_2=0.0)   
     u0    = 1.0
+    # run standard node predictor...
     u_    = self.sdc.predict(u0)
+    # ... then fill in embedded nodes
     usub_ = self.sdc.sub_predict(u0, u_)
     for k in range(3):
+      # update integral operators
       self.sdc.update_I_m_mp1(u_, usub_)
       self.sdc.update_I_p_pp1(u_, usub_)
+      # run standard node sweep...
       u    = self.sdc.sweep(u0, u_)
+      # ...followed by embedded node sweep
       usub = self.sdc.sub_sweep(u0, u, u_, usub_)
       print ("Standard node update: %5.3e" % np.linalg.norm(u - u_, np.inf))
       print ("Embedded node update: %5.3e" % np.linalg.norm(usub - usub_, np.inf))

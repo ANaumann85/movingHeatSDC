@@ -108,6 +108,7 @@ class sdc_step():
       Mcoll = np.eye(self.coll.M) - Q*self.prob.lambda_1
     except:
       raise
+    assert self.prob.lambda_2==0.0, "Can only compute standard collocation solution analytically if lambda_2=0"
     return np.linalg.inv(Mcoll).dot(u0*np.ones(self.coll.M))
 
   def get_collocation_solution_sub(self, u0, m):  
@@ -117,4 +118,5 @@ class sdc_step():
       Mcoll = np.eye(self.coll.P) - Q*self.prob.lambda_2
     except:
       raise
+    assert self.prob.lambda_1==0.0, "Can only compute embedded collocation solution analytically if lambda_1=0"
     return np.linalg.inv(Mcoll).dot(u0*np.ones(self.coll.P))

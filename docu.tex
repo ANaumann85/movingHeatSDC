@@ -31,13 +31,13 @@ Nodes and weights associated with an embedded quadrature rule are called \textbf
 \end{remark}
 Note that there are $M$ many standard nodes, polynomials and weights and $M \times P$ many embedded nodes, polynomials and weights.
 \begin{remark}
-We assume that for both standard and embedded quadrature rules, the left endpoint is a quadrature nodes, so that $T_n = t_1$ and $t_{m} = t_{m,1}$.
+We assume that for both standard and embedded quadrature rules, the right endpoint is a quadrature nodes, so that $t_{M} = T_{n+1}$ and $t_{m,P} = t_{M}$.
 \end{remark}
 \begin{remark}
-However, to allow for Radau-type rules, we do \textbf{not} require that the right endpoint matches the last quadrature nodes and typically we will have $t_{M} < T_{n+1}$ as well as $t_{m,P} < t_{m+1}$.
+However, to allow for Radau-type rules, we do \textbf{not} require that the left endpoint matches the first quadrature nodes and typically we will have $T_n < t_1$ as well as $t_{m} < t_{m,1}$.
 To simplify notation, we use the following conventions
 \begin{equation}
-	t_{M+1}  = t_{M,P+1} := T_{n+1} \ \text{and} \ t_{m,P+1} := t_{m+1} \ \text{for} \ m=1,\ldots,M-1.
+	....
 \end{equation}
 \end{remark}
 
@@ -57,12 +57,12 @@ To approximate integration of a function given at the embedded nodes over a stan
 \end{equation}
 We also need the following \textbf{mixed} weights for integrating the Lagrange polynomials for the standard weights over sub steps associated with embedded quadrature rules
 \begin{equation}
-	\tilde{s}_{m,j,p} := \int_{t_{m,p}}^{t_{m,p+1}} l_{j}(s)~ds, \ \text{for} \ m,j=1,\ldots,M, \ p=1,\ldots,P.
+	\tilde{s}_{m,p,j} := \int_{t_{m,p}}^{t_{m,p+1}} l_{j}(s)~ds, \ \text{for} \ m,j=1,\ldots,M, \ p=1,\ldots,P.
 \end{equation}
 \begin{lemma}\label{lemma:weights_match}
 The mixed weights are consistent with the standard weights in the sense that
 \begin{equation}
-	s_{m,j} = \int_{t_m}^{t_{m+1}} l_j(s)~ds = \sum_{p=1}^{P} \int_{t_{m,p}}^{t_{m,p+1}} l_j(s)~ds = \sum_{p=1}^{P} \tilde{s}_{m,j,p}.
+	s_{m,j} = \int_{t_m}^{t_{m+1}} l_j(s)~ds = \sum_{p=1}^{P} \int_{t_{m,p}}^{t_{m,p+1}} l_j(s)~ds = \sum_{p=1}^{P} \tilde{s}_{m,p,j}.
 \end{equation}
 Verified by \texttt{test\_weights\_match}.
 \end{lemma}
@@ -72,7 +72,7 @@ Verified by \texttt{test\_weights\_match}.
 \begin{tabular}{|cc|cc|} \hline
 \multicolumn{2}{|c|}{Function values} & \multicolumn{2}{c|}{Integral} \\ \hline
 &          & Standard        & Embedded            \\ \hline
-& Standard & $s_{m,j}$       & $\tilde{s}_{m,j,p}$ \\
+& Standard & $s_{m,j}$       & $\tilde{s}_{m,p,j}$ \\
 & Embedded & $\hat{s}_{m,q}$ & $s_{m,p,q}$ \\ \hline
 \end{tabular}
 \caption{Quadrature weights for integrals over standard or embedded sub steps depending on whether function values are given at standard or embedded nodes.}
@@ -90,7 +90,7 @@ Test \texttt{...} verifies this identity for linear functions.
 \end{remark}
 Furthermore, we can approximate the integral over an embedded sub step by
 \begin{equation}
-	\int_{t_{m,p}}^{t_{m,p+1}} u(s)~ds \approx I_{m,p}^{p+1}(\ve{u}^s, \ve{u}^{e}_{m}) := \sum_{j=1}^{M} \tilde{s}_{m,j,p} \ve{u}^{s}_{j} + \sum_{q=1}^{P} s_{m,p,q} \ve{u}^{e}_{m,q}.
+	\int_{t_{m,p}}^{t_{m,p+1}} u(s)~ds \approx I_{m,p}^{p+1}(\ve{u}^s, \ve{u}^{e}_{m}) := \sum_{j=1}^{M} \tilde{s}_{m,p,j} \ve{u}^{s}_{j} + \sum_{q=1}^{P} s_{m,p,q} \ve{u}^{e}_{m,q}.
 \end{equation}
 \begin{lemma}\label{lemma:quadrature_match}
 The two integration operators are consistent in the sense that
@@ -100,13 +100,68 @@ The two integration operators are consistent in the sense that
 \begin{proof}
 By definition of the operators and $\hat{s}_{m,q}$ and using Lemma~\ref{lemma:weights_match} it holds that
 \begin{align*}
-	\sum_{p=1}^{P} I_{m,p}^{p+1}(\ve{u}^s, \ve{u}^{e}_{m}) &= \sum_{p=1}^{P} \left( \sum_{j=1}^{M} \tilde{s}_{m,j,p} \ve{u}^{s}_j + \sum_{q=1}^{P} s_{m,p,q} \ve{u}^{e}_{m,q} \right) \\
-		&= \sum_{j=1}^{M} \left( \sum_{p=1}^{P} \tilde{s}_{m,j,p} \right) \ve{u}^{s}_{j} + \sum_{q=1}^{P} \left( \sum_{p=1}^{P} s_{m,p,q} \right) \ve{u}^{e}_{m,q} \\
+	\sum_{p=1}^{P} I_{m,p}^{p+1}(\ve{u}^s, \ve{u}^{e}_{m}) &= \sum_{p=1}^{P} \left( \sum_{j=1}^{M} \tilde{s}_{m,p,j} \ve{u}^{s}_j + \sum_{q=1}^{P} s_{m,p,q} \ve{u}^{e}_{m,q} \right) \\
+		&= \sum_{j=1}^{M} \left( \sum_{p=1}^{P} \tilde{s}_{m,p,j} \right) \ve{u}^{s}_{j} + \sum_{q=1}^{P} \left( \sum_{p=1}^{P} s_{m,p,q} \right) \ve{u}^{e}_{m,q} \\
 		&= \sum_{j=1}^{M} s_{m,j} \ve{u}^{s}_{j} + \sum_{q=1}^{P} \hat{s}_{m,q} \ve{u}^{e}_{m,q} = I_{m}^{m+1}(\ve{u}^s, \ve{u}^{e}_{m})
 \end{align*}
 \end{proof}
 \end{lemma}
-
+%
+%
+%
+\paragraph{Matrix formulation.}
+To represent the above quadrature rules in matrix form, define the following four matrices
+\begin{align*}
+	\ve{S} &:= \left( s_{m,j} \right) \in \mathbb{R}^{M,M} \ \text{for} \ m,j=1,\ldots,M \\ 
+	\hat{\ve{S}} &:= \left( \hat{s}_{m,p} \right) \in \mathbb{R}^{M,P} \ \text{for} \ m=1,\ldots,M, \ p=1,\ldots,P \\
+	\tilde{\ve{S}}_m &:= \left( \tilde{s}_{m,p,j} \right) \in \mathbb{R}^{P,M} \ \text{for} \ \ p=1,\ldots,P, \ j=1,\ldots,M \\
+	\ve{S}_m &:= \left( s_{m,p,q} \right) \in \mathbb{R}^{P,P} \ \text{for} \ p,q=1,\ldots,P.
+\end{align*}
+We can write the integrals over standard sub steps as
+\begin{equation}
+	\ve{I}^s := 
+	\begin{bmatrix}
+		I_{1}^2 \\ I_2^3 \\ \vdots \\ I_{M}^{M+1}
+	\end{bmatrix}
+	=
+	\ve{S} \ve{u}^s +
+	\begin{bmatrix}
+		\hat{\ve{S}}[1,:] & & \\ & \hat{\ve{S}}[2,:] \\ & & \ddots \\ & & & \hat{\ve{S}}[M,:] 
+	\end{bmatrix}
+	\begin{bmatrix}
+		\ve{u}^e_1 \\ \ve{u}^e_2 \\ \vdots \\ \ve{u}^{e}_{M}
+	\end{bmatrix}.
+\end{equation}
+Integrals over embedded steps can be written as
+\begin{equation}
+	\ve{I}^e_m :=
+	\begin{bmatrix}
+		I_{m,1}^{2} \\ I_{m,2}^{3} \\ \vdots \\ I_{m,P}^{P+1}
+	\end{bmatrix}
+	=
+	\tilde{\ve{S}}[m,:,:] \ve{u}^s + \ve{S}[m,:,:] \ve{u}^e_m
+\end{equation}
+so that
+\begin{equation}
+	\ve{I}^e = 
+	\begin{bmatrix}
+		\ve{I}^e_1 \\ \ve{I}^e_2 \\ \vdots \\ \ve{I}^e_M
+	\end{bmatrix} = 
+	\begin{bmatrix}
+		\tilde{\ve{S}}[1,:,:] \\ \tilde{\ve{S}}[2,:,:]  \\ \vdots \\ \tilde{\ve{S}}[M,:,:] 
+	\end{bmatrix}
+	\ve{u}^s
+	+
+	\begin{bmatrix}
+		\ve{S}[1,:,:] \\ \ve{S}[2,:,:] \\ \vdots \\ \ve{S}[M,:,:] 
+	\end{bmatrix}
+	\begin{bmatrix}
+		\ve{u}^e_1 \\ \ve{u}^e_2 \\ \vdots \\ \ve{u}^e_M.
+	\end{bmatrix}
+\end{equation}
+%
+%
+%
 \subsection*{Multi-rate SDC sweeps}
 Consider an initial value problem
 \begin{equation}
@@ -114,18 +169,32 @@ Consider an initial value problem
 \end{equation}
 where we want to integrate $f$ implicitly with a large time step and $g$ explicitly with a small time step.
 As before, denote as $\ve{u}^s$ a vector with approximate solutions at the standard nodes and as $\ve{u}^{e}$ the vector with approximate solutions at the embedded nodes.
+The predictor computes the initial set of values
+\begin{itemize}
+	\item Compute standard step
+	\begin{equation*}
+		u^0_{m+1} = u^0_m + \Delta t_m f(u^0_{m+1})
+	\end{equation*}
+	\item Compute $P$ embedded steps
+	\begin{equation*}
+		u^0_{m,p+1} = u^0_{m,p} + \Delta t_{m,p} f(u^0_{m+1}) + \Delta t_{m,p} g(u^0_{m,p})
+	\end{equation*}
+	\item Overwrite $u^0_{m+1}$ with $u^0_{m,P+1}$ for use as initial value in next standard step.
+\end{itemize}
+
 Given values $\ve{u}^{s,k}$, $\ve{u}^{e,k}$, the multi-rate SDC sweep then consists of
 \begin{itemize}
 \item Compute standard step
 	\begin{equation}
 		u^{k+1}_{m+1} = u^{k+1}_{m} + \Delta t_m \left( f(u^{k+1}_{m+1}) - f(u^k_{m+1}) \right) + I_{m}^{m+1} \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_m) \right)
 	\end{equation}
-\item Compute embedded steps
+\item Compute $P$ embedded steps
 	\begin{align*}
 		u_{m,p+1}^{k+1} = u_{m,p}^{k+1} &+ \Delta t_{m,p} \left( f(u^{k+1}_{m+1}) - f(u^k_{m+1}) \right) \\
 			& + \Delta t_{m,p} \left( g(u^{k+1}_{m,p}) - g(u^k_{m,p}) \right) + I_{m,p}^{p+1}  \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_m) \right)
 	\end{align*}
 	for $p=1, \ldots, P$.
+\item Overwrite $u_{m+1}^{k+1}$ with $u_{m,P+1}^{k+1}$ for use as initial value in next standard step.
 \end{itemize}
 \begin{remark}
 If the iteration converges, that is and $u^{k+1}_{m+1} - u^{k}_{m+1} \to 0$ and $u^{k+1}_{m,p} - u^{k}_{m,p} \to 0$, the sweeps reduce to the underlying collocation equations
@@ -154,4 +223,40 @@ The collocation solutions are consistent in the sense that
 \end{align*}
 using Lemma~\ref{lemma:quadrature_match}.
 \end{lemma}
+%
+%
+\begin{remark}
+The collocation equations can be written in matrix form as
+\begin{equation}
+	xxx
+\end{equation}
+\end{remark}
+
+\subsection*{Zero-to-node formulation}
+Recursively applying the node-to-node collocation equations provides the zero-to-node formulation for both standard and embedded quadrature rules
+\begin{align*}
+	u_m &= u_0 + \sum_{j=1}^{m-1} I_{j}^{j+1}\left( \ve{u}^s, \ve{u}^e \right) 
+\end{align*}
+and
+\begin{equation}
+	u_{m,p} = u_m + \sum_{q=0}^{p-1} I_{m,q}^{q+1}\left( \ve{u}^s, \ve{u}^e \right).
+\end{equation}
+Denote as $\ve{Q}$ the $M \times M$ matrix with entries
+\begin{equation}
+	q_{m,j} = \sum_{k=1}^{m} s_{k,j} \ \text{for} \ m=1,\ldots, M.
+\end{equation}
+Therefore,
+\begin{align*}
+	\left( \ve{Q} \ve{u}^s \right)_m = \sum_{j=1}^{M} q_{m,j} \ve{u}^s_j &= \sum_{j=1}^{M} \left( \sum_{k=1}^{m} s_{k,j} \right) \ve{u}^s_j \\
+		&= \sum_{k=1}^{m} \sum_{j=1}^{M} s_{k,j} \ve{u}^s_j = \sum_{k=1}^{m} I_{k}^{k+1}\left( \ve{u}^s, 0 \right) \approx \int_{T_n}^{t_m} u(s)~ds.
+\end{align*}
+Further, denote the embedded quadrature matrices as $\ve{Q}_m$ with entries
+\begin{equation}
+	\ve{Q}_{m,p,q} = \sum_{r=1}^{p} s_{m,r,q} \ \text{for} \ m=1,\ldots,M \ \text{and} \ q=1,\ldots,P.
+\end{equation}
+Then,
+\begin{align*}
+	\left( \ve{Q}_m \ve{u}^e \right)_{p} = \sum_{q=1}^{P} \ve{Q}_{m,p,q} \ve{u}^e_{q} &= \sum_{q=1}^{P} \left( \sum_{r=1}^{p} s_{m,r,q} \right) \ve{u}^e_{q} \\
+		&= \sum_{r=1}^{p} \sum_{q=1}^{P} s_{m,r,q} \ve{u}^e_{q} = \sum_{r=1}^{p} I_{m,r}^{r+1}\left( 0, \ve{u}^e\right) \approx \int_{t_{m}}^{t_{m,p}} u(s)~ds.
+\end{align*}
 \end{document}
