@@ -59,9 +59,7 @@ class sdc_step():
 
   '''
   '''
-  def predict(self, u0):
-    u       = np.zeros(self.coll.M) 
-    usub    = np.zeros((self.coll.M,self.coll.P))
+  def predict(self, u0, u, usub):
     u0_step = u0
 
     for m in range(self.coll.M):
