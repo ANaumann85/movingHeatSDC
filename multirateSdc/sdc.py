@@ -60,47 +60,58 @@ class sdc_step():
   '''
   '''
   def predict(self, u0):
-    u = np.zeros(self.coll.M) 
-    u[0] = self.prob.solve_f1(self.coll.coll.delta_m[0], u0)
-    for m in range(1,self.coll.M):
-      u[m] = self.prob.solve_f1(self.coll.coll.delta_m[m], u[m-1])
-    return u
+    u       = np.zeros(self.coll.M) 
+    usub    = np.zeros((self.coll.M,self.coll.P))
+    u0_step = u0
 
-  '''
-  '''
-  def sub_predict(self, u0, u):
-    usub = np.zeros((self.coll.M,self.coll.P))
     for m in range(self.coll.M):
-      usub[m,0] = u0 + self.coll.coll_sub[m].delta_m[0]*( self.prob.f1(u[m]) + self.prob.f2(u0) )
-      for p in range(1,self.coll.P):
-        usub[m,p] = usub[m,p-1] + self.coll.coll_sub[m].delta_m[p]*( self.prob.f1(u[m]) + self.prob.f2(usub[m,p-1]) )       
-      u0 = usub[m,-1]
-    return usub
+      
+        # standard step
+        u[m] = self.prob.solve_f1(self.coll.coll.delta_m[m], u0_step)
+        # embedded steps
+        usub[m,0] = u0_step + self.coll.coll_sub[m].delta_m[0]*( self.prob.f1(u[m]) + self.prob.f2(u0_step) )
+        for p in range(1,self.coll.P):
+          usub[m,p] = usub[m,p-1] + self.coll.coll_sub[m].delta_m[p]*( self.prob.f1(u[m]) + self.prob.f2(usub[m,p-1]) )
+
+        # overwrite standard value
+        u0_step = usub[m,self.coll.P-1]
+        u[m]    = usub[m,self.coll.P-1] 
+
+    return u, usub
+
 
   '''
   '''
-  def sweep(self, u0, u_):
-    u    = np.zeros(self.coll.M)
-    rhs  = u0 - self.coll.coll.delta_m[0]*self.prob.f1(u_[0]) + self.I_m_mp1[0]
-    u[0] = self.prob.solve_f1(self.coll.coll.delta_m[0], rhs)
-    for m in range(1,self.coll.M):
-      rhs  = u[m-1] - self.coll.coll.delta_m[m]*self.prob.f1(u_[m]) + self.I_m_mp1[m]
+  def sweep(self, u0, u, usub, u_, usub_):
+    try:
+      u = np.reshape(u, (self.coll.M,1))
+      usub = np.reshape(usub, (self.coll.M, self.coll.P))
+    except:
+      TypeError("Failed to convert argument u into Mx1 or usub into MxP")
+
+    # update integral terms
+    self.update_I_m_mp1(u_, usub_)
+    self.update_I_p_pp1(u_, usub_)
+
+    u0_step = u0
+
+    for m in range(self.coll.M):
+      # standard step    
+      rhs  = u0_step - self.coll.coll.delta_m[m]*( self.prob.f1(u_[m]) ) + self.I_m_mp1[m]
       u[m] = self.prob.solve_f1(self.coll.coll.delta_m[m], rhs)
-    return u
-
-  '''
-  '''
-  def sub_sweep(self, u0, u, u_, usub_):
-    usub = np.zeros((self.coll.M,self.coll.P))
-    for m in range(self.coll.M):
-      slow      = self.prob.f1(u[m]) - self.prob.f1(u_[m])
-      # explicit f2 terms cancel here [DO THEY REALLY??]
-      usub[m,0] = u0 + self.coll.coll_sub[m].delta_m[0]*slow + self.I_p_pp1[m,0]
+      # embedded steps
+      usub[m,0] = u0_step + self.coll.coll_sub[m].delta_m[0]*( self.prob.f1(u[m]) - self.prob.f1(u_[m]) + self.prob.f2(u0_step) - self.prob.f2(u0_step) ) + self.I_p_pp1[m,0]
       for p in range(1,self.coll.P):
-        usub[m,p] = usub[m,p-1] + self.coll.coll_sub[m].delta_m[p]*(slow + self.prob.f2(usub[m,p-1]) - self.prob.f2(usub_[m,p-1])) + self.I_p_pp1[m,p]
-      u0 = usub[m,-1]
-    return usub
+        usub[m,p] = usub[m,p-1] + self.coll.coll_sub[m].delta_m[p]*( self.prob.f1(u[m]) - self.prob.f1(u_[m]) + self.prob.f2(usub[m,p-1]) - self.prob.f2(usub_[m,p-1]) ) + self.I_p_pp1[m,p]
 
+      # overwrite standard value
+      u0_step = usub[m,self.coll.P-1]
+      u[m]    = usub[m,self.coll.P-1] # ???
+
+    return 0
+
+  '''
+  '''
   def get_collocation_solution(self, u0):  
     Q = self.coll.coll.Qmat
     Q = Q[1:,1:]
