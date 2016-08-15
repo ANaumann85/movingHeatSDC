@@ -3,22 +3,22 @@ from sdc import sdc_step
 import numpy as np
 import copy
 
-M = 2
-P = 3
+M = 5
+P = 4
 tstart = 0.0
 tend   = 10.0
-nsteps = 20
+nsteps = 4
 dt = (tend - tstart)/float(nsteps)
 
 lambda_1 = -0.1
 lambda_2 = -1.0
 prob = problem(lambda_1, lambda_2)
 
-K_iter = 15
-u_    = np.zeros((M,1))
-usub_ = np.zeros((M,P))
-u     = np.zeros((M,1))
-usub  = np.zeros((M,P))
+K_iter = 12
+u_    = np.zeros((M,1,1))
+usub_ = np.zeros((M,P,1))
+u     = np.zeros((M,1,1))
+usub  = np.zeros((M,P,1))
 u0    = 2.0
 u_ex  = u0*np.exp(tend*(lambda_1+lambda_2))
 
@@ -28,10 +28,10 @@ for n in range(nsteps):
   sdc    = sdc_step(M, P, tstart, tend, prob)
   
   # reset buffers to zero
-  u     = np.zeros((M,1))
-  usub  = np.zeros((M,P))
-  u_    = np.zeros((M,1))
-  usub_ = np.zeros((M,P))
+  u     = np.zeros((M,1,1))
+  usub  = np.zeros((M,P,1))
+  u_    = np.zeros((M,1,1))
+  usub_ = np.zeros((M,P,1))
 
   sdc.predict(u0, u_, usub_)
   for k in range(K_iter):

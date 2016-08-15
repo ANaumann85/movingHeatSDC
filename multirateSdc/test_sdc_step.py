@@ -20,24 +20,25 @@ class test_sdc_step(unittest.TestCase):
 
   # Predictor for standard nodes is implicit Euler
   def test_predict(self):
-    u0 = np.random.rand(1)
-    u  = self.sdc.predict(u0)
+    self.setUp(lambda_2=0.0)
+    u0   = np.random.rand(1)
+    u    = np.zeros((self.M, 1))
+    usub = np.zeros((self.M,self.P))
+    self.sdc.predict(u0, u, usub)
     symb = 1.0
     for m in range(self.M):
       symb *= 1.0/(1.0 - self.prob.lambda_1*self.sdc.coll.coll.delta_m[m])
-      err = abs(u[m] - symb*u0)
-      assert err<1e-14, ("Predict on coarse level did not reproduce implicit Euler. Error: %5.3e" % err)
+      err = np.linalg.norm(u[m,:] - symb*u0, np.inf)
+      assert err<1e-14, ("Predict for standard nodes did not reproduce implicit Euler. Error: %5.3e" % err)
 
   # Predictor for embedded nodes is explicit Euler
   def test_predict_sub(self):
     self.setUp(lambda_1=0.0)
     u0 = np.random.rand(1)
+    u    = np.zeros((self.M, 1))
+    usub = np.zeros((self.M,self.P,1))
     # for lambda_1, u should be constant
-    u  = self.sdc.predict(u0)   
-    err = np.linalg.norm(u - u0*np.ones(self.M), np.inf)
-    assert err<1e-14, ("predict for lambda_1 = 0 failed to generate a constant solution. Err: %5.3e" % err)
-    assert np.linalg.norm(self.prob.f1(u), np.inf)<1e-14
-    usub = self.sdc.sub_predict(u0, u)
+    self.sdc.predict(u0, u, usub)
     symb = 1.0
     for m in range(self.M):
       for p in range(self.P):
@@ -48,13 +49,17 @@ class test_sdc_step(unittest.TestCase):
   '''
   Standard collocation solution has to be invariant under SDC sweep across standard nodes
   '''
-  def test_sweep_coll_invariant(self):
+  def test_sweep_coll_standard_invariant(self):
     self.setUp(lambda_2=0.0)
-    u0 = np.random.rand(1)
-    ucoll = self.sdc.get_collocation_solution(u0)
-    self.sdc.update_I_m_mp1(ucoll, np.zeros((self.M,self.P)))
-    usweep = self.sdc.sweep(u0, ucoll)
-    err = np.linalg.norm(usweep - ucoll, np.inf)
+    u0         = np.random.rand(1)
+    ucoll_     = self.sdc.get_collocation_solution(u0)
+    ucoll_sub_ = np.zeros((self.M,self.P,1))
+    
+    ucoll     = np.zeros((self.M,1))
+    ucoll_sub = np.zeros((self.M,self.P,1))
+    
+    self.sdc.sweep(u0, ucoll, ucoll_sub, ucoll_, ucoll_sub_)
+    err = np.linalg.norm((ucoll - ucoll_).flatten(), np.inf)
     assert err<1e-14, ("Collocation solution not invariant under standard node SDC sweep with lambda_2=0. Error: %5.3e" % err)
 
   '''
@@ -64,7 +69,7 @@ class test_sdc_step(unittest.TestCase):
     self.setUp(lambda_2=0.0)
     u0 = np.random.rand(1)
     ucoll = self.sdc.get_collocation_solution(u0)
-    self.sdc.update_I_m_mp1(ucoll, np.zeros((self.M,self.P)))
+    self.sdc.update_I_m_mp1(ucoll, np.zeros((self.M,self.P,1)))
     res = self.sdc.residual(u0, ucoll)
     assert res<1e-14, ("Residual not zero for collocation solution. Error: %5.3e" % res)
 
@@ -97,40 +102,27 @@ class test_sdc_step(unittest.TestCase):
     res = self.sdc.sub_residual(u0, usub)
     assert res<1e-14, ("Solution composed of sub-step collocation solutions failed to produce zero for sub_residual. Error: %5.3e" % res)
 
-  '''
-  '''
-  def test_subsweep_coll_invariant(self):
-    self.setUp(lambda_1=0.0, lambda_2=-1.0)
-    u0 = np.random.rand(1)
-    u0_step = u0
-    ucoll = np.zeros((self.M, self.P))
-    for m in range(self.M):
-      ucoll[m,:] = self.sdc.get_collocation_solution_sub(u0_step, m)
-      u0_step    = ucoll[m,-1]
-    self.sdc.update_I_p_pp1(np.zeros(self.M), ucoll)
-    usweep = self.sdc.sub_sweep(u0, np.zeros(self.M), np.zeros(self.M), ucoll)
-    err = np.linalg.norm(usweep - ucoll, np.inf)
-    assert err<1e-14, ("Solution composed of sub-step collocation solutions not invariant under sub-step sweep. Error: %5.3e" % err)
 
   ''' 
   '''
   def test_converge_to_fixpoint(self):
     self.setUp(lambda_2=0.0)   
     u0    = 1.0
-    # run standard node predictor...
-    u_    = self.sdc.predict(u0)
-    # ... then fill in embedded nodes
-    usub_ = self.sdc.sub_predict(u0, u_)
+    u_    = np.zeros((self.M,1))
+    u     = np.zeros((self.M,1))
+    usub_ = np.zeros((self.M,self.P,1))
+    usub  = np.zeros((self.M,self.P,1))
+    # run predictor
+    self.sdc.predict(u0, u_, usub_)
+
     for k in range(3):
       # update integral operators
       self.sdc.update_I_m_mp1(u_, usub_)
       self.sdc.update_I_p_pp1(u_, usub_)
       # run standard node sweep...
-      u    = self.sdc.sweep(u0, u_)
-      # ...followed by embedded node sweep
-      usub = self.sdc.sub_sweep(u0, u, u_, usub_)
-      print ("Standard node update: %5.3e" % np.linalg.norm(u - u_, np.inf))
-      print ("Embedded node update: %5.3e" % np.linalg.norm(usub - usub_, np.inf))
+      self.sdc.sweep(u0, u, usub, u_, usub_)
+      print ("Standard node update: %5.3e" % np.linalg.norm( (u - u_).flatten(), np.inf))
+      print ("Embedded node update: %5.3e" % np.linalg.norm( (usub - usub_).flatten(), np.inf))
       print ("Standard node residual: %5.3e" % self.sdc.residual(u0, u))
       print ("Embedded node residual: %5.3e" % self.sdc.sub_residual(u0, usub))
       print ""

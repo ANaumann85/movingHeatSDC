@@ -9,11 +9,11 @@ from matplotlib.ticker import ScalarFormatter
 from subprocess import call
 
 M = 3
-P = 2
+P = 3
 tstart = 0.0
 tend   = 2.25
-nsteps = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-K_iter = [2, 4, 6]
+nsteps = [4, 6, 8, 10, 12, 14, 16, 18, 20]
+K_iter = [2, 3, 4]
 err    = np.zeros((np.size(K_iter),np.size(nsteps)))
 order  = np.zeros((np.size(K_iter),np.size(nsteps)))
 
@@ -40,10 +40,10 @@ for kk in range(np.size(K_iter)):
       sdc    = sdc_step(M, P, t_n, t_np1, prob)
 
       # reset buffers to zero
-      u     = np.zeros((M,1))
-      usub  = np.zeros((M,P))
-      u_    = np.zeros((M,1))
-      usub_ = np.zeros((M,P))
+      u     = np.zeros((M,1,1))
+      usub  = np.zeros((M,P,1))
+      u_    = np.zeros((M,1,1))
+      usub_ = np.zeros((M,P,1))
 
       sdc.predict(u0, u_, usub_)
       for k in range(K_iter[kk]):

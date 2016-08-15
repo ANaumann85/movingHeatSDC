@@ -101,7 +101,7 @@ class multirateCollocation(object):
     try:
       fu_sub = np.reshape(fu_sub, (self.P, self.dim))
     except:
-      raise TypeError("Failed to convert argument fu into shape Px1")
+      raise 
     intvalue = 0.0
     for p in range(self.P):
       intvalue += self.Shat_mp[m,p]*fu_sub[p,:]
