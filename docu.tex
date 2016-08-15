@@ -237,4 +237,25 @@ For approximations of the collocation solution, this consistency criterion is no
 \subsection*{Zero-to-node formulation}
 Recursively applying the node-to-node collocation equations provides the zero-to-node formulation for both standard and embedded quadrature rules
 ...
+
+\section*{Scalar test problem}
+We consider the following simplified test problem to study stability and accuracy
+\begin{equation}
+	\begin{pmatrix} \dot{y}_1 \\ \dot{y}_2 \end{pmatrix} = \nu \begin{pmatrix} y_1 \\ y_2 \end{pmatrix} + \begin{pmatrix} a \left( y_1 - y_2 \right) \\ -a (y_1 - y_2) \end{pmatrix}
+		= \begin{pmatrix}  \nu + a & -a \\ -a & \nu  +a \end{pmatrix} \begin{pmatrix} y_1 \\ y_2 \end{pmatrix}
+\end{equation}
+assuming that both machine parts have the same heat transport coefficient $\nu$.
+The eigenvalues are the roots of
+\begin{align*}
+	\left| \begin{pmatrix}  \nu + a & -a \\ -a & \nu  +a \end{pmatrix} - \lambda \ve{I} \right| &= \left( \nu + a - \lambda \right)^2 - a^2 \\
+	&= \left( \nu + a \right)^2 - 2 \lambda \left( \nu + a \right) + \lambda^2 - a^2 = 0
+\end{align*}
+so that
+\begin{equation}
+	\lambda_{1,2} = \nu + a \pm \sqrt{ \left(\nu+a\right)^2 + a^2 - \left( \nu + a \right)^2 } = \nu + a \pm \left| a \right|.
+\end{equation}
+Assume that $a > 0$ so that
+\begin{equation}
+	\lambda_1 = \nu \ \text{and} \ \lambda_2 = \nu + 2 a
+\end{equation}
 \end{document}
