@@ -216,6 +216,33 @@ and embedded residual
 	r^e := \max_{m=1,\ldots,M} \max_{p=1,\ldots,P} \left\| \ve{u}^e_{m,p} - \ve{u}^e_{m,p-1} - I_{m,p-1}^{p}\left( f(\ve{u}^{s}) , g(\ve{u}^{e}_m) \right) \right\|.
 \end{equation}
 \end{remark}
+%
+%
+%
+\begin{lemma}
+The collocation solution is invariant under SDC sweeps. Let $\ve{u}^s$ and $\ve{u}^e$ satisfy the collocation condition.
+Then,
+\begin{align*}
+	u^{k+1}_{m} &= u_{m-1}  + \Delta t_m \left( f(u^{k+1}_m) - f(u_m) \right) + I_{m-1}^{m}\left( f(\ve{u}^s, g(\ve{u}^e_m) \right) \\
+		&= u_{m} + \Delta t_{m} \left( f(u^{k+1}_m) - f(u_m) \right) \\
+	\Rightarrow u^{k+1}_m - \Delta t_m f(u^{k+1}_{m}) &= u_{m} - \Delta t_{m} f(u_m)
+\end{align*}
+so that $u^{k+1}_m = u_m$.
+The embedded sweep will then give
+\begin{align*}
+	u^{k+1}_{m,p} &= u_{m,p-1} + \Delta t_{m,p} \left( g(u^{k+1}_{m-1,p-1}) - g(u_{m-1,p-1} \right) + I_{m,p-1}^{p} \left( f(\ve{u}^s, g(\ve{u}^e_m) \right) \\
+				&= u_{m,p} - \Delta t_{m,p} \left( g(u^{k+1}_{m-1,p-1}) - g(u_{m-1,p-1}) \right)
+\end{align*}
+so that $u^{k+1}_{m,p} = u_{m,p}$.
+Finally,
+\begin{equation}
+	u_{m} = u_{m-1,P} = u_{m-1,0} + \sum_{p=1}^{P} I_{m,p-1}^{p}\left( f(\ve{u}^s, g(\ve{u}^e_m) \right) = u_{m-1} + I_{m-1}^{m}\left( f(\ve{u}^s, g(\ve{u}^e_m) \right) 
+\end{equation}
+so that overwriting $u_{m}$ with $u_{m-1,P}$ does not modify the value.
+\end{lemma}
+%
+%
+%
 \begin{lemma}
 The collocation solutions are consistent in the sense that
 \begin{align*}
