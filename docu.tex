@@ -256,6 +256,23 @@ so that
 \end{equation}
 Assume that $a > 0$ so that
 \begin{equation}
-	\lambda_1 = \nu \ \text{and} \ \lambda_2 = \nu + 2 a
+	\lambda_1 = \nu \ \text{and} \ \lambda_2 = \nu + 2 a.
+\end{equation}
+The matrix can be diagonalised as
+\begin{equation}
+	\begin{pmatrix} \nu+a & -a \\ -a & \nu + a \end{pmatrix} = \begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} \nu & 0 \\ 0 & \nu + 2 a \end{pmatrix} \begin{pmatrix} \frac{1}{2} & \frac{1}{2} \\ -\frac{1}{2} & \frac{1}{2} \end{pmatrix} =: S D S^{-1}.
+\end{equation}
+For some initial value $\ve{y}_0$, the solution $\ve{y} := (y_1, y_2)$ can be found from
+\begin{equation}
+	\dot{\ve{z}} = D \ve{z}, \ \ve{z}(0) = S^{-1} \ve{y}_0 = \begin{pmatrix} \frac{1}{2} y_1(0) + \frac{1}{2} y_2(0) \\ -\frac{1}{2} y_1(0) + \frac{1}{2} y_2(0) \end{pmatrix}
+\end{equation}
+by computing $\ve{y} = S \ve{z}$.
+It is straightforward to compute
+\begin{equation}
+	\ve{z} = \begin{pmatrix} z_1(t) \\ z_2(t) \end{pmatrix} = \begin{pmatrix} z_1(0) e^{\nu t} \\ z_2(0) e^{\left(\nu + 2a\right)t} \end{pmatrix} = \begin{pmatrix} \frac{1}{2} \left(y_1(0) + y_2(0) \right) e^{\nu t} \\ \frac{1}{2} \left( y_2(0) - y_1(0) \right) e^{(\nu + 2 a) t} \end{pmatrix}
+\end{equation}
+and then
+\begin{equation}
+	\ve{y} = S \ve{z} = \begin{pmatrix} z_{1}(t) - z_{2}(t) \\ z_{1}(t) + z_{2}(t) \end{pmatrix} = \frac{1}{2}  \begin{pmatrix}  y_1(0) + y_2(0)  \\ y_1(0) + y_2(0) \end{pmatrix} e^{\nu t} + \frac{1}{2} \begin{pmatrix} y_1(0) - y_2(0)   \\ y_2(0) - y_1(0) \end{pmatrix} e^{(\nu+2 a)t}
 \end{equation}
 \end{document}
