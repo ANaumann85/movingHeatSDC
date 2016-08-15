@@ -5,15 +5,16 @@ class multirateCollocation(object):
 
   '''
   '''
-  def __init__(self, M, P, tleft, tright):
+  def __init__(self, M, P, tleft, tright, dim):
     # approximations of integrals from t_m to t_mp1
-    self.I_m_mp1 = np.zeros((M,1))
+    self.I_m_mp1 = np.zeros((M,1,dim))
     # approximations of integrals from t_p to t_pp1
-    self.I_p_pp1 = np.zeros((M,P))
+    self.I_p_pp1 = np.zeros((M,P,dim))
     assert tleft<tright, "tleft must be smaller than tright"
     self.dt      = abs(tright - tleft)
     self.M       = M
     self.P       = P
+    self.dim     = dim
 
     self.coll     = CollGaussRadau_Right(num_nodes = M, tleft = tleft, tright = tright)
     self.coll_sub = []
@@ -53,12 +54,12 @@ class multirateCollocation(object):
   '''
   def integrate_p_pp1(self, fu, m, p):
     try:
-      fu = np.reshape(fu, (self.M,1))
+      fu = np.reshape(fu, (self.M,self.dim))
     except:
-      raise TypeError("Failed to convert argument fu into shape Mx1")
+      raise
     intvalue = 0.0
     for n in range(self.M):
-      intvalue += self.S_mnp[m,n,p]*fu[n]
+      intvalue += self.S_mnp[m,n,p]*fu[n,:]
     return intvalue
 
   '''
@@ -67,14 +68,14 @@ class multirateCollocation(object):
   '''
   def integrate_p_pp1_sub(self, fu_sub, m, p):
     try:
-      fu = np.reshape(fu_sub, (self.P,1))
+      fu_sub = np.reshape(fu_sub, (self.P,self.dim))
     except:
-      raise TypeError("Failed to convert argument fu into shape Px1")
+      raise
     Smat = self.coll_sub[m].Smat
     Smat = Smat[1:,1:]
     intvalue = 0.0
     for j in range(self.P):
-      intvalue += Smat[p,j]*fu_sub[j]
+      intvalue += Smat[p,j]*fu_sub[j,:]
     return intvalue
       
 
@@ -84,24 +85,24 @@ class multirateCollocation(object):
   '''
   def integrate_m_mp1(self, fu, m):
     try:
-      fu = np.reshape(fu, (self.M,1))
+      fu = np.reshape(fu, (self.M,self.dim))
     except:
       raise TypeError("Failed to convert argument fu into shape Mx1")
     Smat = self.coll.Smat
     Smat = Smat[1:,1:]
     intvalue = 0.0
     for j in range(self.M):
-      intvalue += Smat[m,j]*fu[j]
+      intvalue += Smat[m,j]*fu[j,:]
     return intvalue
 
   '''
   '''
   def integrate_m_mp1_sub(self, fu_sub, m):
     try:
-      fu_sub = np.reshape(fu_sub, (self.P, 1))
+      fu_sub = np.reshape(fu_sub, (self.P, self.dim))
     except:
       raise TypeError("Failed to convert argument fu into shape Px1")
     intvalue = 0.0
     for p in range(self.P):
-      intvalue += self.Shat_mp[m,p]*fu_sub[p]
+      intvalue += self.Shat_mp[m,p]*fu_sub[p,:]
     return intvalue
