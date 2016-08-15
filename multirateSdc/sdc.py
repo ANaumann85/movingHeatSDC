@@ -149,7 +149,7 @@ class sdc_step():
     except:
       raise
     assert self.prob.lambda_2==0.0, "Can only compute standard collocation solution analytically if lambda_2=0"
-    return np.linalg.inv(Mcoll).dot(u0*np.ones(self.coll.M))
+    return np.reshape( np.linalg.inv(Mcoll).dot(u0*np.ones(self.coll.M)), (self.coll.M, 1))
 
   def get_collocation_solution_sub(self, u0, m):  
     Q = self.coll.coll_sub[m].Qmat

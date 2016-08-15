@@ -52,6 +52,7 @@ class test_sdc_step(unittest.TestCase):
   def test_sweep_coll_standard_invariant(self):
     self.setUp(lambda_2=0.0)
     u0         = np.random.rand(1)
+    u0 = 1.0
     ucoll_     = self.sdc.get_collocation_solution(u0)
     ucoll_sub_ = np.zeros((self.M,self.P,1))
     
