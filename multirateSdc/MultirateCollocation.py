@@ -57,7 +57,7 @@ class multirateCollocation(object):
       fu = np.reshape(fu, (self.M,self.dim))
     except:
       raise
-    intvalue = np.zeros((self.dim,1))
+    intvalue = np.zeros(self.dim)
     for n in range(self.M):
       intvalue += self.S_mnp[m,n,p]*fu[n,:]
     return np.reshape(intvalue, (self.dim,1))
@@ -90,7 +90,7 @@ class multirateCollocation(object):
       raise TypeError("Failed to convert argument fu into shape Mx1")
     Smat = self.coll.Smat
     Smat = Smat[1:,1:]
-    intvalue = 0.0
+    intvalue = np.zeros(self.dim)
     for j in range(self.M):
       intvalue += Smat[m,j]*fu[j,:]
     return np.reshape(intvalue, (self.dim,1))
@@ -102,7 +102,7 @@ class multirateCollocation(object):
       fu_sub = np.reshape(fu_sub, (self.P, self.dim))
     except:
       raise 
-    intvalue = 0.0
+    intvalue = np.zeros(self.dim)
     for p in range(self.P):
       intvalue += self.Shat_mp[m,p]*fu_sub[p,:]
     return np.reshape(intvalue, (self.dim,1))

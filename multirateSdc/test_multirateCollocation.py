@@ -40,10 +40,10 @@ class test_problem(unittest.TestCase):
 
   # Sum over integrals over embedded sub steps matches integral over standard sub step
   def test_integrates_match(self):
-    dim = np.random.randint(1,10)
+    dim       = np.random.randint(1,10)
     mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright, dim)
-    slope     = np.random.rand(dim,1)
-    intercept = np.random.rand(dim,1)
+    slope     = np.random.rand(dim)
+    intercept = np.random.rand(dim)
 
     fu        = np.zeros((self.M,dim))
     for d in range(dim):
@@ -66,13 +66,16 @@ class test_problem(unittest.TestCase):
 
   # Linear function given at standard nodes is integrated exactly over embedded sub step
   def test_integrate_p_p1_linear(self):
-    mc_coll = multirateCollocation(self.M, self.P, self.tleft, self.tright, 1)
+    dim     = np.random.randint(1,10)
+    mc_coll = multirateCollocation(self.M, self.P, self.tleft, self.tright, dim)
     # Make sure method throws if input data does not fit
     with self.assertRaises(Exception):
       mc_coll.integrate_p_pp1(np.zeros((self.M+1,1)), 0, 0)
-    slope = np.random.rand(1)
-    intercept = np.random.rand(1)
-    fu      = slope*mc_coll.coll.nodes + intercept
+    slope = np.random.rand(dim)
+    intercept = np.random.rand(dim)
+    fu = np.zeros((self.M,dim))
+    for d in range(dim):
+      fu[:,d]      = slope[d]*mc_coll.coll.nodes + intercept[d]
     for m in range(self.M):
       for p in range(self.P):
         if p==0:
@@ -80,18 +83,23 @@ class test_problem(unittest.TestCase):
         else:
           ta = mc_coll.coll_sub[m].nodes[p-1]
         tb   = mc_coll.coll_sub[m].nodes[p]        
-        intval  = mc_coll.integrate_p_pp1(fu, m, p) 
-        intex   = 0.5*slope*(tb**2-ta**2) + intercept*(tb - ta)
-        err     =  abs(intval - intex)
+        intval  = mc_coll.integrate_p_pp1(fu, m, p)
+        intex   = np.zeros((dim,1))
+        for d in range(dim):
+          intex[d,0]   = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
+        err     =  np.linalg.norm(intval - intex, np.inf)
         assert err<1e-14, ("Function integrate_p_pp1 failed to integrate linear function excatly. Error: %5.3e" % err)
 
   # Linear function given at embedded nodes is integrated exactly over embedded sub steps
   def test_integrate_p_pp1_sub_linear(self):
-    mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright, 1)
-    slope     = np.random.rand(1)
-    intercept = np.random.rand(1)
+    dim       = np.random.randint(1,10)
+    mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright, dim)
+    slope     = np.random.rand(dim)
+    intercept = np.random.rand(dim)
     for m in range(self.M):
-      fu      = slope*mc_coll.coll_sub[m].nodes + intercept
+      fu = np.zeros((self.P,dim))
+      for d in range(dim):
+        fu[:,d]      = slope[d]*mc_coll.coll_sub[m].nodes + intercept[d]
       for p in range(self.P):
         if p==0:
           ta = mc_coll.coll_sub[m].tleft
@@ -99,40 +107,53 @@ class test_problem(unittest.TestCase):
           ta = mc_coll.coll_sub[m].nodes[p-1]
         tb   = mc_coll.coll_sub[m].nodes[p]
         intval = mc_coll.integrate_p_pp1_sub(fu, m, p)
-        intex   = 0.5*slope*(tb**2-ta**2) + intercept*(tb - ta)
-        err     =  abs(intval - intex)
+        intex  = np.zeros((dim,1))
+        for d in range(dim):
+          intex[d,0] = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
+        err     =  np.linalg.norm(intval - intex, np.inf)
         assert err<1e-14, ("Function integrate_p_pp1_sub failed to integrate linear function excatly. Error: %5.3e" % err)
 
   # Linear function at standard nodes is integrated exactly over standard sub steps
   def test_integrate_m_mp1_linear(self):
-    mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright, 1)
-    slope     = np.random.rand(1)
-    intercept = np.random.rand(1)
+    dim       = np.random.randint(1,10)
+    mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright, dim)
+    slope     = np.random.rand(dim)
+    intercept = np.random.rand(dim)
+    fu        = np.zeros((self.M,dim))
+    for d in range(dim):
+      fu[:,d] = slope[d]*mc_coll.coll.nodes + intercept[d]
+
     for m in range(self.M):
-      fu      = slope*mc_coll.coll.nodes + intercept
       if m==0:
         ta = mc_coll.coll.tleft
       else:
         ta = mc_coll.coll.nodes[m-1]
       tb   = mc_coll.coll.nodes[m]
       intval = mc_coll.integrate_m_mp1(fu, m)
-      intex   = 0.5*slope*(tb**2-ta**2) + intercept*(tb - ta)
-      err     =  abs(intval - intex)
-      assert err<1e-14, ("Function integrate_m_mp1 failed to integrate linear function excatly. Error: %5.3e" % err)
+      intex  = np.zeros((dim,1))
+      for d in range(dim):
+        intex[d,0]   = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
+      err     =  np.linalg.norm(intval - intex, np.inf)
+      assert err<1e-13, ("Function integrate_m_mp1 failed to integrate linear function excatly. Error: %5.3e" % err)
 
   # Linear function given at embedded nodes is integrated exactly over standard sub steps
   def test_integrate_m_mp1_sub_linear(self):
-    mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright, 1)
-    slope     = np.random.rand(1)
-    intercept = np.random.rand(1)
+    dim       = np.random.randint(1,10)
+    mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright, dim)
+    slope     = np.random.rand(dim)
+    intercept = np.random.rand(dim)
     for m in range(self.M):
-      fu      = slope*mc_coll.coll_sub[m].nodes + intercept
+      fu = np.zeros((self.P,dim))
+      for d in range(dim):
+        fu[:,d] = slope[d]*mc_coll.coll_sub[m].nodes + intercept[d]
       if m==0:
         ta = mc_coll.coll.tleft
       else:
         ta = mc_coll.coll.nodes[m-1]
       tb   = mc_coll.coll.nodes[m]
       intval  = mc_coll.integrate_m_mp1_sub(fu, m)
-      intex   = 0.5*slope*(tb**2-ta**2) + intercept*(tb - ta)
-      err     =  abs(intval - intex)
+      intex   = np.zeros((dim,1))
+      for d in range(dim):
+        intex[d,0]   = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
+      err     =  np.linalg.norm(intval - intex, np.inf)
       assert err<1e-14, ("Function integrate_m_mp1_sub failed to integrate linear function excatly. Error: %5.3e" % err)
