@@ -57,10 +57,10 @@ class multirateCollocation(object):
       fu = np.reshape(fu, (self.M,self.dim))
     except:
       raise
-    intvalue = 0.0
+    intvalue = np.zeros((self.dim,1))
     for n in range(self.M):
       intvalue += self.S_mnp[m,n,p]*fu[n,:]
-    return intvalue
+    return np.reshape(intvalue, (self.dim,1))
 
   '''
   Takes function values at sub-level collocation nodes and computed approximation of integral between two sub-level quadrature nodes.
@@ -73,10 +73,10 @@ class multirateCollocation(object):
       raise
     Smat = self.coll_sub[m].Smat
     Smat = Smat[1:,1:]
-    intvalue = 0.0
+    intvalue = np.zeros(self.dim)
     for j in range(self.P):
       intvalue += Smat[p,j]*fu_sub[j,:]
-    return intvalue
+    return np.reshape(intvalue, (self.dim,1))
       
 
   '''
@@ -93,7 +93,7 @@ class multirateCollocation(object):
     intvalue = 0.0
     for j in range(self.M):
       intvalue += Smat[m,j]*fu[j,:]
-    return intvalue
+    return np.reshape(intvalue, (self.dim,1))
 
   '''
   '''
@@ -105,4 +105,4 @@ class multirateCollocation(object):
     intvalue = 0.0
     for p in range(self.P):
       intvalue += self.Shat_mp[m,p]*fu_sub[p,:]
-    return intvalue
+    return np.reshape(intvalue, (self.dim,1))

@@ -40,22 +40,28 @@ class test_problem(unittest.TestCase):
 
   # Sum over integrals over embedded sub steps matches integral over standard sub step
   def test_integrates_match(self):
-    mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright, 1)
-    slope     = np.random.rand(1)
-    intercept = np.random.rand(1)
+    dim = np.random.randint(1,10)
+    mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright, dim)
+    slope     = np.random.rand(dim,1)
+    intercept = np.random.rand(dim,1)
+
+    fu        = np.zeros((self.M,dim))
+    for d in range(dim):
+      fu[:,d] = slope[d]*mc_coll.coll.nodes + intercept[d]
+    fusub   = np.zeros((self.P,dim))
     for m in range(self.M):
-      fu      = slope*mc_coll.coll.nodes + intercept
       if m==0:
         ta = mc_coll.coll.tleft
       else:
         ta = mc_coll.coll.nodes[m-1]
       tb   = mc_coll.coll.nodes[m]
       int_m_mp1 = mc_coll.integrate_m_mp1(fu, m)
-      int_p_pp1 = 0.0
-      fusub = slope*mc_coll.coll_sub[m].nodes + intercept
+      int_p_pp1 = np.zeros((dim,1))
+      for d in range(dim):
+        fusub[:,d] = slope[d]*mc_coll.coll_sub[m].nodes + intercept[d]
       for p in range(self.P):
         int_p_pp1 += mc_coll.integrate_p_pp1_sub(fusub, m, p)
-      err = abs(int_m_mp1 - int_p_pp1)
+      err = np.linalg.norm(int_m_mp1 - int_p_pp1, np.inf)
       assert err<1e-14, ("Sum of integrate_p_pp1 does not match integrate_m_mp1. Error: %5.3e" % err)
 
   # Linear function given at standard nodes is integrated exactly over embedded sub step
