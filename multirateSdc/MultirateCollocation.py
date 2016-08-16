@@ -7,7 +7,7 @@ class multirateCollocation(object):
   '''
   def __init__(self, M, P, tleft, tright, dim):
     # approximations of integrals from t_m to t_mp1
-    self.I_m_mp1 = np.zeros((M,1,dim))
+    self.I_m_mp1 = np.zeros((M,dim))
     # approximations of integrals from t_p to t_pp1
     self.I_p_pp1 = np.zeros((M,P,dim))
     assert tleft<tright, "tleft must be smaller than tright"
@@ -60,7 +60,7 @@ class multirateCollocation(object):
     intvalue = np.zeros(self.dim)
     for n in range(self.M):
       intvalue += self.S_mnp[m,n,p]*fu[n,:]
-    return np.reshape(intvalue, (self.dim,1))
+    return intvalue
 
   '''
   Takes function values at sub-level collocation nodes and computed approximation of integral between two sub-level quadrature nodes.
@@ -76,8 +76,8 @@ class multirateCollocation(object):
     intvalue = np.zeros(self.dim)
     for j in range(self.P):
       intvalue += Smat[p,j]*fu_sub[j,:]
-    return np.reshape(intvalue, (self.dim,1))
-      
+    return intvalue
+  
 
   '''
   Takes function values at collocation nodes and computes approximation of integral between two nodes.
@@ -93,7 +93,7 @@ class multirateCollocation(object):
     intvalue = np.zeros(self.dim)
     for j in range(self.M):
       intvalue += Smat[m,j]*fu[j,:]
-    return np.reshape(intvalue, (self.dim,1))
+    return intvalue
 
   '''
   '''
@@ -105,4 +105,4 @@ class multirateCollocation(object):
     intvalue = np.zeros(self.dim)
     for p in range(self.P):
       intvalue += self.Shat_mp[m,p]*fu_sub[p,:]
-    return np.reshape(intvalue, (self.dim,1))
+    return intvalue
