@@ -302,4 +302,12 @@ and then
 \begin{equation}
 	\ve{y} = S \ve{z} = \begin{pmatrix} z_{1}(t) - z_{2}(t) \\ z_{1}(t) + z_{2}(t) \end{pmatrix} = \frac{1}{2}  \begin{pmatrix}  y_1(0) + y_2(0)  \\ y_1(0) + y_2(0) \end{pmatrix} e^{\nu t} + \frac{1}{2} \begin{pmatrix} y_1(0) - y_2(0)   \\ y_2(0) - y_1(0) \end{pmatrix} e^{(\nu+2 a)t}
 \end{equation}
+
+\paragraph{Stability.}
+To assess stability, we need to find a matrix $\ve{R}$ such that
+\begin{equation}
+	\ve{y}^1 = \ve{R} \ve{y}_0
+\end{equation}
+for a single time step of length $1$.
+If $\sigma(\ve{R}) \leq 1$, the series generated from repeatedly applying $\ve{R}$ won't diverge and the method is stable.
 \end{document}

@@ -23,7 +23,7 @@ tend   = 10.0
 nsteps = 25
 dt = (tend - tstart)/float(nsteps)
 
-a    = -0.1
+a    = 0.25
 nu   = -1.0
 prob = problem_model(a, nu)
 
@@ -32,7 +32,7 @@ u_    = np.zeros((M,2))
 usub_ = np.zeros((M,P,2))
 u     = np.zeros((M,2))
 usub  = np.zeros((M,P,2))
-u0    = [2.0, 0.0]
+u0    = [2.0, 1.0]
 u_ex  = uex(tend,u0, a, nu)
 u_plot = np.zeros((nsteps+1,2))
 t_axis = np.zeros(nsteps+1)
