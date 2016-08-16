@@ -1,4 +1,5 @@
 from problem import problem
+from problem_model import problem_model
 from sdc import sdc_step
 import numpy as np
 import unittest
@@ -107,12 +108,18 @@ class test_sdc_step(unittest.TestCase):
   ''' 
   '''
   def test_converge_to_fixpoint(self):
-    self.setUp()
-    u0    = 1.0
-    u_    = np.zeros((self.M,1))
-    u     = np.zeros((self.M,1))
-    usub_ = np.zeros((self.M,self.P,1))
-    usub  = np.zeros((self.M,self.P,1))
+    self.prob = problem_model(-0.1, -1.0)
+    self.M = 2
+    self.P = 3
+    tstart = 0.0
+    tend   = 0.5
+    self.sdc = sdc_step(self.M, self.P, tstart, tend, self.prob)
+    
+    u0    = np.reshape([1.0, 1.0], (2,))
+    u_    = np.zeros((self.M,2))
+    u     = np.zeros((self.M,2))
+    usub_ = np.zeros((self.M,self.P,2))
+    usub  = np.zeros((self.M,self.P,2))
     # run predictor
     self.sdc.predict(u0, u_, usub_)
 

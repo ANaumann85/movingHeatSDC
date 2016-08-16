@@ -56,7 +56,7 @@ class test_problem(unittest.TestCase):
         ta = mc_coll.coll.nodes[m-1]
       tb   = mc_coll.coll.nodes[m]
       int_m_mp1 = mc_coll.integrate_m_mp1(fu, m)
-      int_p_pp1 = np.zeros((dim,1))
+      int_p_pp1 = np.zeros(dim)
       for d in range(dim):
         fusub[:,d] = slope[d]*mc_coll.coll_sub[m].nodes + intercept[d]
       for p in range(self.P):
@@ -68,10 +68,12 @@ class test_problem(unittest.TestCase):
   def test_integrate_p_p1_linear(self):
     dim     = np.random.randint(1,10)
     mc_coll = multirateCollocation(self.M, self.P, self.tleft, self.tright, dim)
+    
     # Make sure method throws if input data does not fit
     with self.assertRaises(Exception):
-      mc_coll.integrate_p_pp1(np.zeros((self.M+1,1)), 0, 0)
-    slope = np.random.rand(dim)
+      mc_coll.integrate_p_pp1(np.zeros(self.M+1), 0, 0)
+    
+    slope     = np.random.rand(dim)
     intercept = np.random.rand(dim)
     fu = np.zeros((self.M,dim))
     for d in range(dim):
@@ -84,9 +86,9 @@ class test_problem(unittest.TestCase):
           ta = mc_coll.coll_sub[m].nodes[p-1]
         tb   = mc_coll.coll_sub[m].nodes[p]        
         intval  = mc_coll.integrate_p_pp1(fu, m, p)
-        intex   = np.zeros((dim,1))
+        intex   = np.zeros(dim)
         for d in range(dim):
-          intex[d,0]   = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
+          intex[d]   = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
         err     =  np.linalg.norm(intval - intex, np.inf)
         assert err<1e-14, ("Function integrate_p_pp1 failed to integrate linear function excatly. Error: %5.3e" % err)
 
@@ -107,9 +109,9 @@ class test_problem(unittest.TestCase):
           ta = mc_coll.coll_sub[m].nodes[p-1]
         tb   = mc_coll.coll_sub[m].nodes[p]
         intval = mc_coll.integrate_p_pp1_sub(fu, m, p)
-        intex  = np.zeros((dim,1))
+        intex  = np.zeros(dim)
         for d in range(dim):
-          intex[d,0] = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
+          intex[d] = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
         err     =  np.linalg.norm(intval - intex, np.inf)
         assert err<1e-14, ("Function integrate_p_pp1_sub failed to integrate linear function excatly. Error: %5.3e" % err)
 
@@ -130,9 +132,9 @@ class test_problem(unittest.TestCase):
         ta = mc_coll.coll.nodes[m-1]
       tb   = mc_coll.coll.nodes[m]
       intval = mc_coll.integrate_m_mp1(fu, m)
-      intex  = np.zeros((dim,1))
+      intex  = np.zeros(dim)
       for d in range(dim):
-        intex[d,0]   = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
+        intex[d]   = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
       err     =  np.linalg.norm(intval - intex, np.inf)
       assert err<1e-13, ("Function integrate_m_mp1 failed to integrate linear function excatly. Error: %5.3e" % err)
 
@@ -152,8 +154,8 @@ class test_problem(unittest.TestCase):
         ta = mc_coll.coll.nodes[m-1]
       tb   = mc_coll.coll.nodes[m]
       intval  = mc_coll.integrate_m_mp1_sub(fu, m)
-      intex   = np.zeros((dim,1))
+      intex   = np.zeros(dim)
       for d in range(dim):
-        intex[d,0]   = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
+        intex[d]   = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
       err     =  np.linalg.norm(intval - intex, np.inf)
       assert err<1e-14, ("Function integrate_m_mp1_sub failed to integrate linear function excatly. Error: %5.3e" % err)

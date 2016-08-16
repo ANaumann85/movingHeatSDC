@@ -23,8 +23,10 @@ class sdc_step():
     except:
       raise
     
+    fu, fu_sub = self.evaluate_f(u, usub)
+    
     for m in range(self.coll.M):
-      self.I_m_mp1[m,:] = self.coll.integrate_m_mp1(self.prob.f1(u), m) + self.coll.integrate_m_mp1_sub(self.prob.f2(usub[m,:,:]), m)
+      self.I_m_mp1[m,:] = self.coll.integrate_m_mp1(fu, m) + self.coll.integrate_m_mp1_sub(fu_sub[m,:,:], m)
 
   '''
   '''
@@ -34,11 +36,24 @@ class sdc_step():
       usub  = np.reshape(usub, (self.coll.M, self.coll.P, self.prob.dim))
     except:
       raise
+    
+    fu, fu_sub = self.evaluate_f(u, usub)
   
     for m in range(self.coll.M):
       for p in range(self.coll.P):
-        self.I_p_pp1[m,p,:] = self.coll.integrate_p_pp1( self.prob.f1(u), m, p ) + self.coll.integrate_p_pp1_sub(self.prob.f2(usub[m,:,:]), m, p )
+        self.I_p_pp1[m,p,:] = self.coll.integrate_p_pp1( fu, m, p ) + self.coll.integrate_p_pp1_sub( fu_sub[m,:,:], m, p )
 
+  '''
+  '''
+  def evaluate_f(self, u, usub):
+    fu     = np.zeros((self.coll.M,self.prob.dim))
+    fu_sub = np.zeros((self.coll.M, self.coll.P, self.prob.dim))
+    for m in range(self.coll.M):
+      fu[m,:] = self.prob.f1(u[m,:])
+      for p in range(self.coll.P):
+        fu_sub[m,p,:] = self.prob.f2(usub[m,p,:])
+    return fu, fu_sub
+    
   '''
   '''
   def residual(self, u0, u):
@@ -48,7 +63,7 @@ class sdc_step():
       raise
     res = np.linalg.norm(u[0,:] - u0 - self.I_m_mp1[0,:], np.inf)
     for m in range(1,self.coll.M):
-      resm = abs(u[m,:] - u[m-1,:] - self.I_m_mp1[m,:])
+      resm = np.linalg.norm(u[m,:] - u[m-1,:] - self.I_m_mp1[m,:], np.inf)
       res  = max(res, resm)
     return res
 
@@ -71,7 +86,7 @@ class sdc_step():
     try:
       u = np.reshape(u, (self.coll.P,self.prob.dim))
     except:
-      raise TypeError("Failed to convert argument u into shape (P,1,dim)")
+      raise
     res = np.linalg.norm(u[0,:] - u0 - self.I_p_pp1[m,0,:], np.inf)
     for p in range(1,self.coll.P):
       res = max(res, np.linalg.norm(u[p,:] - u[p-1,:] - self.I_p_pp1[m,p,:], np.inf))
@@ -81,8 +96,9 @@ class sdc_step():
   '''
   def predict(self, u0, u, usub):
     try:
-      u = np.reshape(u, (self.coll.M, self.prob.dim))
+      u    = np.reshape(u, (self.coll.M, self.prob.dim))
       usub = np.reshape(usub, (self.coll.M, self.coll.P, self.prob.dim))
+      u0   = np.reshape(u0, (self.prob.dim,))
     except:
       raise
 
