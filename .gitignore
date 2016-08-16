@@ -7,3 +7,5 @@ startup.sh
 *.bbl
 *.blg
 *.synctex.gz
+*.vtu
+*.pvd

@@ -1,13 +1,13 @@
 from firedrake import *
 
-nu = 1.0e-3
+nu = 1e-3
 
 nx     = 20
 ny     = 40
 
 t      = 0.0
-tend   = 20
-nsteps = 20
+tend   = 20.0
+nsteps = 40
 timestep = (tend-t)/float(nsteps)
 
 meshA = RectangleMesh(10, 10, 0.5, 0.5)
@@ -47,14 +47,14 @@ while (t<tend):
   # but for now just set it to some constant value
   V_A = FunctionSpace(meshA, "CG", 1)
   u_A = Function(V_A, name="TemperatureA")
-  u_A.interpolate(Expression("5.0*t",t=t))
+  u_A.interpolate(Expression("1.0*t", t=t))
 
   # Evaluate u_A at meshB boundary nodes with Id 1
   node_vec = u_A.at(Xs, dont_raise=True)
-  print node_vec
 
   # Check value at one specific point
-  print 'uA:', u_A.at((0.0, 2.2), dont_raise=True)
+  print 'uA:', u_A.at((0.0, 2.2+0.1*t), dont_raise=True)
+#  del  meshA.spatial_index
 
   # Remove None's 
   node_vec = [0.0 if x is None else x for x in node_vec] 
@@ -71,11 +71,11 @@ while (t<tend):
   u_B_.assign(u_B)
 
   # move meshA downward by timestep; from http://www.firedrakeproject.org/mesh-coordinates.html
-  #meshA= RectangleMesh(10, 10, 0.5,0.5)
   Vc = meshA.coordinates.function_space()
   f2  = Function(Vc).interpolate(Expression(("x[0]", "x[1] - shift"), shift = 0.1*timestep ))
-  del  meshA.spatial_index
-  meshA.coordinates.assign(f2)  
-#  u_A = Function(functionspaceimpl.WithGeometry(u_A.function_space(), meshA), val=u_A.topological)
+#  del  meshA.spatial_index
+#  meshA.coordinates.assign(f2)  
+#  del  meshA.spatial_index
+  meshA = Mesh(Function(f2))
 
   t += timestep
