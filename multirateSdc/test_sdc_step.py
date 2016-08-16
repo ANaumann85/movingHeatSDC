@@ -107,7 +107,7 @@ class test_sdc_step(unittest.TestCase):
   ''' 
   '''
   def test_converge_to_fixpoint(self):
-    self.setUp(lambda_2=0.0)   
+    self.setUp()
     u0    = 1.0
     u_    = np.zeros((self.M,1))
     u     = np.zeros((self.M,1))
@@ -116,17 +116,17 @@ class test_sdc_step(unittest.TestCase):
     # run predictor
     self.sdc.predict(u0, u_, usub_)
 
-    for k in range(3):
-      # update integral operators
-      self.sdc.update_I_m_mp1(u_, usub_)
-      self.sdc.update_I_p_pp1(u_, usub_)
+    for k in range(15):
       # run standard node sweep...
       self.sdc.sweep(u0, u, usub, u_, usub_)
-      print ("Standard node update: %5.3e" % np.linalg.norm( (u - u_).flatten(), np.inf))
-      print ("Embedded node update: %5.3e" % np.linalg.norm( (usub - usub_).flatten(), np.inf))
-      print ("Standard node residual: %5.3e" % self.sdc.residual(u0, u))
-      print ("Embedded node residual: %5.3e" % self.sdc.sub_residual(u0, usub))
-      print ""
-      u = copy.deepcopy(u_)
-      usub = copy.deepcopy(usub_)
+      update_standard = np.linalg.norm( (u-u_).flatten(), np.inf)
+      update_embedded = np.linalg.norm( (usub-usub_).flatten(), np.inf)
+      res_standard    = self.sdc.residual(u0, u)
+      res_embedded    = self.sdc.sub_residual(u0, usub)
+      u_    = copy.deepcopy(u)
+      usub_ = copy.deepcopy(usub)
 
+    assert update_standard<1e-13, ("Standard update failed to converge to zero. Value: %5.3e" % update_standard)
+    assert update_embedded<1e-13, ("Embedded update failed to converge to zero. Value: %5.3e" % update_embedded)
+    assert res_standard<1e-13, ("Standard residual failed to converge to zero. Value: %5.3e" % res_standard)
+    assert res_embedded<1e-13, ("Embedded residual failed to converge to zero. Value: %5.3e" % res_embedded)
