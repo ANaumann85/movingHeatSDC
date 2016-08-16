@@ -115,7 +115,7 @@ class test_sdc_step(unittest.TestCase):
     tend   = 0.5
     self.sdc = sdc_step(self.M, self.P, tstart, tend, self.prob)
     
-    u0    = np.reshape([1.0, 1.0], (2,1))
+    u0    = np.reshape([1.0, 1.0], (2,))
     u_    = np.zeros((self.M,2))
     u     = np.zeros((self.M,2))
     usub_ = np.zeros((self.M,self.P,2))

@@ -63,7 +63,7 @@ class sdc_step():
       raise
     res = np.linalg.norm(u[0,:] - u0 - self.I_m_mp1[0,:], np.inf)
     for m in range(1,self.coll.M):
-      resm = abs(u[m,:] - u[m-1,:] - self.I_m_mp1[m,:])
+      resm = np.linalg.norm(u[m,:] - u[m-1,:] - self.I_m_mp1[m,:], np.inf)
       res  = max(res, resm)
     return res
 
@@ -98,7 +98,7 @@ class sdc_step():
     try:
       u    = np.reshape(u, (self.coll.M, self.prob.dim))
       usub = np.reshape(usub, (self.coll.M, self.coll.P, self.prob.dim))
-      u0   = np.reshape(u0, (self.prob.dim,1))
+      u0   = np.reshape(u0, (self.prob.dim,))
     except:
       raise
 
