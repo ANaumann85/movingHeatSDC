@@ -18,9 +18,11 @@ nstep=40
 dt=tend/nstep
 t=0.0
 outT=File("temperature.pvd")
+outFast=File("tFast.pvd")
 for k in range(0,nstep):
     #r=Function(p.V_B, p.evalM(u0).vector()+dt*p.evalFast(u0, t+dt).vector())
     r=assemble(p.evalM(u0)+dt*p.evalFast(u0, t+dt))
     u0 = p.evalMmJ(u0, t+dt, r, dt)
     outT.write(u0)
+    outFast.write(p.u_A, time=t+dt)
     t += dt

@@ -1,4 +1,5 @@
 from firedrake import *
+import numpy as np
 
 class MovingHeat:
 
@@ -11,6 +12,7 @@ class MovingHeat:
         Vc    = self.meshA.coordinates.function_space()
         f2    = Function(Vc).interpolate(Expression(("x[0]-0.5","x[1]+2.0")))
         self.meshA.coordinates.assign(f2)
+        self.meshA.clear_spatial_index()
         self.V_B = FunctionSpace(self.meshB, "CG", 1)
         Vector_V_B = VectorFunctionSpace(self.meshB, "CG", 1)
         self.phi = TrialFunction(self.V_B)
@@ -20,6 +22,8 @@ class MovingHeat:
         c = Function(Vector_V_B)
         c.interpolate(SpatialCoordinate(self.meshB))
         self.Xs = c.dat.data_ro[self.boundary_nodes_B, :]
+        print self.Xs
+        self.Xs = np.array(map(lambda p: p-np.array([1.0e-13, 0.0]), self.Xs))
 
         self.lastTime=0.0
 
@@ -32,15 +36,17 @@ class MovingHeat:
         Vc = self.meshA.coordinates.function_space()
         f2  = Function(Vc).interpolate(Expression(("x[0]", "x[1] - shift"), shift = 0.1*timestep ))
         if hasattr(self.meshA, 'spatial_index'):
-            del self.meshA.spatial_index #???
-        self.meshA.coordinates.assign(f2)  
+            self.meshA.clear_spatial_index()
+            #del self.meshA.spatial_index #???
+        #self.meshA.coordinates.assign(f2)  
+        self.meshA=Mesh(Function(f2))
         #create functionspace on the moving part
         V_A = FunctionSpace(self.meshA, "CG", 1)
-        u_A = Function(V_A, name="TemperatureA")
+        self.u_A = Function(V_A, name="TemperatureA")
         #set temperature of the moving part
-        u_A.interpolate(Expression("5.0*t",t=t))
+        self.u_A.interpolate(Expression("5.0*t",t=t))
         # Evaluate u_A at meshB boundary nodes with Id 1
-        node_vec = u_A.at(self.Xs, dont_raise=True)
+        node_vec = self.u_A.at(self.Xs, dont_raise=True)
         # Remove None's 
         node_vec = [0.0 if x is None else x for x in node_vec] 
         self.myf.dat.data[self.boundary_nodes_B] = node_vec
