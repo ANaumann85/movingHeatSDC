@@ -18,9 +18,9 @@ tend   = 10.0
 nsteps = 100
 dt = (tend - tstart)/float(nsteps)
 
-a    = 1.0
+a    = 5.0
 nu   = -1.0
-prob = problem_model(a=a, nu=nu, u0=1.0, v0=0.75)
+prob = problem_model(a=a, nu=nu, u0=1.0, v0=0.0)
 
 K_iter = 12
 

@@ -4,9 +4,10 @@ class problem_model():
 
   '''
   '''
-  def __init__(self, a, nu, u0, v0):
+  def __init__(self, a, nu, alpha, u0, v0):
     self.a = a
     self.nu = nu
+    self.alpha = alpha
     self.u0 = u0
     self.v0 = v0
     self.S  = nu*np.diag([1.0, 4.0, 1.0, 4.0])
@@ -39,7 +40,7 @@ class problem_model():
     A[3,2] = np.cos(self.a*t)
     A[3,3] = 1.0
     
-    A *= 1.0/(2.0*np.pi)
+    A *= self.alpha/(2.0*np.pi)
     return A
   
   '''
