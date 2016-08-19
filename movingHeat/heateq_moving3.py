@@ -22,7 +22,6 @@ class MovingHeat:
         c = Function(Vector_V_B)
         c.interpolate(SpatialCoordinate(self.meshB))
         self.Xs = c.dat.data_ro[self.boundary_nodes_B, :]
-        print self.Xs
         self.Xs = np.array(map(lambda p: p-np.array([1.0e-13, 0.0]), self.Xs))
 
         self.lastTime=0.0
@@ -81,3 +80,13 @@ class MovingHeat:
         """
         aM=inner(u,self.v)*dx
         return assemble(aM)
+
+    def solveM(self, r):
+        """ evaluate u, such that Mu=r
+        """
+        bif = (inner(self.phi, self.v))*dx(domain=self.meshB)
+        bifM=assemble(bif)
+        u_B=Function(self.V_B, name="solM")
+        solve(bifM, u_B, r)
+        return u_B
+
