@@ -9,7 +9,7 @@ class problem_model():
     self.nu = nu
     self.u0 = u0
     self.v0 = v0
-    self.S  = -nu*np.diag([1.0, 4.0, 1.0, 4.0])
+    self.S  = nu*np.diag([1.0, 4.0, 1.0, 4.0])
     self.dim = 4
   
   '''

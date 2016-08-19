@@ -8,33 +8,33 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 from subprocess import call
 
-M = 3
-P = 3
+M = 2
+P = 4
 tstart = 0.0
 tend   = 1.0
 
-a_vec  = np.linspace(0.0,   2.0, 20)
-nu_vec = np.linspace(-5.0,  0.0, 50)
+a_vec  = np.linspace(0.0,   10,  20)
+nu_vec = np.linspace(-5.0,  0.0, 10)
 stab   = np.zeros((np.size(a_vec), np.size(nu_vec)))
 
-K_iter = 2
+K_iter = 1
 
 for kk in range(np.size(a_vec)):
   for ll in range(np.size(nu_vec)):
 
-    prob = problem_model(a_vec[kk], nu_vec[ll])
+    prob = problem_model(a=a_vec[kk], nu=nu_vec[ll], u0=1.0, v0=0.0)
     sdc    = sdc_step(M, P, 0.0, 1.0, prob)
 
-    R = np.zeros((2,2))
-    u0 = np.eye(2)
+    R = np.zeros((prob.dim,prob.dim))
+    u0 = np.eye(prob.dim)
     
-    for mm in range(2):
+    for mm in range(prob.dim):
     
       # reset buffers to zero
-      u     = np.zeros((M,2))
-      usub  = np.zeros((M,P,2))
-      u_    = np.zeros((M,2))
-      usub_ = np.zeros((M,P,2))
+      u     = np.zeros((M,prob.dim))
+      usub  = np.zeros((M,P,prob.dim))
+      u_    = np.zeros((M,prob.dim))
+      usub_ = np.zeros((M,P,prob.dim))
 
       sdc.predict(u0[:,mm], u_, usub_)
       for k in range(K_iter):
@@ -43,7 +43,7 @@ for kk in range(np.size(a_vec)):
         usub_ = copy.deepcopy(usub)
       R[:,mm] = u[M-1]
   
-    eval, evec = np.linalg.eig(R)
+    eval, evec  = np.linalg.eig(R)
     stab[kk,ll] = np.linalg.norm(eval, np.inf)
 
 #rcParams['figure.figsize'] = 1.5, 1.5
@@ -60,3 +60,4 @@ filename = 'stability-K'+str(K_iter)+'-M'+str(M)+'-P'+str(P)+'.pdf'
 fig.savefig(filename, bbox_inches='tight')
 call(["pdfcrop", filename, filename])
 #plt.show()
+
