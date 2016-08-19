@@ -51,7 +51,7 @@ class sdc_step():
     for m in range(self.coll.M):
       fu[m,:] = self.prob.f1(u[m,:])
       for p in range(self.coll.P):
-        fu_sub[m,p,:] = self.prob.f2(usub[m,p,:])
+        fu_sub[m,p,:] = self.prob.f2(usub[m,p,:], self.coll.coll_sub[m].nodes[p])
     return fu, fu_sub
     
   '''
@@ -109,9 +109,11 @@ class sdc_step():
         # standard step
         u[m,:] = self.prob.solve_f1(self.coll.coll.delta_m[m], u0_step)
         # embedded steps
-        usub[m,0,:] = u0_step + self.coll.coll_sub[m].delta_m[0]*( self.prob.f1(u[m,:]) + self.prob.f2(u0_step) )
+        t = self.coll.coll_sub[m].tleft
+        usub[m,0,:] = u0_step + self.coll.coll_sub[m].delta_m[0]*( self.prob.f1(u[m,:]) + self.prob.f2(u0_step, t) )
         for p in range(1,self.coll.P):
-          usub[m,p,:] = usub[m,p-1,:] + self.coll.coll_sub[m].delta_m[p]*( self.prob.f1(u[m,:]) + self.prob.f2(usub[m,p-1,:]) )
+          t = self.coll.coll_sub[m].nodes[p-1]
+          usub[m,p,:] = usub[m,p-1,:] + self.coll.coll_sub[m].delta_m[p]*( self.prob.f1(u[m,:]) + self.prob.f2(usub[m,p-1,:], t) )
 
         # overwrite standard value
         u0_step = usub[m,self.coll.P-1,:]
@@ -145,9 +147,11 @@ class sdc_step():
       u[m,:] = self.prob.solve_f1(self.coll.coll.delta_m[m], rhs)
       
       # embedded steps
-      usub[m,0,:] = u0_step + self.coll.coll_sub[m].delta_m[0]*( self.prob.f1(u[m,:]) - self.prob.f1(u_[m,:]) + self.prob.f2(u0_step) - self.prob.f2(u0_step) ) + self.I_p_pp1[m,0,:]
+      t = self.coll.coll_sub[m].tleft
+      usub[m,0,:] = u0_step + self.coll.coll_sub[m].delta_m[0]*( self.prob.f1(u[m,:]) - self.prob.f1(u_[m,:]) + self.prob.f2(u0_step, t) - self.prob.f2(u0_step, t) ) + self.I_p_pp1[m,0,:]
       for p in range(1,self.coll.P):
-        usub[m,p,:] = usub[m,p-1,:] + self.coll.coll_sub[m].delta_m[p]*( self.prob.f1(u[m,:]) - self.prob.f1(u_[m,:]) + self.prob.f2(usub[m,p-1,:]) - self.prob.f2(usub_[m,p-1,:]) ) + self.I_p_pp1[m,p,:]
+        t = self.coll.coll_sub[m].nodes[p-1]
+        usub[m,p,:] = usub[m,p-1,:] + self.coll.coll_sub[m].delta_m[p]*( self.prob.f1(u[m,:]) - self.prob.f1(u_[m,:]) + self.prob.f2(usub[m,p-1,:], t) - self.prob.f2(usub_[m,p-1,:], t) ) + self.I_p_pp1[m,p,:]
 
       # overwrite standard value
       u0_step = usub[m,self.coll.P-1,:]

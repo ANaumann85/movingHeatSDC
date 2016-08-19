@@ -1,5 +1,6 @@
 from problem import problem
 from problem_model import problem_model
+from problem_inh import problem_inh
 from sdc import sdc_step
 import numpy as np
 import unittest
@@ -104,22 +105,61 @@ class test_sdc_step(unittest.TestCase):
     res = self.sdc.sub_residual(u0, usub)
     assert res<1e-14, ("Solution composed of sub-step collocation solutions failed to produce zero for sub_residual. Error: %5.3e" % res)
 
-
   ''' 
   '''
+  def test_converge_to_fixpoint_inh(self):
+    nu = -1.0
+    self.prob = problem_inh(nu)
+    self.M = 5
+    self.P = 5
+    tstart = 0.0
+    tend   = 0.5
+    self.sdc = sdc_step(self.M, self.P, tstart, tend, self.prob)
+  
+    u0 = 1.0
+    u_ = np.zeros((self.M,self.prob.dim))
+    u = np.zeros((self.M,self.prob.dim))
+    usub_ = np.zeros((self.M,self.P,self.prob.dim))
+    usub = np.zeros((self.M,self.P,self.prob.dim))
+
+    # run predictor
+    self.sdc.predict(u0, u_, usub_)
+
+    for k in range(15):
+      # run standard node sweep...
+      self.sdc.sweep(u0, u, usub, u_, usub_)
+      update_standard = np.linalg.norm( (u-u_).flatten(), np.inf)
+      update_embedded = np.linalg.norm( (usub-usub_).flatten(), np.inf)
+      res_standard    = self.sdc.residual(u0, u)
+      res_embedded    = self.sdc.sub_residual(u0, usub)
+      u_    = copy.deepcopy(u)
+      usub_ = copy.deepcopy(usub)
+
+    c1  = u0 + 1.0/(nu**2+1)
+    uex = c1*np.exp(nu*tend) - (nu*np.sin(tend) + np.cos(tend))/(nu**2+1)
+    err =  abs(uex - u[-1])
+    assert err<1e-13, ("Larger than expected error for inhomogenous problem. Error: %5.3e" % err)
+    assert update_standard<1e-13, ("Standard update failed to converge to zero. Value: %5.3e" % update_standard)
+    assert update_embedded<1e-13, ("Embedded update failed to converge to zero. Value: %5.3e" % update_embedded)
+    assert res_standard<1e-13, ("Standard residual failed to converge to zero. Value: %5.3e" % res_standard)
+    assert res_embedded<1e-13, ("Embedded residual failed to converge to zero. Value: %5.3e" % res_embedded)
+  
+  ''' 
+  '''
+  #@unittest.skip("temporarily disabled")
   def test_converge_to_fixpoint(self):
-    self.prob = problem_model(-0.1, -1.0)
+    self.prob = problem_model(-0.1, -1.0, 1.0, 0.1)
     self.M = 2
     self.P = 3
     tstart = 0.0
     tend   = 0.5
     self.sdc = sdc_step(self.M, self.P, tstart, tend, self.prob)
     
-    u0    = np.reshape([1.0, 1.0], (2,))
-    u_    = np.zeros((self.M,2))
-    u     = np.zeros((self.M,2))
-    usub_ = np.zeros((self.M,self.P,2))
-    usub  = np.zeros((self.M,self.P,2))
+    u0    = np.reshape([1.0, 0.0, 1.0, 0.0], (4,))
+    u_    = np.zeros((self.M,4))
+    u     = np.zeros((self.M,4))
+    usub_ = np.zeros((self.M,self.P,4))
+    usub  = np.zeros((self.M,self.P,4))
     # run predictor
     self.sdc.predict(u0, u_, usub_)
 

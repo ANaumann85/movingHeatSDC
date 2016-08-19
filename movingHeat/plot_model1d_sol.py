@@ -22,7 +22,7 @@ def g(t):
   return np.exp(1j*omega*t)*(y_0 - v_0)/np.sqrt(2*np.pi)
 
 tend   = 100.0
-nsteps = 200
+nsteps = 10
 taxis  = np.linspace(0,tend,nsteps+1)
 dt     = tend/float(nsteps)
 
