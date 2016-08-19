@@ -149,10 +149,10 @@ class test_sdc_step(unittest.TestCase):
   #@unittest.skip("temporarily disabled")
   def test_converge_to_fixpoint(self):
     self.prob = problem_model(-0.1, -1.0, 1.0, 0.1)
-    self.M = 2
-    self.P = 3
+    self.M = 3
+    self.P = 4
     tstart = 0.0
-    tend   = 0.5
+    tend   = 0.2
     self.sdc = sdc_step(self.M, self.P, tstart, tend, self.prob)
     
     u0    = np.reshape([1.0, 0.0, 1.0, 0.0], (4,))
@@ -163,7 +163,7 @@ class test_sdc_step(unittest.TestCase):
     # run predictor
     self.sdc.predict(u0, u_, usub_)
 
-    for k in range(15):
+    for k in range(25):
       # run standard node sweep...
       self.sdc.sweep(u0, u, usub, u_, usub_)
       update_standard = np.linalg.norm( (u-u_).flatten(), np.inf)
@@ -173,7 +173,7 @@ class test_sdc_step(unittest.TestCase):
       u_    = copy.deepcopy(u)
       usub_ = copy.deepcopy(usub)
 
-    assert update_standard<1e-13, ("Standard update failed to converge to zero. Value: %5.3e" % update_standard)
-    assert update_embedded<1e-13, ("Embedded update failed to converge to zero. Value: %5.3e" % update_embedded)
-    assert res_standard<1e-13, ("Standard residual failed to converge to zero. Value: %5.3e" % res_standard)
-    assert res_embedded<1e-13, ("Embedded residual failed to converge to zero. Value: %5.3e" % res_embedded)
+    assert update_standard<1e-12, ("Standard update failed to converge to zero. Value: %5.3e" % update_standard)
+    assert update_embedded<1e-12, ("Embedded update failed to converge to zero. Value: %5.3e" % update_embedded)
+    assert res_standard<1e-12, ("Standard residual failed to converge to zero. Value: %5.3e" % res_standard)
+    assert res_embedded<1e-12, ("Embedded residual failed to converge to zero. Value: %5.3e" % res_embedded)
