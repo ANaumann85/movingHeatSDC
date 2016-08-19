@@ -11,5 +11,5 @@ class problem():
   def solve_f1(self, a, b):
     return b/(1.0 - self.lambda_1*a)
 
-  def f2(self, u):
+  def f2(self, u, *unused):
     return self.lambda_2*u
