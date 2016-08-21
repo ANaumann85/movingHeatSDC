@@ -4,7 +4,7 @@ from sdc import sdc_step
 import numpy as np
 import copy
 import firedrake as fd
-
+import sys
 
 #lambda_1 = -0.1
 #lambda_2 = -1.0
@@ -20,7 +20,7 @@ M = 2
 P = 2
 tstart = 0.0
 tend   = 1000.0
-nsteps = 4
+nsteps = int(sys.argv[1])
 dt = (tend - tstart)/float(nsteps)
 
 K_iter = 4
@@ -32,7 +32,7 @@ u0    = prob.getU0()
 #u0    = 2.0 
 #u_ex  = u0*np.exp(tend*(lambda_1+lambda_2))
 
-prob.startFile("T")
+prob.startFile("T_sdc_%d" % nsteps)
 prob.write(u0)
 for n in range(nsteps):
   tstart = float(n)*dt
@@ -51,11 +51,11 @@ for n in range(nsteps):
     u_    = copy.deepcopy(u)
     usub_ = copy.deepcopy(usub)
 
-  print ("+++ step: %3i +++ " % n)
-  print ("standard residual: %5.3e " % sdc.residual(u0, u))
-  print ("embedded residual: %5.3e " % sdc.sub_residual(u0, usub))
+  #print ("+++ step: %3i +++ " % n)
+  #print ("standard residual: %5.3e " % sdc.residual(u0, u))
+  #print ("embedded residual: %5.3e " % sdc.sub_residual(u0, usub))
   u0 = u[M-1]
-  prob.write(u0)
+  prob.write(u0, tend)
 
 ###
 #print ("error:             %5.3e " % (abs(u0 - u_ex)/abs(u_ex)))

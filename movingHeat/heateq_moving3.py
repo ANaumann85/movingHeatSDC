@@ -42,6 +42,7 @@ class MovingHeat:
         #create functionspace on the moving part
         V_A = FunctionSpace(self.meshA, "CG", 1)
         self.u_A = Function(V_A, name="TemperatureA")
+        va = TestFunction(V_A)
         #set temperature of the moving part
         self.u_A.interpolate(Expression("5.0*t",t=t))
         # Evaluate u_A at meshB boundary nodes with Id 1
@@ -53,6 +54,9 @@ class MovingHeat:
         #Rfast=(self.alpha*inner((self.myf-u_B), self.v)*ds(1,domain=self.meshB))
         Rfast=(self.alpha*inner((self.myf), self.v)*ds(1,domain=self.meshB))
         ass=assemble(Rfast)
+        print np.sum(ass.vector().get_local())
+        swap=assemble(inner(self.u_A, va)*dx)
+        print np.sum(swap.vector().get_local())
         return ass
 
     def evalSlow(self, uB, t):
