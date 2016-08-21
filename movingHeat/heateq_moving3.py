@@ -22,7 +22,7 @@ class MovingHeat:
         c = Function(Vector_V_B)
         c.interpolate(SpatialCoordinate(self.meshB))
         self.Xs = c.dat.data_ro[self.boundary_nodes_B, :]
-        self.Xs = np.array(map(lambda p: p-np.array([1.0e-13, 0.0]), self.Xs))
+        self.Xs = np.array(map(lambda p: p-np.array([1.0e-10, 0.0]), self.Xs))
 
         self.lastTime=0.0
 
@@ -49,7 +49,10 @@ class MovingHeat:
         node_vec = self.u_A.at(self.Xs, dont_raise=True)
         # Remove None's 
         node_vec = [0.0 if x is None else x for x in node_vec] 
+        print node_vec
         self.myf.dat.data[self.boundary_nodes_B] = node_vec
+        myfOut=File("myf.pvd")
+        myfOut.write(self.myf, time=t)
         #define the linear form of the fast part
         #Rfast=(self.alpha*inner((self.myf-u_B), self.v)*ds(1,domain=self.meshB))
         Rfast=(self.alpha*inner((self.myf), self.v)*ds(1,domain=self.meshB))
