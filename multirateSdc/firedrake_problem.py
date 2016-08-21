@@ -37,7 +37,7 @@ class problem():
 
   def getU0(self):
     uRet = Function(self.mh.V_B, name="u0")
-    uRet.interpolate(Expression("0.0*x[0]*(x[0]-1)*x[1]*(x[1]-4)"))
+    uRet.interpolate(Expression("0.0*x[0]*(x[0]-1)*x[1]*(x[1]-4)")) 
     return uRet.vector().get_local()
 
   def startFile(self, fname):

@@ -49,17 +49,17 @@ class MovingHeat:
         node_vec = self.u_A.at(self.Xs, dont_raise=True)
         # Remove None's 
         node_vec = [0.0 if x is None else x for x in node_vec] 
-        print node_vec
+        #print node_vec
         self.myf.dat.data[self.boundary_nodes_B] = node_vec
-        myfOut=File("myf.pvd")
-        myfOut.write(self.myf, time=t)
+        #myfOut=File("myf.pvd")
+        #myfOut.write(self.myf, time=t)
         #define the linear form of the fast part
         #Rfast=(self.alpha*inner((self.myf-u_B), self.v)*ds(1,domain=self.meshB))
         Rfast=(self.alpha*inner((self.myf), self.v)*ds(1,domain=self.meshB))
         ass=assemble(Rfast)
-        print np.sum(ass.vector().get_local())
-        swap=assemble(inner(self.u_A, va)*dx)
-        print np.sum(swap.vector().get_local())
+        #print np.sum(ass.vector().get_local())
+        #swap=assemble(inner(self.u_A, va)*dx)
+        #print np.sum(swap.vector().get_local())
         return ass
 
     def evalSlow(self, uB, t):
@@ -94,6 +94,9 @@ class MovingHeat:
         bif = (inner(self.phi, self.v))*dx(domain=self.meshB)
         bifM=assemble(bif)
         u_B=Function(self.V_B, name="solM")
-        solve(bifM, u_B, r)
+        #print bifM._M.sparsity.shape
+        #help(bifM._M)
+        solve(bifM, u_B, r, solver_parameters={"ksp_rtol":1e-12})
+        #swap=bifM._M.matrix()*u_B.vector()-r.vector()
         return u_B
 
