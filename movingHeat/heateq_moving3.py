@@ -22,8 +22,7 @@ class MovingHeat:
         c = Function(Vector_V_B)
         c.interpolate(SpatialCoordinate(self.meshB))
         self.Xs = c.dat.data_ro[self.boundary_nodes_B, :]
-        print self.Xs
-        self.Xs = np.array(map(lambda p: p-np.array([1.0e-13, 0.0]), self.Xs))
+        self.Xs = np.array(map(lambda p: p-np.array([1.0e-10, 0.0]), self.Xs))
 
         self.lastTime=0.0
 
@@ -43,17 +42,24 @@ class MovingHeat:
         #create functionspace on the moving part
         V_A = FunctionSpace(self.meshA, "CG", 1)
         self.u_A = Function(V_A, name="TemperatureA")
+        va = TestFunction(V_A)
         #set temperature of the moving part
         self.u_A.interpolate(Expression("5.0*t",t=t))
         # Evaluate u_A at meshB boundary nodes with Id 1
         node_vec = self.u_A.at(self.Xs, dont_raise=True)
         # Remove None's 
         node_vec = [0.0 if x is None else x for x in node_vec] 
+        #print node_vec
         self.myf.dat.data[self.boundary_nodes_B] = node_vec
+        #myfOut=File("myf.pvd")
+        #myfOut.write(self.myf, time=t)
         #define the linear form of the fast part
         #Rfast=(self.alpha*inner((self.myf-u_B), self.v)*ds(1,domain=self.meshB))
         Rfast=(self.alpha*inner((self.myf), self.v)*ds(1,domain=self.meshB))
         ass=assemble(Rfast)
+        #print np.sum(ass.vector().get_local())
+        #swap=assemble(inner(self.u_A, va)*dx)
+        #print np.sum(swap.vector().get_local())
         return ass
 
     def evalSlow(self, uB, t):
@@ -81,3 +87,16 @@ class MovingHeat:
         """
         aM=inner(u,self.v)*dx
         return assemble(aM)
+
+    def solveM(self, r):
+        """ evaluate u, such that Mu=r
+        """
+        bif = (inner(self.phi, self.v))*dx(domain=self.meshB)
+        bifM=assemble(bif)
+        u_B=Function(self.V_B, name="solM")
+        #print bifM._M.sparsity.shape
+        #help(bifM._M)
+        solve(bifM, u_B, r, solver_parameters={"ksp_rtol":1e-12})
+        #swap=bifM._M.matrix()*u_B.vector()-r.vector()
+        return u_B
+
