@@ -89,3 +89,13 @@ class problem_model():
     A = self.get_mat1(t)
     b = self.get_b1(t)
     return A.dot(u) + b
+
+  '''
+  '''
+  def get_solution(self, u, x):
+    uplot = 0.0*x + u[0]
+    uplot += u[1]*np.cos(1.0*x)
+    uplot += u[3]*np.cos(2.0*x)
+    uplot += u[2]*np.sin(1.0*x)
+    uplot += u[4]*np.sin(2.0*x)
+    return uplot
