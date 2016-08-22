@@ -10,8 +10,8 @@ class problem_model():
     self.alpha = alpha
     self.u0 = u0
     self.v0 = v0
-    self.S  = nu*np.diag([1.0, 4.0, 1.0, 4.0])
-    self.dim = 4
+    self.S  = -nu*np.diag([0.0, 1.0, 4.0, 1.0, 4.0])
+    self.dim = 5
   
   '''
   '''
@@ -40,18 +40,23 @@ class problem_model():
     A[3,2] = np.cos(self.a*t)
     A[3,3] = 1.0
     
-    A *= -self.alpha/(2.0*np.pi)
-    return A
+    B = np.zeros((5,5))
+    B[1:5,1:5] = A
+    B[0,0] = 1.0/2.0
+    B *= -self.alpha/(2.0*np.pi)
+    
+    return B
   
   '''
   '''
   def get_b1(self, t):
-    b = np.zeros((4,))
-    b[0] = np.cos(self.a*t)
-    b[1] = np.cos(2.0*self.a*t)
-    b[2] = np.sin(self.a*t)
-    b[3] = np.sin(2.0*self.a*t)
-    b *= -(self.u0 - self.v0)/np.pi
+    b = np.zeros((5,))
+    b[0] = 1.0/2.0
+    b[1] = np.cos(self.a*t)
+    b[2] = np.cos(2.0*self.a*t)
+    b[3] = np.sin(self.a*t)
+    b[4] = np.sin(2.0*self.a*t)
+    b *= self.v0/np.pi
     return b
   
   
@@ -84,3 +89,13 @@ class problem_model():
     A = self.get_mat1(t)
     b = self.get_b1(t)
     return A.dot(u) + b
+
+  '''
+  '''
+  def get_solution(self, u, x):
+    uplot = 0.0*x + 0.5*u[0]
+    uplot += u[1]*np.cos(1.0*x)
+    uplot += u[3]*np.cos(2.0*x)
+    uplot += u[2]*np.sin(1.0*x)
+    uplot += u[4]*np.sin(2.0*x)
+    return uplot

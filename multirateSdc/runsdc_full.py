@@ -1,4 +1,3 @@
-from problem_model import problem_model
 from problem_full import problem_full
 from sdc import sdc_step
 import numpy as np
@@ -9,30 +8,24 @@ from pylab import rcParams
 from matplotlib.ticker import ScalarFormatter
 from subprocess import call
 
-def delta(a, t, x):
-  u = 1.0/(2.0*np.pi) + 0.0*x
-  for k in range(1,3):
-    u+= 1.0/np.pi*( np.cos(float(k)*a*t)*np.cos(float(k)*x) + np.sin(float(k)*a*t)*np.sin(float(k)*x) )
-  return u
-
-
 M      = 2
 P      = 5
 tstart = 0.0
 tend   = 10.0
-nsteps = 50
+nsteps = 200
 dt     = (tend - tstart)/float(nsteps)
 
-Nx = 50
+Nx    = 50
 xaxis = np.linspace(0, 2*np.pi, Nx+1)
 xaxis = xaxis[0:Nx]
 
-prob = problem_model(a=1.0, nu=1.0, alpha=2.0, u0=1.5, v0=0.25)
+prob = problem_full(a=1.0, nu=1.0, alpha=2.0, v0=0.25, xaxis = xaxis)
 K_iter = 12
 
-u0         = [2.0*prob.u0, 0.0, 0.0, 0.0, 0.0]
+u0         = 1.5 + 0.0*xaxis
 u_plot     = np.zeros((nsteps+1,prob.dim))
 u_euler    = np.zeros((nsteps+1, prob.dim))
+
 t_axis     = np.zeros(nsteps+1)
 t_axis[0]  = tstart
 u_plot[0]  = u0
@@ -67,11 +60,9 @@ for n in range(nsteps):
   print ("standard residual: %5.3e " % sdc.residual(u0, u))
   print ("embedded residual: %5.3e " % sdc.sub_residual(u0, usub))
 
-  uplot   = prob.get_solution(u0, xaxis)
-  #usource = delta(prob.a, tend, xaxis)
   fig.clear()
-  #plt.plot(xaxis, usource, 'k--')
-  plt.plot(xaxis, uplot, 'r')
+  plt.plot(xaxis, u[M-1], 'r')
+  plt.plot(xaxis, u_euler[n+1], 'k--')
   plt.ylim([-1.0, 2.0])
   plt.title(("t = %3.2f" % tend))
   plt.show(block=False)
