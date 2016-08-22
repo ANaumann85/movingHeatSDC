@@ -40,7 +40,7 @@ class problem_model():
     A[3,2] = np.cos(self.a*t)
     A[3,3] = 1.0
     
-    A *= self.alpha/(2.0*np.pi)
+    A *= -self.alpha/(2.0*np.pi)
     return A
   
   '''
@@ -51,7 +51,7 @@ class problem_model():
     b[1] = np.cos(2.0*self.a*t)
     b[2] = np.sin(self.a*t)
     b[3] = np.sin(2.0*self.a*t)
-    b *= (self.u0 - self.v0)/np.pi
+    b *= -(self.u0 - self.v0)/np.pi
     return b
   
   

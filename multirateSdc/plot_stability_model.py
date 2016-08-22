@@ -3,7 +3,7 @@ from sdc import sdc_step
 import numpy as np
 import copy
 
-from pylab import rcParams
+#from pylab import rcParams
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 from subprocess import call
@@ -15,7 +15,7 @@ tend   = 1.0
 
 #a_vec  = np.linspace(0.0,   10,  20)
 a = 1.0
-alpha_vec = np.linspace(0.0, 12.0, 20)
+alpha_vec = np.linspace(0.0, 30.0, 20)
 nu_vec = np.linspace(-5.0,    0.0, 20)
 
 #stab   = np.zeros((np.size(a_vec), np.size(nu_vec)))
