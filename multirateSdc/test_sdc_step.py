@@ -148,7 +148,7 @@ class test_sdc_step(unittest.TestCase):
   '''
   #@unittest.skip("temporarily disabled")
   def test_converge_to_fixpoint(self):
-    self.prob = problem_model(-0.1, -1.0, 1.0, 0.1)
+    self.prob = problem_model(-0.1, -1.0, 1.0, 1.0, 0.1)
     self.M = 3
     self.P = 4
     tstart = 0.0

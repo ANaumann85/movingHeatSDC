@@ -79,7 +79,7 @@ class MovingHeat:
         bif = (inner(self.phi, self.v) + a* self.nu * inner(grad(self.phi), grad(self.v)))*dx(domain=self.meshB)
         bifM=assemble(bif)
         u_B=Function(u, name="solEvalMmJ")
-        solve(bifM, u_B, r)
+        solve(bifM, u_B, r, solver_parameters={"ksp_rtol":1e-12,"ksp_atol":1e-20}) #,"ksp_converged_reason":0})#,"ksp_final_residual":2 
         return u_B
 
     def evalM(self, u):
@@ -96,7 +96,7 @@ class MovingHeat:
         u_B=Function(self.V_B, name="solM")
         #print bifM._M.sparsity.shape
         #help(bifM._M)
-        solve(bifM, u_B, r, solver_parameters={"ksp_rtol":1e-12})
+        solve(bifM, u_B, r, solver_parameters={"ksp_rtol":1e-12,"ksp_atol":1e-20})
         #swap=bifM._M.matrix()*u_B.vector()-r.vector()
         return u_B
 
