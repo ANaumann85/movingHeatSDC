@@ -1,7 +1,7 @@
 #/bin/bash
 
 K="2 3 4 8" # 32"
-nStep="4 8"
+nStep="2 4 8"
 
 baseN="T_noSrc_sdc_K_%d_%d_fixed_%d.vtu"
 ref="../T_noSrc_imex_20000_fixed_20000.vtu"

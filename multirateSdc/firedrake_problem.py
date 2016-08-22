@@ -29,15 +29,15 @@ class problem():
 
   def f2(self, u):
     t=1.0
-    uB = Function(self.mh.V_B, name="uB") 
-    uB.vector().set_local(u)
-    uB = self.mh.evalFast(uB, t)
-    uB = self.mh.solveM(uB)
-    return uB.vector().get_local()
+    #uB = Function(self.mh.V_B, name="uB") 
+    #uB.vector().set_local(u)
+    #uB = self.mh.evalFast(uB, t)
+    #uB = self.mh.solveM(uB)
+    return np.zeros(self.dim) #uB.vector().get_local()
 
   def getU0(self):
     uRet = Function(self.mh.V_B, name="u0")
-    uRet.interpolate(Expression("0.0*x[0]*(x[0]-1)*x[1]*(x[1]-4)")) 
+    uRet.interpolate(Expression("x[0]*(x[0]-1)*x[1]*(x[1]-4)")) #0.0*
     return uRet.vector().get_local()
 
   def startFile(self, fname):

@@ -23,7 +23,7 @@ tend   = 1000.0
 nsteps = int(sys.argv[1]) 
 dt = (tend - tstart)/float(nsteps)
 
-K_iter = 8
+K_iter = 2
 u_    = np.zeros((M,1,prob.dim))
 usub_ = np.zeros((M,P,prob.dim))
 u     = np.zeros((M,1,prob.dim))
@@ -32,7 +32,7 @@ u0    = prob.getU0()
 #u0    = 2.0 
 #u_ex  = u0*np.exp(tend*(lambda_1+lambda_2))
 
-prob.startFile("T_sdc_K_%d_%d" % (K_iter, nsteps))
+prob.startFile("T_noSrc_sdc_K_%d_%d" % (K_iter, nsteps))
 prob.write(u0)
 for n in range(nsteps):
   tstart = float(n)*dt
