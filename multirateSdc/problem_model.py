@@ -10,7 +10,7 @@ class problem_model():
     self.alpha = alpha
     self.u0 = u0
     self.v0 = v0
-    self.S  = nu*np.diag([0.0, 1.0, 4.0, 1.0, 4.0])
+    self.S  = -nu*np.diag([0.0, 1.0, 4.0, 1.0, 4.0])
     self.dim = 5
   
   '''
@@ -93,7 +93,7 @@ class problem_model():
   '''
   '''
   def get_solution(self, u, x):
-    uplot = 0.0*x + u[0]
+    uplot = 0.0*x + 0.5*u[0]
     uplot += u[1]*np.cos(1.0*x)
     uplot += u[3]*np.cos(2.0*x)
     uplot += u[2]*np.sin(1.0*x)
