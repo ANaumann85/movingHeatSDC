@@ -3,7 +3,7 @@ import numpy as np
 
 class MovingHeat:
 
-    def __init__(self, nu, alpha, nx, ny):
+    def __init__(self, nu, alpha, nx, ny, evFast):
         self.nu = nu
         self.alpha = alpha
         self.meshA = RectangleMesh(nx, ny, 0.5, 0.5)
@@ -25,10 +25,16 @@ class MovingHeat:
         self.Xs = np.array(map(lambda p: p-np.array([1.0e-10, 0.0]), self.Xs))
 
         self.lastTime=0.0
+        if evFast== "grid":
+            self.evalFast=self.evalFast_grid
+        if evFast== "rect":
+            self.evalFast=self.evalFast_rect
+        if evFast== "tri":
+            self.evalFast=self.evalFast_tri
 
         #self.myfOut=File("myf.pvd")
 
-    def evalFast(self, u_B, t): 
+    def evalFast_grid(self, u_B, t): 
         """evaluates the fast part
         """
         #move meshA to the current position
@@ -64,6 +70,32 @@ class MovingHeat:
         #print "sum(myf):",np.sum(ass.vector().get_local())
         #swap=assemble(inner(self.u_A, va)*dx)
         #print np.sum(swap.vector().get_local())
+        return ass
+
+    def evalFast_rect(self, u_B, t): 
+        """evaluates the fast part with a rectangle instead of mesh
+        """
+        #move meshA to the current position
+        timestep = t-self.lastTime
+        self.myf.interpolate(Expression("fabs(x[1]-center) <= d ? 5.0 : 0.0", center=2.25-0.1*timestep, d=0.25))
+        #self.myfOut.write(self.myf, time=t)
+        #define the linear form of the fast part
+        Rfast=(self.alpha*inner((self.myf-u_B), self.v)*ds(1,domain=self.meshB))
+        #Rfast=(self.alpha*inner((self.myf), self.v)*ds(1,domain=self.meshB))
+        ass=assemble(Rfast)
+        return ass
+
+    def evalFast_tri(self, u_B, t): 
+        """evaluates the fast part with a triangle instead of mesh
+        """
+        #move meshA to the current position
+        timestep = t-self.lastTime
+        self.myf.interpolate(Expression("fabs(x[1]-center) <= d ? 5.0*(1.0-fabs(x[1]-center)/d)*2 : 0.0", center=2.25-0.1*timestep, d=0.25))
+        #self.myfOut.write(self.myf, time=t)
+        #define the linear form of the fast part
+        Rfast=(self.alpha*inner((self.myf-u_B), self.v)*ds(1,domain=self.meshB))
+        #Rfast=(self.alpha*inner((self.myf), self.v)*ds(1,domain=self.meshB))
+        ass=assemble(Rfast)
         return ass
 
     def evalSlow(self, uB, t):

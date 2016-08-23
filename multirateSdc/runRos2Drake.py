@@ -14,7 +14,8 @@ nu= 1.0e-3 #1.0e-3
 alpha=1.0e-4
 nx=10
 ny=40
-prob = fdProb(nu, alpha, nx, ny)
+mode="tri"
+prob = fdProb(nu, alpha, nx, ny, mode)
 
 tstart = 0.0
 tend   = 20.0
@@ -26,7 +27,7 @@ gamma = 1-np.sqrt(1/2.0)
 #u0    = 2.0 
 #u_ex  = u0*np.exp(tend*(lambda_1+lambda_2))
 
-prob.startFile("M_3_P_2_testMove/T_ros2_%d" % nsteps)
+prob.startFile("M_3_P_2_testMove_%s/T_ros2_%d" % (mode,nsteps))
 prob.write(u0)
 for n in range(nsteps):
   tstart = float(n)*dt

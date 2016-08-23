@@ -4,11 +4,11 @@ import numpy as np
 
 class problem():
 
-  def __init__(self, nu, alpha, nx, ny):
+  def __init__(self, nu, alpha, nx, ny, fmode):
     sys.path.append('../movingHeat')
     from heateq_moving3 import MovingHeat as mh
 
-    self.mh = mh(nu, alpha, nx, ny)
+    self.mh = mh(nu, alpha, nx, ny, fmode)
     helper = Function(self.mh.V_B)
     self.dim = helper.vector().local_size()
     
