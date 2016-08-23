@@ -33,16 +33,19 @@ class MovingHeat:
         """
         #move meshA to the current position
         timestep = t-self.lastTime
-        self.lastTime = t
-        Vc = self.meshA.coordinates.function_space()
-        f2  = Function(Vc).interpolate(Expression(("x[0]", "x[1] - shift"), shift = 0.1*timestep ))
-        if hasattr(self.meshA, 'spatial_index'):
-            self.meshA.clear_spatial_index()
-            #del self.meshA.spatial_index #???
-        #self.meshA.coordinates.assign(f2)  
-        self.meshA=Mesh(Function(f2))
+        #self.lastTime = t
+        if abs(timestep) > 1e-15:
+            Vc = self.meshA.coordinates.function_space()
+            f2  = Function(Vc).interpolate(Expression(("x[0]", "x[1] - shift"), shift = 0.1*timestep ))
+            if hasattr(self.meshA, 'spatial_index'):
+                self.meshA.clear_spatial_index()
+                #del self.meshA.spatial_index #???
+            #self.meshA.coordinates.assign(f2)  
+            meshA=Mesh(Function(f2))
+        else:
+            meshA=self.meshA
         #create functionspace on the moving part
-        V_A = FunctionSpace(self.meshA, "CG", 1)
+        V_A = FunctionSpace(meshA, "CG", 1)
         self.u_A = Function(V_A, name="TemperatureA")
         va = TestFunction(V_A)
         #set temperature of the moving part
