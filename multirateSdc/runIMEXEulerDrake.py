@@ -1,4 +1,4 @@
-from firedrake_problem import problem as fdProb
+from problem_firedrake import problem as fdProb
 from problem import problem as scalProb
 from sdc import sdc_step
 import numpy as np
@@ -16,7 +16,7 @@ ny=40
 prob = fdProb(nu, alpha, nx, ny)
 
 tstart = 0.0
-tend   = 1000.0
+tend   = 20.0
 nsteps = 20000
 
 dt = (tend - tstart)/float(nsteps)
@@ -24,12 +24,12 @@ u0    = prob.getU0()
 #u0    = 2.0 
 #u_ex  = u0*np.exp(tend*(lambda_1+lambda_2))
 
-prob.startFile("T_noSrc_imex_%d" % nsteps)
+prob.startFile("M_3_P_2/T_imex_%d" % nsteps)
 prob.write(u0)
 for n in range(nsteps):
   tstart = float(n)*dt
   tend   = float(n+1)*dt
   t=n*dt
-  r=u0+dt*prob.f2(u0) #, t+dt)
+  r=u0+dt*prob.f2(u0, tend)
   u0=prob.solve_f1(dt,r)
 prob.write(u0,tend)

@@ -28,10 +28,9 @@ class problem():
     return uB.vector().get_local()
 
   def f2(self, u, tIn):
-    t=1.0
     uB = Function(self.mh.V_B, name="uB") 
     uB.vector().set_local(u)
-    uB = self.mh.evalFast(uB, t)
+    uB = self.mh.evalFast(uB, tIn)
     uB = self.mh.solveM(uB)
     return uB.vector().get_local() #np.zeros(self.dim)
 

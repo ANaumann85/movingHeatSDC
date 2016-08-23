@@ -26,6 +26,8 @@ class MovingHeat:
 
         self.lastTime=0.0
 
+        #self.myfOut=File("myf.pvd")
+
     def evalFast(self, u_B, t): 
         """evaluates the fast part
         """
@@ -44,20 +46,19 @@ class MovingHeat:
         self.u_A = Function(V_A, name="TemperatureA")
         va = TestFunction(V_A)
         #set temperature of the moving part
-        self.u_A.interpolate(Expression("5.0*t",t=t))
+        self.u_A.interpolate(Expression("5.0"))
         # Evaluate u_A at meshB boundary nodes with Id 1
         node_vec = self.u_A.at(self.Xs, dont_raise=True)
         # Remove None's 
         node_vec = [0.0 if x is None else x for x in node_vec] 
         #print node_vec
         self.myf.dat.data[self.boundary_nodes_B] = node_vec
-        #myfOut=File("myf.pvd")
-        #myfOut.write(self.myf, time=t)
+        #self.myfOut.write(self.myf, time=t)
         #define the linear form of the fast part
-        #Rfast=(self.alpha*inner((self.myf-u_B), self.v)*ds(1,domain=self.meshB))
-        Rfast=(self.alpha*inner((self.myf), self.v)*ds(1,domain=self.meshB))
+        Rfast=(self.alpha*inner((self.myf-u_B), self.v)*ds(1,domain=self.meshB))
+        #Rfast=(self.alpha*inner((self.myf), self.v)*ds(1,domain=self.meshB))
         ass=assemble(Rfast)
-        #print np.sum(ass.vector().get_local())
+        #print "sum(myf):",np.sum(ass.vector().get_local())
         #swap=assemble(inner(self.u_A, va)*dx)
         #print np.sum(swap.vector().get_local())
         return ass

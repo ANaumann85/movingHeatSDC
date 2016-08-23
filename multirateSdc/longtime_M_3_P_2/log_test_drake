@@ -1,0 +1,4740 @@
++++ step:   0 +++ 
+standard residual: 1.992e+03 
+embedded residual: 1.328e+03 
++++ step:   1 +++ 
+standard residual: 1.992e+03 
+embedded residual: 1.328e+03 
++++ step:   0 +++ 
+standard residual: 4.980e+02 
+embedded residual: 3.320e+02 
++++ step:   1 +++ 
+standard residual: 4.980e+02 
+embedded residual: 3.320e+02 
++++ step:   2 +++ 
+standard residual: 4.980e+02 
+embedded residual: 3.320e+02 
++++ step:   3 +++ 
+standard residual: 4.980e+02 
+embedded residual: 3.320e+02 
++++ step:   0 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.302e+01 
++++ step:   1 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   2 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   3 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   4 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   5 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   6 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   7 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   0 +++ 
+standard residual: 7.029e+02 
+embedded residual: 4.686e+02 
++++ step:   1 +++ 
+standard residual: 7.029e+02 
+embedded residual: 4.686e+02 
++++ step:   0 +++ 
+standard residual: 1.758e+02 
+embedded residual: 1.172e+02 
++++ step:   1 +++ 
+standard residual: 1.758e+02 
+embedded residual: 1.172e+02 
++++ step:   2 +++ 
+standard residual: 1.758e+02 
+embedded residual: 1.172e+02 
++++ step:   3 +++ 
+standard residual: 1.758e+02 
+embedded residual: 1.172e+02 
++++ step:   0 +++ 
+standard residual: 4.395e+01 
+embedded residual: 2.930e+01 
++++ step:   1 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   2 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   3 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   4 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   5 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   6 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   7 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   0 +++ 
+standard residual: 4.521e+02 
+embedded residual: 3.014e+02 
++++ step:   1 +++ 
+standard residual: 4.521e+02 
+embedded residual: 3.014e+02 
++++ step:   0 +++ 
+standard residual: 1.131e+02 
+embedded residual: 7.537e+01 
++++ step:   1 +++ 
+standard residual: 1.131e+02 
+embedded residual: 7.537e+01 
++++ step:   2 +++ 
+standard residual: 1.131e+02 
+embedded residual: 7.537e+01 
++++ step:   3 +++ 
+standard residual: 1.131e+02 
+embedded residual: 7.537e+01 
++++ step:   0 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   1 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   2 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   3 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   4 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   5 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   6 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   7 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   0 +++ 
+standard residual: 1.539e+01 
+embedded residual: 1.026e+01 
++++ step:   1 +++ 
+standard residual: 1.539e+01 
+embedded residual: 1.026e+01 
++++ step:   0 +++ 
+standard residual: 3.850e+00 
+embedded residual: 2.567e+00 
++++ step:   1 +++ 
+standard residual: 3.850e+00 
+embedded residual: 2.567e+00 
++++ step:   2 +++ 
+standard residual: 3.850e+00 
+embedded residual: 2.567e+00 
++++ step:   3 +++ 
+standard residual: 3.850e+00 
+embedded residual: 2.567e+00 
++++ step:   0 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   1 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   2 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   3 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   4 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   5 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   6 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   7 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   0 +++ 
+standard residual: 1.992e+03 
+embedded residual: 1.328e+03 
++++ step:   1 +++ 
+standard residual: 1.992e+03 
+embedded residual: 1.328e+03 
++++ step:   0 +++ 
+standard residual: 4.980e+02 
+embedded residual: 3.320e+02 
++++ step:   1 +++ 
+standard residual: 4.980e+02 
+embedded residual: 3.320e+02 
++++ step:   2 +++ 
+standard residual: 4.980e+02 
+embedded residual: 3.320e+02 
++++ step:   3 +++ 
+standard residual: 4.980e+02 
+embedded residual: 3.320e+02 
++++ step:   0 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.302e+01 
++++ step:   1 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   2 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   3 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   4 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   5 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   6 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   7 +++ 
+standard residual: 1.245e+02 
+embedded residual: 8.303e+01 
++++ step:   0 +++ 
+standard residual: 3.114e+01 
+embedded residual: 2.076e+01 
++++ step:   1 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:   2 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:   3 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:   4 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:   5 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:   6 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:   7 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:   8 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:   9 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:  10 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:  11 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:  12 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:  13 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:  14 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:  15 +++ 
+standard residual: 3.115e+01 
+embedded residual: 2.076e+01 
++++ step:   0 +++ 
+standard residual: 7.029e+02 
+embedded residual: 4.686e+02 
++++ step:   1 +++ 
+standard residual: 7.029e+02 
+embedded residual: 4.686e+02 
++++ step:   0 +++ 
+standard residual: 1.758e+02 
+embedded residual: 1.172e+02 
++++ step:   1 +++ 
+standard residual: 1.758e+02 
+embedded residual: 1.172e+02 
++++ step:   2 +++ 
+standard residual: 1.758e+02 
+embedded residual: 1.172e+02 
++++ step:   3 +++ 
+standard residual: 1.758e+02 
+embedded residual: 1.172e+02 
++++ step:   0 +++ 
+standard residual: 4.395e+01 
+embedded residual: 2.930e+01 
++++ step:   1 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   2 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   3 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   4 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   5 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   6 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   7 +++ 
+standard residual: 4.394e+01 
+embedded residual: 2.930e+01 
++++ step:   0 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.322e+00 
++++ step:   1 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:   2 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:   3 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:   4 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:   5 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:   6 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:   7 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:   8 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:   9 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:  10 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:  11 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:  12 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:  13 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:  14 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:  15 +++ 
+standard residual: 1.098e+01 
+embedded residual: 7.318e+00 
++++ step:   0 +++ 
+standard residual: 4.521e+02 
+embedded residual: 3.014e+02 
++++ step:   1 +++ 
+standard residual: 4.521e+02 
+embedded residual: 3.014e+02 
++++ step:   0 +++ 
+standard residual: 1.131e+02 
+embedded residual: 7.537e+01 
++++ step:   1 +++ 
+standard residual: 1.131e+02 
+embedded residual: 7.537e+01 
++++ step:   2 +++ 
+standard residual: 1.131e+02 
+embedded residual: 7.537e+01 
++++ step:   3 +++ 
+standard residual: 1.131e+02 
+embedded residual: 7.537e+01 
++++ step:   0 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   1 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   2 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   3 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   4 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   5 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   6 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   7 +++ 
+standard residual: 2.828e+01 
+embedded residual: 1.885e+01 
++++ step:   0 +++ 
+standard residual: 7.074e+00 
+embedded residual: 4.716e+00 
++++ step:   1 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:   2 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:   3 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:   4 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:   5 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:   6 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:   7 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:   8 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:   9 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:  10 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:  11 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:  12 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:  13 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:  14 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:  15 +++ 
+standard residual: 7.073e+00 
+embedded residual: 4.715e+00 
++++ step:   0 +++ 
+standard residual: 1.539e+01 
+embedded residual: 1.026e+01 
++++ step:   1 +++ 
+standard residual: 1.539e+01 
+embedded residual: 1.026e+01 
++++ step:   0 +++ 
+standard residual: 3.850e+00 
+embedded residual: 2.567e+00 
++++ step:   1 +++ 
+standard residual: 3.850e+00 
+embedded residual: 2.567e+00 
++++ step:   2 +++ 
+standard residual: 3.850e+00 
+embedded residual: 2.567e+00 
++++ step:   3 +++ 
+standard residual: 3.850e+00 
+embedded residual: 2.567e+00 
++++ step:   0 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   1 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   2 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   3 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   4 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   5 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   6 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   7 +++ 
+standard residual: 9.637e-01 
+embedded residual: 6.425e-01 
++++ step:   0 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:   1 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:   2 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:   3 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:   4 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:   5 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:   6 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:   7 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:   8 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:   9 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:  10 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:  11 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:  12 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:  13 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:  14 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:  15 +++ 
+standard residual: 2.415e-01 
+embedded residual: 1.610e-01 
++++ step:   0 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:   1 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:   2 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:   3 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:   4 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:   5 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:   6 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:   7 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:   8 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:   9 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  10 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  11 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  12 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  13 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  14 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  15 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  16 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  17 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  18 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  19 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  20 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  21 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  22 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  23 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  24 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  25 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  26 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  27 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  28 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  29 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  30 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:  31 +++ 
+standard residual: 7.788e+00 
+embedded residual: 5.192e+00 
++++ step:   0 +++ 
+standard residual: 1.946e+00 
+embedded residual: 1.297e+00 
++++ step:   1 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:   2 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:   3 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:   4 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:   5 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:   6 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:   7 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:   8 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:   9 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  10 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  11 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  12 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  13 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  14 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  15 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  16 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  17 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  18 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  19 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  20 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  21 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  22 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  23 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  24 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  25 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  26 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  27 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  28 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  29 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  30 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  31 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  32 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  33 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  34 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  35 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  36 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  37 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  38 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  39 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  40 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  41 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  42 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  43 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  44 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  45 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  46 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  47 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  48 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  49 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  50 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  51 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  52 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  53 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  54 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  55 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  56 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  57 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  58 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  59 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  60 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  61 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  62 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:  63 +++ 
+standard residual: 1.945e+00 
+embedded residual: 1.297e+00 
++++ step:   0 +++ 
+standard residual: 4.842e-01 
+embedded residual: 3.228e-01 
++++ step:   1 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:   2 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:   3 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:   4 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:   5 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:   6 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:   7 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:   8 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:   9 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  10 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  11 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  12 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  13 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  14 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  15 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  16 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  17 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  18 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  19 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  20 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  21 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  22 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  23 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  24 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  25 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  26 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  27 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  28 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  29 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  30 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  31 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  32 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  33 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  34 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  35 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  36 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  37 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  38 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  39 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  40 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  41 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  42 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  43 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  44 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  45 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  46 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  47 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  48 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  49 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  50 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  51 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  52 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  53 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  54 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  55 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  56 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  57 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  58 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  59 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  60 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  61 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  62 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  63 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  64 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  65 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  66 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  67 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  68 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  69 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  70 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  71 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  72 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  73 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  74 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  75 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  76 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  77 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  78 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  79 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  80 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  81 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  82 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  83 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  84 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  85 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  86 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  87 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  88 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  89 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  90 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  91 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  92 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  93 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  94 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  95 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  96 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  97 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  98 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:  99 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 100 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 101 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 102 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 103 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 104 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 105 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 106 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 107 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 108 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 109 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 110 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 111 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 112 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 113 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 114 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 115 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 116 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 117 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 118 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 119 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 120 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 121 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 122 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 123 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 124 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 125 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 126 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step: 127 +++ 
+standard residual: 4.834e-01 
+embedded residual: 3.223e-01 
++++ step:   0 +++ 
+standard residual: 2.738e+00 
+embedded residual: 1.825e+00 
++++ step:   1 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:   2 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:   3 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:   4 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:   5 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:   6 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:   7 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:   8 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:   9 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  10 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  11 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  12 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  13 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  14 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  15 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  16 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  17 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  18 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  19 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  20 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  21 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  22 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  23 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  24 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  25 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  26 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  27 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  28 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  29 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  30 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:  31 +++ 
+standard residual: 2.733e+00 
+embedded residual: 1.822e+00 
++++ step:   0 +++ 
+standard residual: 6.768e-01 
+embedded residual: 4.512e-01 
++++ step:   1 +++ 
+standard residual: 6.742e-01 
+embedded residual: 4.494e-01 
++++ step:   2 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:   3 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:   4 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:   5 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:   6 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:   7 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:   8 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:   9 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  10 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  11 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  12 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  13 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  14 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  15 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  16 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  17 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  18 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  19 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  20 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  21 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  22 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  23 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  24 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  25 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  26 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  27 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  28 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  29 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  30 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  31 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  32 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  33 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  34 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  35 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  36 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  37 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  38 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  39 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  40 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  41 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  42 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  43 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  44 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  45 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  46 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  47 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  48 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  49 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  50 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  51 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  52 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  53 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  54 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  55 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  56 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  57 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  58 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  59 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  60 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  61 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  62 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:  63 +++ 
+standard residual: 6.741e-01 
+embedded residual: 4.494e-01 
++++ step:   0 +++ 
+standard residual: 1.634e-01 
+embedded residual: 1.090e-01 
++++ step:   1 +++ 
+standard residual: 1.623e-01 
+embedded residual: 1.082e-01 
++++ step:   2 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:   3 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:   4 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:   5 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:   6 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:   7 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:   8 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:   9 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  10 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  11 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  12 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  13 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  14 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  15 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  16 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  17 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  18 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  19 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  20 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  21 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  22 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  23 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  24 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  25 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  26 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  27 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  28 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  29 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  30 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  31 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  32 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  33 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  34 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  35 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  36 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  37 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  38 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  39 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  40 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  41 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  42 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  43 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  44 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  45 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  46 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  47 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  48 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  49 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  50 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  51 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  52 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  53 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  54 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  55 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  56 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  57 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  58 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  59 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  60 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  61 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  62 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  63 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  64 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  65 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  66 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  67 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  68 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  69 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  70 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  71 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  72 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  73 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  74 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  75 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  76 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  77 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  78 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  79 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  80 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  81 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  82 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  83 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  84 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  85 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  86 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  87 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  88 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  89 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  90 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  91 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  92 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  93 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  94 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  95 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  96 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  97 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  98 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:  99 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 100 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 101 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 102 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 103 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 104 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 105 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 106 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 107 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 108 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 109 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 110 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 111 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 112 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 113 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 114 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 115 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 116 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 117 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 118 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 119 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 120 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 121 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 122 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 123 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 124 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 125 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 126 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step: 127 +++ 
+standard residual: 1.622e-01 
+embedded residual: 1.081e-01 
++++ step:   0 +++ 
+standard residual: 1.769e+00 
+embedded residual: 1.179e+00 
++++ step:   1 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:   2 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:   3 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:   4 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:   5 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:   6 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:   7 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:   8 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:   9 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  10 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  11 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  12 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  13 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  14 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  15 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  16 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  17 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  18 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  19 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  20 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  21 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  22 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  23 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  24 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  25 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  26 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  27 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  28 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  29 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  30 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:  31 +++ 
+standard residual: 1.768e+00 
+embedded residual: 1.179e+00 
++++ step:   0 +++ 
+standard residual: 4.407e-01 
+embedded residual: 2.938e-01 
++++ step:   1 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:   2 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:   3 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:   4 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:   5 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:   6 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:   7 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:   8 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:   9 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  10 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  11 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  12 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  13 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  14 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  15 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  16 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  17 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  18 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  19 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  20 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  21 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  22 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  23 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  24 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  25 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  26 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  27 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  28 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  29 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  30 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  31 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  32 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  33 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  34 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  35 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  36 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  37 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  38 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  39 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  40 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  41 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  42 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  43 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  44 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  45 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  46 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  47 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  48 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  49 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  50 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  51 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  52 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  53 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  54 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  55 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  56 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  57 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  58 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  59 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  60 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  61 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  62 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:  63 +++ 
+standard residual: 4.403e-01 
+embedded residual: 2.935e-01 
++++ step:   0 +++ 
+standard residual: 1.082e-01 
+embedded residual: 7.217e-02 
++++ step:   1 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:   2 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:   3 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:   4 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:   5 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:   6 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:   7 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:   8 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:   9 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  10 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  11 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  12 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  13 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  14 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  15 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  16 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  17 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  18 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  19 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  20 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  21 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  22 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  23 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  24 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  25 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  26 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  27 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  28 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  29 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  30 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  31 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  32 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  33 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  34 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  35 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  36 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  37 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  38 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  39 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  40 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  41 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  42 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  43 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  44 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  45 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  46 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  47 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  48 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  49 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  50 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  51 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  52 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  53 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  54 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  55 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  56 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  57 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  58 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  59 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  60 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  61 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  62 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  63 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  64 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  65 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  66 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  67 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  68 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  69 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  70 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  71 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  72 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  73 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  74 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  75 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  76 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  77 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  78 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  79 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  80 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  81 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  82 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  83 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  84 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  85 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  86 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  87 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  88 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  89 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  90 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  91 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  92 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  93 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  94 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  95 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  96 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  97 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  98 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:  99 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 100 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 101 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 102 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 103 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 104 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 105 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 106 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 107 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 108 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 109 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 110 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 111 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 112 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 113 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 114 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 115 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 116 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 117 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 118 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 119 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 120 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 121 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 122 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 123 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 124 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 125 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 126 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step: 127 +++ 
+standard residual: 1.081e-01 
+embedded residual: 7.206e-02 
++++ step:   0 +++ 
+standard residual: 6.055e-02 
+embedded residual: 4.037e-02 
++++ step:   1 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:   2 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:   3 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:   4 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:   5 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:   6 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:   7 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:   8 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:   9 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  10 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  11 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  12 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  13 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  14 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  15 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  16 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  17 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  18 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  19 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  20 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  21 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  22 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  23 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  24 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  25 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  26 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  27 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  28 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  29 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  30 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:  31 +++ 
+standard residual: 6.053e-02 
+embedded residual: 4.035e-02 
++++ step:   0 +++ 
+standard residual: 1.508e-02 
+embedded residual: 1.005e-02 
++++ step:   1 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:   2 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:   3 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:   4 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:   5 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:   6 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:   7 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:   8 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:   9 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  10 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  11 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  12 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  13 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  14 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  15 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  16 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  17 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  18 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  19 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  20 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  21 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  22 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  23 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  24 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  25 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  26 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  27 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  28 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  29 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  30 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  31 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  32 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  33 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  34 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  35 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  36 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  37 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  38 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  39 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  40 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  41 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  42 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  43 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  44 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  45 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  46 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  47 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  48 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  49 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  50 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  51 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  52 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  53 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  54 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  55 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  56 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  57 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  58 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  59 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  60 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  61 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  62 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:  63 +++ 
+standard residual: 1.507e-02 
+embedded residual: 1.005e-02 
++++ step:   0 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.425e-03 
++++ step:   1 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:   2 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:   3 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:   4 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:   5 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:   6 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:   7 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:   8 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:   9 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  10 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  11 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  12 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  13 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  14 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  15 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  16 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  17 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  18 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  19 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  20 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  21 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  22 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  23 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  24 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  25 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  26 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  27 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  28 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  29 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  30 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  31 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  32 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  33 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  34 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  35 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  36 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  37 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  38 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  39 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  40 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  41 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  42 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  43 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  44 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  45 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  46 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  47 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  48 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  49 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  50 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  51 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  52 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  53 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  54 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  55 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  56 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  57 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  58 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  59 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  60 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  61 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  62 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  63 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  64 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  65 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  66 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  67 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  68 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  69 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  70 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  71 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  72 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  73 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  74 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  75 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  76 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  77 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  78 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  79 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  80 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  81 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  82 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  83 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  84 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  85 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  86 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  87 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  88 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  89 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  90 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  91 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  92 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  93 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  94 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  95 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  96 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  97 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  98 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:  99 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 100 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 101 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 102 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 103 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 104 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 105 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 106 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 107 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 108 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 109 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 110 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 111 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 112 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 113 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 114 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 115 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 116 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 117 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 118 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 119 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 120 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 121 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 122 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 123 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 124 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 125 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 126 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step: 127 +++ 
+standard residual: 3.637e-03 
+embedded residual: 2.424e-03 
++++ step:   0 +++ 
+standard residual: 1.609e-07 
+embedded residual: 1.073e-07 
++++ step:   1 +++ 
+standard residual: 2.687e-07 
+embedded residual: 1.791e-07 
++++ step:   0 +++ 
+standard residual: 3.857e-08 
+embedded residual: 2.571e-08 
++++ step:   1 +++ 
+standard residual: 5.322e-08 
+embedded residual: 3.548e-08 
++++ step:   2 +++ 
+standard residual: 5.044e-08 
+embedded residual: 3.363e-08 
++++ step:   3 +++ 
+standard residual: 3.978e-08 
+embedded residual: 2.652e-08 
++++ step:   0 +++ 
+standard residual: 3.550e-09 
+embedded residual: 2.367e-09 
++++ step:   1 +++ 
+standard residual: 1.900e-08 
+embedded residual: 1.267e-08 
++++ step:   2 +++ 
+standard residual: 2.072e-08 
+embedded residual: 1.381e-08 
++++ step:   3 +++ 
+standard residual: 1.781e-08 
+embedded residual: 1.187e-08 
++++ step:   4 +++ 
+standard residual: 1.879e-08 
+embedded residual: 1.253e-08 
++++ step:   5 +++ 
+standard residual: 2.007e-08 
+embedded residual: 1.338e-08 
++++ step:   6 +++ 
+standard residual: 3.102e-08 
+embedded residual: 2.068e-08 
++++ step:   7 +++ 
+standard residual: 3.161e-08 
+embedded residual: 2.107e-08 
++++ step:   0 +++ 
+standard residual: 3.219e-09 
+embedded residual: 2.146e-09 
++++ step:   1 +++ 
+standard residual: 4.836e-10 
+embedded residual: 3.224e-10 
++++ step:   2 +++ 
+standard residual: 6.697e-10 
+embedded residual: 4.465e-10 
++++ step:   3 +++ 
+standard residual: 8.597e-10 
+embedded residual: 5.731e-10 
++++ step:   4 +++ 
+standard residual: 9.965e-10 
+embedded residual: 6.643e-10 
++++ step:   5 +++ 
+standard residual: 1.084e-09 
+embedded residual: 7.223e-10 
++++ step:   6 +++ 
+standard residual: 1.126e-09 
+embedded residual: 7.504e-10 
++++ step:   7 +++ 
+standard residual: 3.697e-09 
+embedded residual: 2.465e-09 
++++ step:   8 +++ 
+standard residual: 3.622e-09 
+embedded residual: 2.414e-09 
++++ step:   9 +++ 
+standard residual: 3.548e-09 
+embedded residual: 2.366e-09 
++++ step:  10 +++ 
+standard residual: 3.473e-09 
+embedded residual: 2.315e-09 
++++ step:  11 +++ 
+standard residual: 3.390e-09 
+embedded residual: 2.260e-09 
++++ step:  12 +++ 
+standard residual: 3.296e-09 
+embedded residual: 2.197e-09 
++++ step:  13 +++ 
+standard residual: 3.248e-09 
+embedded residual: 2.165e-09 
++++ step:  14 +++ 
+standard residual: 3.204e-09 
+embedded residual: 2.136e-09 
++++ step:  15 +++ 
+standard residual: 3.179e-09 
+embedded residual: 2.119e-09 
++++ step:   0 +++ 
+standard residual: 1.022e-09 
+embedded residual: 6.816e-10 
++++ step:   1 +++ 
+standard residual: 6.383e-10 
+embedded residual: 4.255e-10 
++++ step:   2 +++ 
+standard residual: 5.055e-10 
+embedded residual: 3.370e-10 
++++ step:   3 +++ 
+standard residual: 4.050e-10 
+embedded residual: 2.700e-10 
++++ step:   4 +++ 
+standard residual: 3.439e-10 
+embedded residual: 2.293e-10 
++++ step:   5 +++ 
+standard residual: 3.090e-10 
+embedded residual: 2.060e-10 
++++ step:   6 +++ 
+standard residual: 2.870e-10 
+embedded residual: 1.914e-10 
++++ step:   7 +++ 
+standard residual: 2.713e-10 
+embedded residual: 1.809e-10 
++++ step:   8 +++ 
+standard residual: 2.588e-10 
+embedded residual: 1.725e-10 
++++ step:   9 +++ 
+standard residual: 2.483e-10 
+embedded residual: 1.656e-10 
++++ step:  10 +++ 
+standard residual: 2.390e-10 
+embedded residual: 1.594e-10 
++++ step:  11 +++ 
+standard residual: 2.320e-10 
+embedded residual: 1.546e-10 
++++ step:  12 +++ 
+standard residual: 2.312e-10 
+embedded residual: 1.541e-10 
++++ step:  13 +++ 
+standard residual: 2.304e-10 
+embedded residual: 1.536e-10 
++++ step:  14 +++ 
+standard residual: 2.295e-10 
+embedded residual: 1.530e-10 
++++ step:  15 +++ 
+standard residual: 2.278e-10 
+embedded residual: 1.519e-10 
++++ step:  16 +++ 
+standard residual: 2.269e-10 
+embedded residual: 1.512e-10 
++++ step:  17 +++ 
+standard residual: 2.265e-10 
+embedded residual: 1.510e-10 
++++ step:  18 +++ 
+standard residual: 2.248e-10 
+embedded residual: 1.499e-10 
++++ step:  19 +++ 
+standard residual: 2.241e-10 
+embedded residual: 1.494e-10 
++++ step:  20 +++ 
+standard residual: 2.219e-10 
+embedded residual: 1.479e-10 
++++ step:  21 +++ 
+standard residual: 2.212e-10 
+embedded residual: 1.475e-10 
++++ step:  22 +++ 
+standard residual: 2.192e-10 
+embedded residual: 1.461e-10 
++++ step:  23 +++ 
+standard residual: 2.182e-10 
+embedded residual: 1.454e-10 
++++ step:  24 +++ 
+standard residual: 2.160e-10 
+embedded residual: 1.440e-10 
++++ step:  25 +++ 
+standard residual: 2.141e-10 
+embedded residual: 1.427e-10 
++++ step:  26 +++ 
+standard residual: 2.135e-10 
+embedded residual: 1.423e-10 
++++ step:  27 +++ 
+standard residual: 2.146e-10 
+embedded residual: 1.430e-10 
++++ step:  28 +++ 
+standard residual: 2.120e-10 
+embedded residual: 1.414e-10 
++++ step:  29 +++ 
+standard residual: 2.143e-10 
+embedded residual: 1.429e-10 
++++ step:  30 +++ 
+standard residual: 2.161e-10 
+embedded residual: 1.441e-10 
++++ step:  31 +++ 
+standard residual: 2.137e-10 
+embedded residual: 1.425e-10 
++++ step:   0 +++ 
+standard residual: 1.989e-11 
+embedded residual: 1.326e-11 
++++ step:   1 +++ 
+standard residual: 1.806e-10 
+embedded residual: 1.204e-10 
++++ step:   2 +++ 
+standard residual: 1.266e-09 
+embedded residual: 8.438e-10 
++++ step:   3 +++ 
+standard residual: 1.347e-09 
+embedded residual: 8.981e-10 
++++ step:   4 +++ 
+standard residual: 2.485e-10 
+embedded residual: 1.657e-10 
++++ step:   5 +++ 
+standard residual: 2.348e-11 
+embedded residual: 1.565e-11 
++++ step:   6 +++ 
+standard residual: 1.974e-11 
+embedded residual: 1.316e-11 
++++ step:   7 +++ 
+standard residual: 1.961e-11 
+embedded residual: 1.308e-11 
++++ step:   8 +++ 
+standard residual: 1.958e-11 
+embedded residual: 1.305e-11 
++++ step:   9 +++ 
+standard residual: 1.982e-11 
+embedded residual: 1.322e-11 
++++ step:  10 +++ 
+standard residual: 1.974e-11 
+embedded residual: 1.316e-11 
++++ step:  11 +++ 
+standard residual: 1.970e-11 
+embedded residual: 1.314e-11 
++++ step:  12 +++ 
+standard residual: 1.962e-11 
+embedded residual: 1.308e-11 
++++ step:  13 +++ 
+standard residual: 1.989e-11 
+embedded residual: 1.326e-11 
++++ step:  14 +++ 
+standard residual: 1.948e-11 
+embedded residual: 1.299e-11 
++++ step:  15 +++ 
+standard residual: 1.954e-11 
+embedded residual: 1.303e-11 
++++ step:  16 +++ 
+standard residual: 1.977e-11 
+embedded residual: 1.318e-11 
++++ step:  17 +++ 
+standard residual: 1.973e-11 
+embedded residual: 1.316e-11 
++++ step:  18 +++ 
+standard residual: 1.994e-11 
+embedded residual: 1.329e-11 
++++ step:  19 +++ 
+standard residual: 1.994e-11 
+embedded residual: 1.329e-11 
++++ step:  20 +++ 
+standard residual: 1.937e-11 
+embedded residual: 1.291e-11 
++++ step:  21 +++ 
+standard residual: 2.009e-11 
+embedded residual: 1.339e-11 
++++ step:  22 +++ 
+standard residual: 1.992e-11 
+embedded residual: 1.328e-11 
++++ step:  23 +++ 
+standard residual: 1.929e-11 
+embedded residual: 1.286e-11 
++++ step:  24 +++ 
+standard residual: 1.988e-11 
+embedded residual: 1.325e-11 
++++ step:  25 +++ 
+standard residual: 1.987e-11 
+embedded residual: 1.325e-11 
++++ step:  26 +++ 
+standard residual: 1.993e-11 
+embedded residual: 1.329e-11 
++++ step:  27 +++ 
+standard residual: 1.982e-11 
+embedded residual: 1.321e-11 
++++ step:  28 +++ 
+standard residual: 2.002e-11 
+embedded residual: 1.335e-11 
++++ step:  29 +++ 
+standard residual: 1.972e-11 
+embedded residual: 1.315e-11 
++++ step:  30 +++ 
+standard residual: 1.985e-11 
+embedded residual: 1.323e-11 
++++ step:  31 +++ 
+standard residual: 1.975e-11 
+embedded residual: 1.316e-11 
++++ step:  32 +++ 
+standard residual: 1.999e-11 
+embedded residual: 1.333e-11 
++++ step:  33 +++ 
+standard residual: 2.008e-11 
+embedded residual: 1.339e-11 
++++ step:  34 +++ 
+standard residual: 2.064e-11 
+embedded residual: 1.376e-11 
++++ step:  35 +++ 
+standard residual: 1.962e-11 
+embedded residual: 1.308e-11 
++++ step:  36 +++ 
+standard residual: 1.971e-11 
+embedded residual: 1.314e-11 
++++ step:  37 +++ 
+standard residual: 1.935e-11 
+embedded residual: 1.290e-11 
++++ step:  38 +++ 
+standard residual: 1.998e-11 
+embedded residual: 1.332e-11 
++++ step:  39 +++ 
+standard residual: 2.028e-11 
+embedded residual: 1.352e-11 
++++ step:  40 +++ 
+standard residual: 1.953e-11 
+embedded residual: 1.302e-11 
++++ step:  41 +++ 
+standard residual: 2.027e-11 
+embedded residual: 1.351e-11 
++++ step:  42 +++ 
+standard residual: 1.986e-11 
+embedded residual: 1.324e-11 
++++ step:  43 +++ 
+standard residual: 1.948e-11 
+embedded residual: 1.299e-11 
++++ step:  44 +++ 
+standard residual: 9.344e-11 
+embedded residual: 6.229e-11 
++++ step:  45 +++ 
+standard residual: 9.415e-11 
+embedded residual: 6.277e-11 
++++ step:  46 +++ 
+standard residual: 9.500e-11 
+embedded residual: 6.334e-11 
++++ step:  47 +++ 
+standard residual: 9.626e-11 
+embedded residual: 6.417e-11 
++++ step:  48 +++ 
+standard residual: 9.655e-11 
+embedded residual: 6.436e-11 
++++ step:  49 +++ 
+standard residual: 9.697e-11 
+embedded residual: 6.465e-11 
++++ step:  50 +++ 
+standard residual: 9.802e-11 
+embedded residual: 6.535e-11 
++++ step:  51 +++ 
+standard residual: 9.902e-11 
+embedded residual: 6.601e-11 
++++ step:  52 +++ 
+standard residual: 9.954e-11 
+embedded residual: 6.636e-11 
++++ step:  53 +++ 
+standard residual: 1.001e-10 
+embedded residual: 6.676e-11 
++++ step:  54 +++ 
+standard residual: 1.008e-10 
+embedded residual: 6.719e-11 
++++ step:  55 +++ 
+standard residual: 1.008e-10 
+embedded residual: 6.721e-11 
++++ step:  56 +++ 
+standard residual: 1.015e-10 
+embedded residual: 6.764e-11 
++++ step:  57 +++ 
+standard residual: 1.028e-10 
+embedded residual: 6.851e-11 
++++ step:  58 +++ 
+standard residual: 1.033e-10 
+embedded residual: 6.884e-11 
++++ step:  59 +++ 
+standard residual: 1.034e-10 
+embedded residual: 6.896e-11 
++++ step:  60 +++ 
+standard residual: 1.036e-10 
+embedded residual: 6.905e-11 
++++ step:  61 +++ 
+standard residual: 1.041e-10 
+embedded residual: 6.941e-11 
++++ step:  62 +++ 
+standard residual: 1.047e-10 
+embedded residual: 6.977e-11 
++++ step:  63 +++ 
+standard residual: 1.051e-10 
+embedded residual: 7.008e-11 
++++ step:   0 +++ 
+standard residual: 4.446e-12 
+embedded residual: 2.964e-12 
++++ step:   1 +++ 
+standard residual: 4.332e-12 
+embedded residual: 2.888e-12 
++++ step:   2 +++ 
+standard residual: 4.268e-12 
+embedded residual: 2.845e-12 
++++ step:   3 +++ 
+standard residual: 4.266e-12 
+embedded residual: 2.844e-12 
++++ step:   4 +++ 
+standard residual: 4.280e-12 
+embedded residual: 2.853e-12 
++++ step:   5 +++ 
+standard residual: 2.180e-11 
+embedded residual: 1.453e-11 
++++ step:   6 +++ 
+standard residual: 3.680e-10 
+embedded residual: 2.453e-10 
++++ step:   7 +++ 
+standard residual: 2.660e-10 
+embedded residual: 1.773e-10 
++++ step:   8 +++ 
+standard residual: 1.754e-11 
+embedded residual: 1.170e-11 
++++ step:   9 +++ 
+standard residual: 8.971e-11 
+embedded residual: 5.980e-11 
++++ step:  10 +++ 
+standard residual: 4.460e-12 
+embedded residual: 2.974e-12 
++++ step:  11 +++ 
+standard residual: 4.488e-12 
+embedded residual: 2.992e-12 
++++ step:  12 +++ 
+standard residual: 4.526e-12 
+embedded residual: 3.017e-12 
++++ step:  13 +++ 
+standard residual: 4.528e-12 
+embedded residual: 3.019e-12 
++++ step:  14 +++ 
+standard residual: 4.513e-12 
+embedded residual: 3.008e-12 
++++ step:  15 +++ 
+standard residual: 4.574e-12 
+embedded residual: 3.049e-12 
++++ step:  16 +++ 
+standard residual: 4.493e-12 
+embedded residual: 2.995e-12 
++++ step:  17 +++ 
+standard residual: 4.483e-12 
+embedded residual: 2.988e-12 
++++ step:  18 +++ 
+standard residual: 4.470e-12 
+embedded residual: 2.980e-12 
++++ step:  19 +++ 
+standard residual: 4.498e-12 
+embedded residual: 2.998e-12 
++++ step:  20 +++ 
+standard residual: 4.507e-12 
+embedded residual: 3.004e-12 
++++ step:  21 +++ 
+standard residual: 4.501e-12 
+embedded residual: 3.000e-12 
++++ step:  22 +++ 
+standard residual: 4.477e-12 
+embedded residual: 2.985e-12 
++++ step:  23 +++ 
+standard residual: 4.576e-12 
+embedded residual: 3.051e-12 
++++ step:  24 +++ 
+standard residual: 4.600e-12 
+embedded residual: 3.066e-12 
++++ step:  25 +++ 
+standard residual: 4.519e-12 
+embedded residual: 3.013e-12 
++++ step:  26 +++ 
+standard residual: 4.581e-12 
+embedded residual: 3.054e-12 
++++ step:  27 +++ 
+standard residual: 4.503e-12 
+embedded residual: 3.002e-12 
++++ step:  28 +++ 
+standard residual: 4.526e-12 
+embedded residual: 3.017e-12 
++++ step:  29 +++ 
+standard residual: 4.555e-12 
+embedded residual: 3.037e-12 
++++ step:  30 +++ 
+standard residual: 4.466e-12 
+embedded residual: 2.977e-12 
++++ step:  31 +++ 
+standard residual: 4.495e-12 
+embedded residual: 2.997e-12 
++++ step:  32 +++ 
+standard residual: 4.517e-12 
+embedded residual: 3.011e-12 
++++ step:  33 +++ 
+standard residual: 4.523e-12 
+embedded residual: 3.015e-12 
++++ step:  34 +++ 
+standard residual: 4.560e-12 
+embedded residual: 3.040e-12 
++++ step:  35 +++ 
+standard residual: 4.458e-12 
+embedded residual: 2.972e-12 
++++ step:  36 +++ 
+standard residual: 4.552e-12 
+embedded residual: 3.035e-12 
++++ step:  37 +++ 
+standard residual: 4.581e-12 
+embedded residual: 3.054e-12 
++++ step:  38 +++ 
+standard residual: 4.558e-12 
+embedded residual: 3.039e-12 
++++ step:  39 +++ 
+standard residual: 4.586e-12 
+embedded residual: 3.057e-12 
++++ step:  40 +++ 
+standard residual: 4.463e-12 
+embedded residual: 2.975e-12 
++++ step:  41 +++ 
+standard residual: 4.449e-12 
+embedded residual: 2.966e-12 
++++ step:  42 +++ 
+standard residual: 4.388e-12 
+embedded residual: 2.925e-12 
++++ step:  43 +++ 
+standard residual: 4.484e-12 
+embedded residual: 2.989e-12 
++++ step:  44 +++ 
+standard residual: 4.479e-12 
+embedded residual: 2.986e-12 
++++ step:  45 +++ 
+standard residual: 4.532e-12 
+embedded residual: 3.021e-12 
++++ step:  46 +++ 
+standard residual: 4.515e-12 
+embedded residual: 3.010e-12 
++++ step:  47 +++ 
+standard residual: 4.393e-12 
+embedded residual: 2.929e-12 
++++ step:  48 +++ 
+standard residual: 4.455e-12 
+embedded residual: 2.970e-12 
++++ step:  49 +++ 
+standard residual: 4.530e-12 
+embedded residual: 3.020e-12 
++++ step:  50 +++ 
+standard residual: 4.423e-12 
+embedded residual: 2.949e-12 
++++ step:  51 +++ 
+standard residual: 4.522e-12 
+embedded residual: 3.014e-12 
++++ step:  52 +++ 
+standard residual: 4.525e-12 
+embedded residual: 3.017e-12 
++++ step:  53 +++ 
+standard residual: 4.461e-12 
+embedded residual: 2.974e-12 
++++ step:  54 +++ 
+standard residual: 4.555e-12 
+embedded residual: 3.037e-12 
++++ step:  55 +++ 
+standard residual: 4.461e-12 
+embedded residual: 2.974e-12 
++++ step:  56 +++ 
+standard residual: 4.472e-12 
+embedded residual: 2.982e-12 
++++ step:  57 +++ 
+standard residual: 4.393e-12 
+embedded residual: 2.929e-12 
++++ step:  58 +++ 
+standard residual: 4.452e-12 
+embedded residual: 2.968e-12 
++++ step:  59 +++ 
+standard residual: 4.623e-12 
+embedded residual: 3.082e-12 
++++ step:  60 +++ 
+standard residual: 4.548e-12 
+embedded residual: 3.032e-12 
++++ step:  61 +++ 
+standard residual: 4.445e-12 
+embedded residual: 2.963e-12 
++++ step:  62 +++ 
+standard residual: 4.332e-12 
+embedded residual: 2.888e-12 
++++ step:  63 +++ 
+standard residual: 4.393e-12 
+embedded residual: 2.929e-12 
++++ step:  64 +++ 
+standard residual: 4.488e-12 
+embedded residual: 2.992e-12 
++++ step:  65 +++ 
+standard residual: 4.362e-12 
+embedded residual: 2.908e-12 
++++ step:  66 +++ 
+standard residual: 4.496e-12 
+embedded residual: 2.997e-12 
++++ step:  67 +++ 
+standard residual: 4.425e-12 
+embedded residual: 2.950e-12 
++++ step:  68 +++ 
+standard residual: 4.442e-12 
+embedded residual: 2.962e-12 
++++ step:  69 +++ 
+standard residual: 4.677e-12 
+embedded residual: 3.118e-12 
++++ step:  70 +++ 
+standard residual: 4.543e-12 
+embedded residual: 3.029e-12 
++++ step:  71 +++ 
+standard residual: 4.431e-12 
+embedded residual: 2.954e-12 
++++ step:  72 +++ 
+standard residual: 4.462e-12 
+embedded residual: 2.975e-12 
++++ step:  73 +++ 
+standard residual: 4.548e-12 
+embedded residual: 3.032e-12 
++++ step:  74 +++ 
+standard residual: 4.475e-12 
+embedded residual: 2.983e-12 
++++ step:  75 +++ 
+standard residual: 4.515e-12 
+embedded residual: 3.010e-12 
++++ step:  76 +++ 
+standard residual: 4.482e-12 
+embedded residual: 2.988e-12 
++++ step:  77 +++ 
+standard residual: 4.536e-12 
+embedded residual: 3.024e-12 
++++ step:  78 +++ 
+standard residual: 4.559e-12 
+embedded residual: 3.039e-12 
++++ step:  79 +++ 
+standard residual: 4.402e-12 
+embedded residual: 2.934e-12 
++++ step:  80 +++ 
+standard residual: 4.343e-12 
+embedded residual: 2.895e-12 
++++ step:  81 +++ 
+standard residual: 4.470e-12 
+embedded residual: 2.980e-12 
++++ step:  82 +++ 
+standard residual: 4.517e-12 
+embedded residual: 3.011e-12 
++++ step:  83 +++ 
+standard residual: 4.521e-12 
+embedded residual: 3.014e-12 
++++ step:  84 +++ 
+standard residual: 4.569e-12 
+embedded residual: 3.046e-12 
++++ step:  85 +++ 
+standard residual: 4.486e-12 
+embedded residual: 2.991e-12 
++++ step:  86 +++ 
+standard residual: 4.440e-12 
+embedded residual: 2.960e-12 
++++ step:  87 +++ 
+standard residual: 4.425e-12 
+embedded residual: 2.950e-12 
++++ step:  88 +++ 
+standard residual: 4.725e-12 
+embedded residual: 3.150e-12 
++++ step:  89 +++ 
+standard residual: 4.466e-12 
+embedded residual: 2.977e-12 
++++ step:  90 +++ 
+standard residual: 4.544e-12 
+embedded residual: 3.029e-12 
++++ step:  91 +++ 
+standard residual: 4.378e-12 
+embedded residual: 2.919e-12 
++++ step:  92 +++ 
+standard residual: 4.502e-12 
+embedded residual: 3.001e-12 
++++ step:  93 +++ 
+standard residual: 4.457e-12 
+embedded residual: 2.972e-12 
++++ step:  94 +++ 
+standard residual: 4.370e-12 
+embedded residual: 2.913e-12 
++++ step:  95 +++ 
+standard residual: 4.543e-12 
+embedded residual: 3.029e-12 
++++ step:  96 +++ 
+standard residual: 4.475e-12 
+embedded residual: 2.984e-12 
++++ step:  97 +++ 
+standard residual: 4.562e-12 
+embedded residual: 3.041e-12 
++++ step:  98 +++ 
+standard residual: 4.548e-12 
+embedded residual: 3.032e-12 
++++ step:  99 +++ 
+standard residual: 4.577e-12 
+embedded residual: 3.051e-12 
++++ step: 100 +++ 
+standard residual: 4.537e-12 
+embedded residual: 3.025e-12 
++++ step: 101 +++ 
+standard residual: 4.411e-12 
+embedded residual: 2.940e-12 
++++ step: 102 +++ 
+standard residual: 4.544e-12 
+embedded residual: 3.030e-12 
++++ step: 103 +++ 
+standard residual: 4.671e-12 
+embedded residual: 3.114e-12 
++++ step: 104 +++ 
+standard residual: 4.389e-12 
+embedded residual: 2.926e-12 
++++ step: 105 +++ 
+standard residual: 4.691e-12 
+embedded residual: 3.127e-12 
++++ step: 106 +++ 
+standard residual: 4.369e-12 
+embedded residual: 2.913e-12 
++++ step: 107 +++ 
+standard residual: 4.428e-12 
+embedded residual: 2.952e-12 
++++ step: 108 +++ 
+standard residual: 4.492e-12 
+embedded residual: 2.994e-12 
++++ step: 109 +++ 
+standard residual: 4.348e-12 
+embedded residual: 2.899e-12 
++++ step: 110 +++ 
+standard residual: 4.490e-12 
+embedded residual: 2.993e-12 
++++ step: 111 +++ 
+standard residual: 4.439e-12 
+embedded residual: 2.959e-12 
++++ step: 112 +++ 
+standard residual: 4.488e-12 
+embedded residual: 2.992e-12 
++++ step: 113 +++ 
+standard residual: 4.460e-12 
+embedded residual: 2.974e-12 
++++ step: 114 +++ 
+standard residual: 4.675e-12 
+embedded residual: 3.117e-12 
++++ step: 115 +++ 
+standard residual: 4.508e-12 
+embedded residual: 3.005e-12 
++++ step: 116 +++ 
+standard residual: 4.607e-12 
+embedded residual: 3.071e-12 
++++ step: 117 +++ 
+standard residual: 4.532e-12 
+embedded residual: 3.021e-12 
++++ step: 118 +++ 
+standard residual: 4.522e-12 
+embedded residual: 3.015e-12 
++++ step: 119 +++ 
+standard residual: 4.392e-12 
+embedded residual: 2.928e-12 
++++ step: 120 +++ 
+standard residual: 4.596e-12 
+embedded residual: 3.064e-12 
++++ step: 121 +++ 
+standard residual: 4.497e-12 
+embedded residual: 2.998e-12 
++++ step: 122 +++ 
+standard residual: 4.550e-12 
+embedded residual: 3.034e-12 
++++ step: 123 +++ 
+standard residual: 4.482e-12 
+embedded residual: 2.988e-12 
++++ step: 124 +++ 
+standard residual: 4.435e-12 
+embedded residual: 2.957e-12 
++++ step: 125 +++ 
+standard residual: 4.608e-12 
+embedded residual: 3.072e-12 
++++ step: 126 +++ 
+standard residual: 4.480e-12 
+embedded residual: 2.987e-12 
++++ step: 127 +++ 
+standard residual: 4.264e-12 
+embedded residual: 2.842e-12 
++++ step:   0 +++ 
+standard residual: 1.609e-07 
+embedded residual: 1.073e-07 
++++ step:   1 +++ 
+standard residual: 2.687e-07 
+embedded residual: 1.791e-07 
++++ step:   0 +++ 
+standard residual: 3.857e-08 
+embedded residual: 2.571e-08 
++++ step:   1 +++ 
+standard residual: 5.322e-08 
+embedded residual: 3.548e-08 
++++ step:   2 +++ 
+standard residual: 5.045e-08 
+embedded residual: 3.363e-08 
++++ step:   3 +++ 
+standard residual: 3.980e-08 
+embedded residual: 2.654e-08 
++++ step:   0 +++ 
+standard residual: 3.551e-09 
+embedded residual: 2.367e-09 
++++ step:   1 +++ 
+standard residual: 1.900e-08 
+embedded residual: 1.267e-08 
++++ step:   2 +++ 
+standard residual: 2.072e-08 
+embedded residual: 1.381e-08 
++++ step:   3 +++ 
+standard residual: 1.781e-08 
+embedded residual: 1.187e-08 
++++ step:   4 +++ 
+standard residual: 1.879e-08 
+embedded residual: 1.253e-08 
++++ step:   5 +++ 
+standard residual: 2.006e-08 
+embedded residual: 1.337e-08 
++++ step:   6 +++ 
+standard residual: 3.100e-08 
+embedded residual: 2.067e-08 
++++ step:   7 +++ 
+standard residual: 3.162e-08 
+embedded residual: 2.108e-08 
++++ step:   0 +++ 
+standard residual: 3.219e-09 
+embedded residual: 2.146e-09 
++++ step:   1 +++ 
+standard residual: 4.835e-10 
+embedded residual: 3.223e-10 
++++ step:   2 +++ 
+standard residual: 6.703e-10 
+embedded residual: 4.468e-10 
++++ step:   3 +++ 
+standard residual: 8.607e-10 
+embedded residual: 5.738e-10 
++++ step:   4 +++ 
+standard residual: 9.962e-10 
+embedded residual: 6.641e-10 
++++ step:   5 +++ 
+standard residual: 1.081e-09 
+embedded residual: 7.209e-10 
++++ step:   6 +++ 
+standard residual: 1.124e-09 
+embedded residual: 7.493e-10 
++++ step:   7 +++ 
+standard residual: 3.702e-09 
+embedded residual: 2.468e-09 
++++ step:   8 +++ 
+standard residual: 3.625e-09 
+embedded residual: 2.417e-09 
++++ step:   9 +++ 
+standard residual: 3.556e-09 
+embedded residual: 2.371e-09 
++++ step:  10 +++ 
+standard residual: 3.464e-09 
+embedded residual: 2.310e-09 
++++ step:  11 +++ 
+standard residual: 3.386e-09 
+embedded residual: 2.257e-09 
++++ step:  12 +++ 
+standard residual: 3.330e-09 
+embedded residual: 2.220e-09 
++++ step:  13 +++ 
+standard residual: 3.281e-09 
+embedded residual: 2.188e-09 
++++ step:  14 +++ 
+standard residual: 3.197e-09 
+embedded residual: 2.131e-09 
++++ step:  15 +++ 
+standard residual: 3.174e-09 
+embedded residual: 2.116e-09 
++++ step:   0 +++ 
+standard residual: 1.022e-09 
+embedded residual: 6.816e-10 
++++ step:   1 +++ 
+standard residual: 6.383e-10 
+embedded residual: 4.255e-10 
++++ step:   2 +++ 
+standard residual: 5.055e-10 
+embedded residual: 3.370e-10 
++++ step:   3 +++ 
+standard residual: 4.050e-10 
+embedded residual: 2.700e-10 
++++ step:   4 +++ 
+standard residual: 3.439e-10 
+embedded residual: 2.293e-10 
++++ step:   5 +++ 
+standard residual: 3.090e-10 
+embedded residual: 2.060e-10 
++++ step:   6 +++ 
+standard residual: 2.870e-10 
+embedded residual: 1.914e-10 
++++ step:   7 +++ 
+standard residual: 2.713e-10 
+embedded residual: 1.809e-10 
++++ step:   8 +++ 
+standard residual: 2.588e-10 
+embedded residual: 1.726e-10 
++++ step:   9 +++ 
+standard residual: 2.484e-10 
+embedded residual: 1.656e-10 
++++ step:  10 +++ 
+standard residual: 2.390e-10 
+embedded residual: 1.593e-10 
++++ step:  11 +++ 
+standard residual: 2.317e-10 
+embedded residual: 1.545e-10 
++++ step:  12 +++ 
+standard residual: 2.314e-10 
+embedded residual: 1.543e-10 
++++ step:  13 +++ 
+standard residual: 2.305e-10 
+embedded residual: 1.537e-10 
++++ step:  14 +++ 
+standard residual: 2.296e-10 
+embedded residual: 1.531e-10 
++++ step:  15 +++ 
+standard residual: 2.282e-10 
+embedded residual: 1.521e-10 
++++ step:  16 +++ 
+standard residual: 2.272e-10 
+embedded residual: 1.514e-10 
++++ step:  17 +++ 
+standard residual: 2.258e-10 
+embedded residual: 1.505e-10 
++++ step:  18 +++ 
+standard residual: 2.245e-10 
+embedded residual: 1.497e-10 
++++ step:  19 +++ 
+standard residual: 2.235e-10 
+embedded residual: 1.490e-10 
++++ step:  20 +++ 
+standard residual: 2.211e-10 
+embedded residual: 1.474e-10 
++++ step:  21 +++ 
+standard residual: 2.209e-10 
+embedded residual: 1.473e-10 
++++ step:  22 +++ 
+standard residual: 2.181e-10 
+embedded residual: 1.454e-10 
++++ step:  23 +++ 
+standard residual: 2.170e-10 
+embedded residual: 1.446e-10 
++++ step:  24 +++ 
+standard residual: 2.184e-10 
+embedded residual: 1.456e-10 
++++ step:  25 +++ 
+standard residual: 2.162e-10 
+embedded residual: 1.441e-10 
++++ step:  26 +++ 
+standard residual: 2.167e-10 
+embedded residual: 1.445e-10 
++++ step:  27 +++ 
+standard residual: 2.156e-10 
+embedded residual: 1.438e-10 
++++ step:  28 +++ 
+standard residual: 2.139e-10 
+embedded residual: 1.426e-10 
++++ step:  29 +++ 
+standard residual: 2.126e-10 
+embedded residual: 1.417e-10 
++++ step:  30 +++ 
+standard residual: 2.111e-10 
+embedded residual: 1.407e-10 
++++ step:  31 +++ 
+standard residual: 2.110e-10 
+embedded residual: 1.406e-10 
++++ step:   0 +++ 
+standard residual: 1.641e-11 
+embedded residual: 1.094e-11 
++++ step:   1 +++ 
+standard residual: 1.806e-10 
+embedded residual: 1.204e-10 
++++ step:   2 +++ 
+standard residual: 1.266e-09 
+embedded residual: 8.438e-10 
++++ step:   3 +++ 
+standard residual: 1.347e-09 
+embedded residual: 8.981e-10 
++++ step:   4 +++ 
+standard residual: 2.485e-10 
+embedded residual: 1.657e-10 
++++ step:   5 +++ 
+standard residual: 2.348e-11 
+embedded residual: 1.565e-11 
++++ step:   6 +++ 
+standard residual: 6.600e-12 
+embedded residual: 4.400e-12 
++++ step:   7 +++ 
+standard residual: 3.309e-12 
+embedded residual: 2.206e-12 
++++ step:   8 +++ 
+standard residual: 3.505e-12 
+embedded residual: 2.337e-12 
++++ step:   9 +++ 
+standard residual: 3.806e-12 
+embedded residual: 2.538e-12 
++++ step:  10 +++ 
+standard residual: 4.120e-12 
+embedded residual: 2.747e-12 
++++ step:  11 +++ 
+standard residual: 4.417e-12 
+embedded residual: 2.945e-12 
++++ step:  12 +++ 
+standard residual: 4.697e-12 
+embedded residual: 3.131e-12 
++++ step:  13 +++ 
+standard residual: 4.935e-12 
+embedded residual: 3.290e-12 
++++ step:  14 +++ 
+standard residual: 5.154e-12 
+embedded residual: 3.436e-12 
++++ step:  15 +++ 
+standard residual: 5.360e-12 
+embedded residual: 3.573e-12 
++++ step:  16 +++ 
+standard residual: 5.519e-12 
+embedded residual: 3.679e-12 
++++ step:  17 +++ 
+standard residual: 5.685e-12 
+embedded residual: 3.790e-12 
++++ step:  18 +++ 
+standard residual: 5.837e-12 
+embedded residual: 3.891e-12 
++++ step:  19 +++ 
+standard residual: 5.922e-12 
+embedded residual: 3.948e-12 
++++ step:  20 +++ 
+standard residual: 6.036e-12 
+embedded residual: 4.024e-12 
++++ step:  21 +++ 
+standard residual: 6.108e-12 
+embedded residual: 4.072e-12 
++++ step:  22 +++ 
+standard residual: 6.177e-12 
+embedded residual: 4.118e-12 
++++ step:  23 +++ 
+standard residual: 6.274e-12 
+embedded residual: 4.182e-12 
++++ step:  24 +++ 
+standard residual: 6.324e-12 
+embedded residual: 4.216e-12 
++++ step:  25 +++ 
+standard residual: 6.411e-12 
+embedded residual: 4.274e-12 
++++ step:  26 +++ 
+standard residual: 6.379e-12 
+embedded residual: 4.252e-12 
++++ step:  27 +++ 
+standard residual: 6.443e-12 
+embedded residual: 4.296e-12 
++++ step:  28 +++ 
+standard residual: 6.530e-12 
+embedded residual: 4.353e-12 
++++ step:  29 +++ 
+standard residual: 6.632e-12 
+embedded residual: 4.421e-12 
++++ step:  30 +++ 
+standard residual: 6.865e-12 
+embedded residual: 4.576e-12 
++++ step:  31 +++ 
+standard residual: 7.096e-12 
+embedded residual: 4.730e-12 
++++ step:  32 +++ 
+standard residual: 7.316e-12 
+embedded residual: 4.877e-12 
++++ step:  33 +++ 
+standard residual: 7.531e-12 
+embedded residual: 5.021e-12 
++++ step:  34 +++ 
+standard residual: 7.760e-12 
+embedded residual: 5.173e-12 
++++ step:  35 +++ 
+standard residual: 7.976e-12 
+embedded residual: 5.318e-12 
++++ step:  36 +++ 
+standard residual: 8.190e-12 
+embedded residual: 5.460e-12 
++++ step:  37 +++ 
+standard residual: 8.409e-12 
+embedded residual: 5.606e-12 
++++ step:  38 +++ 
+standard residual: 8.620e-12 
+embedded residual: 5.746e-12 
++++ step:  39 +++ 
+standard residual: 8.821e-12 
+embedded residual: 5.880e-12 
++++ step:  40 +++ 
+standard residual: 9.013e-12 
+embedded residual: 6.009e-12 
++++ step:  41 +++ 
+standard residual: 9.234e-12 
+embedded residual: 6.156e-12 
++++ step:  42 +++ 
+standard residual: 9.422e-12 
+embedded residual: 6.281e-12 
++++ step:  43 +++ 
+standard residual: 9.635e-12 
+embedded residual: 6.423e-12 
++++ step:  44 +++ 
+standard residual: 9.335e-11 
+embedded residual: 6.223e-11 
++++ step:  45 +++ 
+standard residual: 9.429e-11 
+embedded residual: 6.286e-11 
++++ step:  46 +++ 
+standard residual: 9.493e-11 
+embedded residual: 6.328e-11 
++++ step:  47 +++ 
+standard residual: 9.650e-11 
+embedded residual: 6.433e-11 
++++ step:  48 +++ 
+standard residual: 9.628e-11 
+embedded residual: 6.419e-11 
++++ step:  49 +++ 
+standard residual: 9.735e-11 
+embedded residual: 6.490e-11 
++++ step:  50 +++ 
+standard residual: 9.787e-11 
+embedded residual: 6.525e-11 
++++ step:  51 +++ 
+standard residual: 9.859e-11 
+embedded residual: 6.573e-11 
++++ step:  52 +++ 
+standard residual: 9.948e-11 
+embedded residual: 6.632e-11 
++++ step:  53 +++ 
+standard residual: 9.996e-11 
+embedded residual: 6.664e-11 
++++ step:  54 +++ 
+standard residual: 1.006e-10 
+embedded residual: 6.708e-11 
++++ step:  55 +++ 
+standard residual: 1.013e-10 
+embedded residual: 6.751e-11 
++++ step:  56 +++ 
+standard residual: 1.016e-10 
+embedded residual: 6.775e-11 
++++ step:  57 +++ 
+standard residual: 1.029e-10 
+embedded residual: 6.858e-11 
++++ step:  58 +++ 
+standard residual: 1.027e-10 
+embedded residual: 6.845e-11 
++++ step:  59 +++ 
+standard residual: 1.033e-10 
+embedded residual: 6.884e-11 
++++ step:  60 +++ 
+standard residual: 1.041e-10 
+embedded residual: 6.938e-11 
++++ step:  61 +++ 
+standard residual: 1.039e-10 
+embedded residual: 6.929e-11 
++++ step:  62 +++ 
+standard residual: 1.050e-10 
+embedded residual: 7.001e-11 
++++ step:  63 +++ 
+standard residual: 1.051e-10 
+embedded residual: 7.004e-11 
++++ step:   0 +++ 
+standard residual: 2.173e-13 
+embedded residual: 1.449e-13 
++++ step:   1 +++ 
+standard residual: 2.964e-13 
+embedded residual: 1.976e-13 
++++ step:   2 +++ 
+standard residual: 3.541e-13 
+embedded residual: 2.361e-13 
++++ step:   3 +++ 
+standard residual: 3.845e-13 
+embedded residual: 2.564e-13 
++++ step:   4 +++ 
+standard residual: 1.059e-12 
+embedded residual: 7.061e-13 
++++ step:   5 +++ 
+standard residual: 2.180e-11 
+embedded residual: 1.453e-11 
++++ step:   6 +++ 
+standard residual: 3.680e-10 
+embedded residual: 2.453e-10 
++++ step:   7 +++ 
+standard residual: 2.660e-10 
+embedded residual: 1.773e-10 
++++ step:   8 +++ 
+standard residual: 1.754e-11 
+embedded residual: 1.170e-11 
++++ step:   9 +++ 
+standard residual: 8.971e-11 
+embedded residual: 5.980e-11 
++++ step:  10 +++ 
+standard residual: 1.851e-12 
+embedded residual: 1.234e-12 
++++ step:  11 +++ 
+standard residual: 6.792e-13 
+embedded residual: 4.528e-13 
++++ step:  12 +++ 
+standard residual: 3.429e-13 
+embedded residual: 2.286e-13 
++++ step:  13 +++ 
+standard residual: 3.502e-13 
+embedded residual: 2.334e-13 
++++ step:  14 +++ 
+standard residual: 3.552e-13 
+embedded residual: 2.368e-13 
++++ step:  15 +++ 
+standard residual: 3.620e-13 
+embedded residual: 2.413e-13 
++++ step:  16 +++ 
+standard residual: 3.524e-13 
+embedded residual: 2.349e-13 
++++ step:  17 +++ 
+standard residual: 2.728e-13 
+embedded residual: 1.819e-13 
++++ step:  18 +++ 
+standard residual: 3.550e-13 
+embedded residual: 2.366e-13 
++++ step:  19 +++ 
+standard residual: 3.963e-13 
+embedded residual: 2.642e-13 
++++ step:  20 +++ 
+standard residual: 4.641e-13 
+embedded residual: 3.094e-13 
++++ step:  21 +++ 
+standard residual: 2.830e-13 
+embedded residual: 1.887e-13 
++++ step:  22 +++ 
+standard residual: 2.885e-13 
+embedded residual: 1.923e-13 
++++ step:  23 +++ 
+standard residual: 2.902e-13 
+embedded residual: 1.935e-13 
++++ step:  24 +++ 
+standard residual: 3.711e-13 
+embedded residual: 2.473e-13 
++++ step:  25 +++ 
+standard residual: 3.844e-13 
+embedded residual: 2.562e-13 
++++ step:  26 +++ 
+standard residual: 3.135e-13 
+embedded residual: 2.090e-13 
++++ step:  27 +++ 
+standard residual: 2.960e-13 
+embedded residual: 1.973e-13 
++++ step:  28 +++ 
+standard residual: 3.249e-13 
+embedded residual: 2.166e-13 
++++ step:  29 +++ 
+standard residual: 3.116e-13 
+embedded residual: 2.077e-13 
++++ step:  30 +++ 
+standard residual: 3.100e-13 
+embedded residual: 2.066e-13 
++++ step:  31 +++ 
+standard residual: 3.123e-13 
+embedded residual: 2.082e-13 
++++ step:  32 +++ 
+standard residual: 3.586e-13 
+embedded residual: 2.390e-13 
++++ step:  33 +++ 
+standard residual: 3.732e-13 
+embedded residual: 2.488e-13 
++++ step:  34 +++ 
+standard residual: 3.191e-13 
+embedded residual: 2.128e-13 
++++ step:  35 +++ 
+standard residual: 3.744e-13 
+embedded residual: 2.495e-13 
++++ step:  36 +++ 
+standard residual: 3.302e-13 
+embedded residual: 2.201e-13 
++++ step:  37 +++ 
+standard residual: 3.597e-13 
+embedded residual: 2.397e-13 
++++ step:  38 +++ 
+standard residual: 3.219e-13 
+embedded residual: 2.146e-13 
++++ step:  39 +++ 
+standard residual: 3.341e-13 
+embedded residual: 2.227e-13 
++++ step:  40 +++ 
+standard residual: 3.536e-13 
+embedded residual: 2.356e-13 
++++ step:  41 +++ 
+standard residual: 3.668e-13 
+embedded residual: 2.446e-13 
++++ step:  42 +++ 
+standard residual: 3.836e-13 
+embedded residual: 2.558e-13 
++++ step:  43 +++ 
+standard residual: 4.003e-13 
+embedded residual: 2.668e-13 
++++ step:  44 +++ 
+standard residual: 4.170e-13 
+embedded residual: 2.780e-13 
++++ step:  45 +++ 
+standard residual: 4.337e-13 
+embedded residual: 2.892e-13 
++++ step:  46 +++ 
+standard residual: 4.513e-13 
+embedded residual: 3.008e-13 
++++ step:  47 +++ 
+standard residual: 4.676e-13 
+embedded residual: 3.118e-13 
++++ step:  48 +++ 
+standard residual: 4.845e-13 
+embedded residual: 3.230e-13 
++++ step:  49 +++ 
+standard residual: 5.016e-13 
+embedded residual: 3.344e-13 
++++ step:  50 +++ 
+standard residual: 5.192e-13 
+embedded residual: 3.462e-13 
++++ step:  51 +++ 
+standard residual: 5.354e-13 
+embedded residual: 3.570e-13 
++++ step:  52 +++ 
+standard residual: 5.517e-13 
+embedded residual: 3.678e-13 
++++ step:  53 +++ 
+standard residual: 5.697e-13 
+embedded residual: 3.798e-13 
++++ step:  54 +++ 
+standard residual: 5.861e-13 
+embedded residual: 3.907e-13 
++++ step:  55 +++ 
+standard residual: 6.034e-13 
+embedded residual: 4.023e-13 
++++ step:  56 +++ 
+standard residual: 6.206e-13 
+embedded residual: 4.137e-13 
++++ step:  57 +++ 
+standard residual: 6.375e-13 
+embedded residual: 4.250e-13 
++++ step:  58 +++ 
+standard residual: 6.540e-13 
+embedded residual: 4.360e-13 
++++ step:  59 +++ 
+standard residual: 6.713e-13 
+embedded residual: 4.475e-13 
++++ step:  60 +++ 
+standard residual: 6.892e-13 
+embedded residual: 4.594e-13 
++++ step:  61 +++ 
+standard residual: 7.045e-13 
+embedded residual: 4.697e-13 
++++ step:  62 +++ 
+standard residual: 7.196e-13 
+embedded residual: 4.797e-13 
++++ step:  63 +++ 
+standard residual: 7.383e-13 
+embedded residual: 4.922e-13 
++++ step:  64 +++ 
+standard residual: 7.559e-13 
+embedded residual: 5.040e-13 
++++ step:  65 +++ 
+standard residual: 7.722e-13 
+embedded residual: 5.148e-13 
++++ step:  66 +++ 
+standard residual: 7.872e-13 
+embedded residual: 5.248e-13 
++++ step:  67 +++ 
+standard residual: 8.047e-13 
+embedded residual: 5.364e-13 
++++ step:  68 +++ 
+standard residual: 8.212e-13 
+embedded residual: 5.474e-13 
++++ step:  69 +++ 
+standard residual: 8.382e-13 
+embedded residual: 5.588e-13 
++++ step:  70 +++ 
+standard residual: 8.524e-13 
+embedded residual: 5.683e-13 
++++ step:  71 +++ 
+standard residual: 8.701e-13 
+embedded residual: 5.801e-13 
++++ step:  72 +++ 
+standard residual: 8.881e-13 
+embedded residual: 5.921e-13 
++++ step:  73 +++ 
+standard residual: 9.048e-13 
+embedded residual: 6.032e-13 
++++ step:  74 +++ 
+standard residual: 9.160e-13 
+embedded residual: 6.107e-13 
++++ step:  75 +++ 
+standard residual: 9.341e-13 
+embedded residual: 6.228e-13 
++++ step:  76 +++ 
+standard residual: 9.484e-13 
+embedded residual: 6.322e-13 
++++ step:  77 +++ 
+standard residual: 9.678e-13 
+embedded residual: 6.452e-13 
++++ step:  78 +++ 
+standard residual: 9.885e-13 
+embedded residual: 6.590e-13 
++++ step:  79 +++ 
+standard residual: 1.000e-12 
+embedded residual: 6.667e-13 
++++ step:  80 +++ 
+standard residual: 1.015e-12 
+embedded residual: 6.765e-13 
++++ step:  81 +++ 
+standard residual: 1.033e-12 
+embedded residual: 6.887e-13 
++++ step:  82 +++ 
+standard residual: 1.043e-12 
+embedded residual: 6.956e-13 
++++ step:  83 +++ 
+standard residual: 1.065e-12 
+embedded residual: 7.099e-13 
++++ step:  84 +++ 
+standard residual: 1.074e-12 
+embedded residual: 7.162e-13 
++++ step:  85 +++ 
+standard residual: 1.093e-12 
+embedded residual: 7.287e-13 
++++ step:  86 +++ 
+standard residual: 1.114e-12 
+embedded residual: 7.426e-13 
++++ step:  87 +++ 
+standard residual: 1.127e-12 
+embedded residual: 7.516e-13 
++++ step:  88 +++ 
+standard residual: 1.142e-12 
+embedded residual: 7.613e-13 
++++ step:  89 +++ 
+standard residual: 1.157e-12 
+embedded residual: 7.713e-13 
++++ step:  90 +++ 
+standard residual: 1.174e-12 
+embedded residual: 7.826e-13 
++++ step:  91 +++ 
+standard residual: 1.187e-12 
+embedded residual: 7.911e-13 
++++ step:  92 +++ 
+standard residual: 1.198e-12 
+embedded residual: 7.988e-13 
++++ step:  93 +++ 
+standard residual: 1.223e-12 
+embedded residual: 8.154e-13 
++++ step:  94 +++ 
+standard residual: 1.231e-12 
+embedded residual: 8.205e-13 
++++ step:  95 +++ 
+standard residual: 1.241e-12 
+embedded residual: 8.272e-13 
++++ step:  96 +++ 
+standard residual: 1.266e-12 
+embedded residual: 8.437e-13 
++++ step:  97 +++ 
+standard residual: 1.281e-12 
+embedded residual: 8.540e-13 
++++ step:  98 +++ 
+standard residual: 1.287e-12 
+embedded residual: 8.583e-13 
++++ step:  99 +++ 
+standard residual: 1.300e-12 
+embedded residual: 8.670e-13 
++++ step: 100 +++ 
+standard residual: 1.320e-12 
+embedded residual: 8.799e-13 
++++ step: 101 +++ 
+standard residual: 1.329e-12 
+embedded residual: 8.861e-13 
++++ step: 102 +++ 
+standard residual: 1.357e-12 
+embedded residual: 9.047e-13 
++++ step: 103 +++ 
+standard residual: 1.371e-12 
+embedded residual: 9.140e-13 
++++ step: 104 +++ 
+standard residual: 1.381e-12 
+embedded residual: 9.207e-13 
++++ step: 105 +++ 
+standard residual: 1.385e-12 
+embedded residual: 9.235e-13 
++++ step: 106 +++ 
+standard residual: 1.411e-12 
+embedded residual: 9.410e-13 
++++ step: 107 +++ 
+standard residual: 1.425e-12 
+embedded residual: 9.499e-13 
++++ step: 108 +++ 
+standard residual: 1.436e-12 
+embedded residual: 9.576e-13 
++++ step: 109 +++ 
+standard residual: 1.456e-12 
+embedded residual: 9.707e-13 
++++ step: 110 +++ 
+standard residual: 1.456e-12 
+embedded residual: 9.706e-13 
++++ step: 111 +++ 
+standard residual: 1.478e-12 
+embedded residual: 9.853e-13 
++++ step: 112 +++ 
+standard residual: 1.493e-12 
+embedded residual: 9.951e-13 
++++ step: 113 +++ 
+standard residual: 1.503e-12 
+embedded residual: 1.002e-12 
++++ step: 114 +++ 
+standard residual: 1.523e-12 
+embedded residual: 1.016e-12 
++++ step: 115 +++ 
+standard residual: 1.539e-12 
+embedded residual: 1.026e-12 
++++ step: 116 +++ 
+standard residual: 1.554e-12 
+embedded residual: 1.036e-12 
++++ step: 117 +++ 
+standard residual: 1.565e-12 
+embedded residual: 1.043e-12 
++++ step: 118 +++ 
+standard residual: 1.582e-12 
+embedded residual: 1.054e-12 
++++ step: 119 +++ 
+standard residual: 1.590e-12 
+embedded residual: 1.060e-12 
++++ step: 120 +++ 
+standard residual: 1.605e-12 
+embedded residual: 1.070e-12 
++++ step: 121 +++ 
+standard residual: 1.617e-12 
+embedded residual: 1.078e-12 
++++ step: 122 +++ 
+standard residual: 1.625e-12 
+embedded residual: 1.083e-12 
++++ step: 123 +++ 
+standard residual: 1.641e-12 
+embedded residual: 1.094e-12 
++++ step: 124 +++ 
+standard residual: 1.656e-12 
+embedded residual: 1.104e-12 
++++ step: 125 +++ 
+standard residual: 1.670e-12 
+embedded residual: 1.114e-12 
++++ step: 126 +++ 
+standard residual: 1.688e-12 
+embedded residual: 1.125e-12 
++++ step: 127 +++ 
+standard residual: 1.699e-12 
+embedded residual: 1.132e-12 
