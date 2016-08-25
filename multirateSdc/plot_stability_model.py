@@ -15,8 +15,8 @@ tstart = 0.0
 tend   = 1.0
 
 a = 1.0
-alpha_vec = np.linspace(0.0, 20.0, 20)
-nu_vec    = np.linspace(0.0, 5.0, 20)
+alpha_vec = np.linspace(0.0, 35.0, 20)
+nu_vec    = np.linspace(0.0, 5.0,  20)
 
 stab     = np.zeros((np.size(alpha_vec), np.size(nu_vec)))
 stab_ros = np.zeros((np.size(alpha_vec), np.size(nu_vec)))
