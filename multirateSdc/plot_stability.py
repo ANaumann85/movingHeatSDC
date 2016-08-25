@@ -1,5 +1,6 @@
 from problem import problem
 from sdc import sdc_step
+from ros2 import ros2_step
 import numpy as np
 import copy
 
@@ -13,9 +14,10 @@ P = 2
 tstart = 0.0
 tend   = 1.0
 
-lambda_1 = np.linspace(-1.0,  0.0, 25)
-lambda_2 = np.linspace(-5.0,  0.0, 20)
-stab     = np.zeros((np.size(lambda_1), np.size(lambda_2)))
+lambda_1  = np.linspace(-1.0,  0.0, 25)
+lambda_2  = np.linspace(-5.0,  0.0, 20)
+stab      = np.zeros((np.size(lambda_1), np.size(lambda_2)))
+stab_ros  = np.zeros((np.size(lambda_1), np.size(lambda_2)))
 
 K_iter = 2
 
@@ -25,6 +27,7 @@ for kk in range(np.size(lambda_1)):
   for ll in range(np.size(lambda_2)):
 
     prob = problem(lambda_1[kk], lambda_2[ll])
+    ros    = ros2_step(0.0, 1.0, prob)
     sdc    = sdc_step(M, P, 0.0, 1.0, prob)
     
     # reset buffers to zero

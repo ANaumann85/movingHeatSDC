@@ -16,36 +16,39 @@ class problem_model():
   '''
   '''
   def get_mat1(self, t):
-    A = np.zeros((4,4))
+    A = np.zeros((5,5))
+    # equation for a_0
+    A[0,0] = 1.0/2.0
     
     # equation for a_1
-    A[0,0] = np.cos(2.0*self.a*t) + 1.0
-    A[0,1] = np.cos(self.a*t)
-    A[0,2] = np.sin(2.0*self.a*t)
-    A[0,3] = np.sin(self.a*t)
-  
-    # equation for a_2
     A[1,0] = np.cos(self.a*t)
-    A[1,1] = 1.0
-    A[1,2] = -np.sin(self.a*t)
-  
+    A[1,1] = np.cos(2.0*self.a*t)+1.0
+    A[1,2] = np.cos(self.a*t)
+    A[1,3] = np.sin(2.0*self.a*t)
+    A[1,4] = np.sin(self.a*t)
+    
+    # equation for a_2
+    A[2,0] = np.cos(2.0*self.a*t)
+    A[2,1] = np.cos(self.a*t)
+    A[2,2] = 1.0
+    A[2,3] = -np.sin(self.a*t)
+    
     # equation for b_1
-    A[2,0] = np.sin(2.0*self.a*t)
-    A[2,1] = -np.sin(self.a*t)
-    A[2,2] = -np.cos(2.0*self.a*t) + 1.0
-    A[2,3] = np.cos(self.a*t)
-  
-    # equation for b_2
     A[3,0] = np.sin(self.a*t)
-    A[3,2] = np.cos(self.a*t)
-    A[3,3] = 1.0
+    A[3,1] = np.sin(2.0*self.a*t)
+    A[3,2] = -np.sin(self.a*t)
+    A[3,3] = -np.cos(2.0*self.a*t)+1
+    A[3,4] = np.cos(self.a*t)
     
-    B = np.zeros((5,5))
-    B[1:5,1:5] = A
-    B[0,0] = 1.0/2.0
-    B *= -self.alpha/(2.0*np.pi)
+    # equation for b_2
+    A[4,0] = np.sin(2.0*self.a*t)
+    A[4,1] = np.sin(self.a*t)
+    A[4,3] = np.cos(self.a*t)
+    A[4,4] = 1.0
     
-    return B
+    A *= -self.alpha/(2.0*np.pi)
+    
+    return A
   
   '''
   '''
@@ -56,7 +59,7 @@ class problem_model():
     b[2] = np.cos(2.0*self.a*t)
     b[3] = np.sin(self.a*t)
     b[4] = np.sin(2.0*self.a*t)
-    b *= self.v0/np.pi
+    b *= self.alpha*self.v0/np.pi
     return b
   
   
