@@ -3,12 +3,12 @@ import copy
 from MultirateCollocation import multirateCollocation
 from problem import problem
 
-class sdc_step():
+class sdc_standard_step():
 
   '''
   '''
-  def __init__(self, M, P, tstart, tend, problem):
-    self.coll    = multirateCollocation(M, P, tstart, tend, problem.dim)
+  def __init__(self, M, tstart, tend, problem):
+    self.coll    = multirateCollocation(M, 2, tstart, tend, problem.dim)
     self.I_m_mp1 = np.zeros((M,problem.dim))
     self.prob    = problem
     self.dt      = tend-tstart
@@ -29,10 +29,10 @@ class sdc_step():
 
   '''
   '''
-  def evaluate_f(self, u, usub):
+  def evaluate_f(self, u,):
     fu     = np.zeros((self.coll.M,self.prob.dim))
     for m in range(self.coll.M):
-      fu[m,:] = self.prob.f1(u[m,:]) + self.prob.f2(u[m,:])
+      fu[m,:] = self.prob.f1(u[m,:]) + self.prob.f2(u[m,:], self.coll.coll.nodes[m])
     return fu
     
   '''
@@ -51,21 +51,23 @@ class sdc_step():
 
   '''
   '''
-  def predict(self, u0, u, usub):
+  def predict(self, u0, u):
     try:
       u    = np.reshape(u, (self.coll.M, self.prob.dim))
       u0   = np.reshape(u0, (self.prob.dim,))
     except:
       raise
-
+    
     for m in range(self.coll.M):
       
         # standard step (explicit part)
-        b = u0 # ... complete
+        if m==0:
+          rhs = u0 + self.coll.coll.delta_m[m]*self.prob.f2(u0, self.coll.coll.tleft)
+        else:
+          rhs = u[m-1,:] + self.coll.coll.delta_m[m]*self.prob.f2(u[m-1,:], self.coll.coll.nodes[m-1])
         
         # standard step (implicit part)
-        u[m,:] = self.prob.solve_f1(self.coll.coll.delta_m[m], b)
-
+        u[m,:] = self.prob.solve_f1(self.coll.coll.delta_m[m], rhs)
 
     return u
 
@@ -86,10 +88,16 @@ class sdc_step():
     for m in range(self.coll.M):
       
       # standard step (explicit part)
-      rhs  = u0_step - self.coll.coll.delta_m[m]*( self.prob.f1(u_[m,:]) ) + self.I_m_mp1[m,:]
-      u[m,:] = self.prob.solve_f1(self.coll.coll.delta_m[m], rhs)
-      
+      if m==0: # explicit term cancels out for first substep
+        rhs = u0 - self.coll.coll.delta_m[m]*( self.prob.f1(u_[m,:]) ) + self.I_m_mp1[m,:]
+      else:
+        rhs  = u[m-1,:] - self.coll.coll.delta_m[m]*( self.prob.f1(u_[m,:]) ) \
+                        + self.coll.coll.delta_m[m]*( self.prob.f2(u[m-1,:], self.coll.coll.nodes[m-1]) \
+                              - self.prob.f2(u_[m-1,:], self.coll.coll.nodes[m-1])) \
+                        + self.I_m_mp1[m,:]
+
       # standard step (implicit part)
+      u[m,:] = self.prob.solve_f1(self.coll.coll.delta_m[m], rhs)
 
     return 0
 
