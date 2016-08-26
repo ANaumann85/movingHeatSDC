@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 from pylab import rcParams
 from matplotlib.ticker import ScalarFormatter
 from subprocess import call
+from ros2 import ros2_step
 
 def uex(t, y0, a, nu):
   p1 = np.exp(nu*t)
@@ -20,16 +21,27 @@ M = 3
 P = 3
 tstart = 0.0
 tend   = 2.25
-nsteps = [4, 6, 8, 10, 12, 14, 16, 18, 20]
+nsteps = [10, 12, 14, 16, 18, 20]
 K_iter = [2, 3, 4]
 err    = np.zeros((np.size(K_iter),np.size(nsteps)))
 order  = np.zeros((np.size(K_iter),np.size(nsteps)))
 
 fs     = 8
 
-a  = -0.25
-nu = -1.1
-prob     = problem_model(a, nu)
+a  = 1.25
+nu = 1.1
+alpha =5.0
+u0=0
+v0=1
+prob     = problem_model(a, nu, alpha, u0, v0)
+
+exIter=1000
+dt=(tend-tstart)/exIter
+u_ex = np.zeros(prob.dim)
+u_ex[0] = 1.0 
+for k in range(exIter):
+    ros2 = ros2_step(tstart+k*dt, tstart+(k+1)*dt, prob)
+    u_ex  = ros2.step(u_ex)
 
 for kk in range(np.size(K_iter)):
 
@@ -38,8 +50,8 @@ for kk in range(np.size(K_iter)):
   for ll in range(np.size(nsteps)):
 
     dt    = (tend - tstart)/float(nsteps[ll])
-    u0    = [1.0, 0.0]
-    u_ex  = uex(tend, u0, a, nu)
+    u0    = np.zeros(prob.dim)
+    u0[0] = 1.0
 
     for n in range(nsteps[ll]):
       t_n    = float(n)*dt
@@ -47,10 +59,10 @@ for kk in range(np.size(K_iter)):
       sdc    = sdc_step(M, P, t_n, t_np1, prob)
 
       # reset buffers to zero
-      u     = np.zeros((M,2))
-      usub  = np.zeros((M,P,2))
-      u_    = np.zeros((M,2))
-      usub_ = np.zeros((M,P,2))
+      u     = np.zeros((M,prob.dim))
+      usub  = np.zeros((M,P,prob.dim))
+      u_    = np.zeros((M,prob.dim))
+      usub_ = np.zeros((M,P,prob.dim))
 
       sdc.predict(u0, u_, usub_)
       for k in range(K_iter[kk]):
