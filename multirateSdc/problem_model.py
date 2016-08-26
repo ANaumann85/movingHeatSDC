@@ -5,12 +5,12 @@ class problem_model():
   '''
   '''
   def __init__(self, a, nu, alpha, v0):
-    self.a = a
-    self.nu = nu
+    self.a     = a
+    self.nu    = nu
     self.alpha = alpha
-    self.v0 = v0
-    self.S  = -nu*np.diag([0.0, 1.0, 4.0, 1.0, 4.0])
-    self.dim = 5
+    self.v0    = v0
+    self.S     = -nu*np.diag([0.0, 1.0, 4.0, 1.0, 4.0])
+    self.dim   = 5
   
   '''
   '''
@@ -73,12 +73,12 @@ class problem_model():
 
   '''
   '''
-  def solve_f1(self, alpha, b):
+  def solve_f1(self, c, b):
     try:
       b = np.reshape(b, ((self.dim,)))
     except:
       raise
-    M = np.eye(self.dim) - alpha*self.S
+    M = np.eye(self.dim) - c*self.S
     return np.linalg.solve(M, b)
 
   '''
