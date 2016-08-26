@@ -1,6 +1,7 @@
 from problem_model import problem_model
 from sdc import sdc_step
 import numpy as np
+from scipy.integrate import odeint
 import copy
 
 from matplotlib import pyplot as plt
@@ -9,39 +10,30 @@ from matplotlib.ticker import ScalarFormatter
 from subprocess import call
 from ros2 import ros2_step
 
-def uex(t, y0, a, nu):
-  p1 = np.exp(nu*t)
-  p2 = np.exp((nu+2*a)*t)
-  y = np.zeros(2)
-  y[0] = 0.5*(y0[0] + y0[1])*p1 + 0.5*(y0[0] - y0[1])*p2
-  y[1] = 0.5*(y0[0] + y0[1])*p1 + 0.5*(y0[1] - y0[0])*p2
-  return y
-
 M = 3
 P = 3
 tstart = 0.0
 tend   = 2.25
-nsteps = [10, 12, 14, 16, 18, 20]
+nsteps = [40, 50, 60, 70, 80, 90, 100]
 K_iter = [2, 3, 4]
 err    = np.zeros((np.size(K_iter),np.size(nsteps)))
 order  = np.zeros((np.size(K_iter),np.size(nsteps)))
 
 fs     = 8
 
-a  = 1.25
-nu = 1.1
-alpha =5.0
-u0=0
-v0=1
-prob     = problem_model(a, nu, alpha, u0, v0)
+a     =  1.0
+nu    =  1.1
+alpha = 10.0
+v0    = 0.0
+prob  = problem_model(a, nu, alpha, v0)
 
 exIter=1000
 dt=(tend-tstart)/exIter
 u_ex = np.zeros(prob.dim)
-u_ex[0] = 1.0 
-for k in range(exIter):
-    ros2 = ros2_step(tstart+k*dt, tstart+(k+1)*dt, prob)
-    u_ex  = ros2.step(u_ex)
+u0    = np.zeros(prob.dim)
+u0[0] = 1.0
+sol = odeint(prob.f, u0, [0.0, tend], rtol=1e-12, atol=1e-12)
+u_ex = sol[-1]
 
 for kk in range(np.size(K_iter)):
 

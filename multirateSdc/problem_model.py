@@ -4,11 +4,10 @@ class problem_model():
 
   '''
   '''
-  def __init__(self, a, nu, alpha, u0, v0):
+  def __init__(self, a, nu, alpha, v0):
     self.a = a
     self.nu = nu
     self.alpha = alpha
-    self.u0 = u0
     self.v0 = v0
     self.S  = -nu*np.diag([0.0, 1.0, 4.0, 1.0, 4.0])
     self.dim = 5
@@ -92,6 +91,11 @@ class problem_model():
     A = self.get_mat1(t)
     b = self.get_b1(t)
     return A.dot(u) + b
+    
+  '''
+  '''
+  def f(self, u, t):
+    return self.f1(u) + self.f2(u, t)
 
   '''
   '''
