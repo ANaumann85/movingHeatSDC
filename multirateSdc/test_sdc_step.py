@@ -148,14 +148,14 @@ class test_sdc_step(unittest.TestCase):
   '''
   #@unittest.skip("temporarily disabled")
   def test_converge_to_fixpoint(self):
-    self.prob = problem_model(a = -0.1, nu = -1.0, alpha = 1.0, u0 = 0.1, v0 = 1.0)
+    self.prob = problem_model(a = -0.1, nu = -1.0, alpha = 1.0, v0 = 1.0)
     self.M = 3
     self.P = 4
     tstart = 0.0
     tend   = 0.2
     self.sdc = sdc_step(self.M, self.P, tstart, tend, self.prob)
     
-    u0    = np.reshape([2.0*self.prob.u0, 1.0, 0.0, 1.0, 0.0], (self.prob.dim,))
+    u0    = np.reshape([2.0, 1.0, 0.0, 1.0, 0.0], (self.prob.dim,))
     u_    = np.zeros((self.M,self.prob.dim))
     u     = np.zeros((self.M,self.prob.dim))
     usub_ = np.zeros((self.M,self.P,self.prob.dim))

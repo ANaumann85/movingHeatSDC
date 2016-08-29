@@ -27,7 +27,7 @@ K_iter = 2
 for kk in range(np.size(alpha_vec)):
   for ll in range(np.size(nu_vec)):
 
-    prob = problem_model(a=a, nu=nu_vec[ll], alpha=alpha_vec[kk], u0=0.0, v0=0.0)
+    prob = problem_model(a=a, nu=nu_vec[ll], alpha=alpha_vec[kk], v0=0.0)
     
     eigv, eigvec = np.linalg.eig(prob.S + prob.get_mat1(0.1))
     stab_c[kk,ll] = np.max(eigv)
