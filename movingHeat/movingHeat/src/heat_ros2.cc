@@ -11,6 +11,10 @@ namespace Dune
 
 int main(int argc, char* argv[])
 {
+  if(argc < 2) {
+    std::cerr << "usage: " << argv[0] << " <nStep>\n";
+    return 1;
+  }
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
   Heat heat(10);
@@ -21,11 +25,13 @@ int main(int argc, char* argv[])
 
   double t0(0.0), tend(20.0);
   unsigned nStep(40);
+  {std::stringstream ss; ss << argv[1]; ss >> nStep; }
 
-  double dt((tend-t0)/nStep);
-  heat.startFile("heat_ros2", y0);
+  std::stringstream ss; ss << "heat_ros2_" << nStep;
+  heat.startFile(ss.str(), y0);
   heat.writeResult(t0);
   ros2.solve(heat, y0, t0, tend, nStep);
+  heat.writeResult(tend);
   return 0;
 }
 

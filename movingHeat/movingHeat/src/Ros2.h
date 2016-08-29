@@ -34,12 +34,13 @@ class Ros2
   }
 
   template<typename F>
-  void solve(F& f, Vec& y0, double t0, double te, unsigned nStep)
+  void solve(F& f, Vec& y0, double t0, double te, unsigned nStep, bool write=false)
   {
     double dt=(te-t0)/nStep;
     for(unsigned i(0); i < nStep; ++i, t0+=dt) {
       onestep(f, y0, t0, dt);
-      f.writeResult(t0+dt);
+      if(write)
+        f.writeResult(t0+dt);
     }
     
   }
