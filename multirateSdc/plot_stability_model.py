@@ -11,7 +11,7 @@ from matplotlib.patches import Polygon
 from subprocess import call
 
 M = 3
-P = 5
+P = 12
 tstart = 0.0
 tend   = 1.0
 
@@ -35,7 +35,7 @@ for kk in range(np.size(alpha_vec)):
     eigv, eigvec = np.linalg.eig(prob.S + prob.get_mat1(0.1))
     stab_c[kk,ll] = np.max(eigv)
     
-    sdc     = sdc_step(M, P, 0.0, 1.0, prob)
+    sdc     = sdc_step(M, P, 0.0, 1.0, prob)    
     sdc_std = sdc_standard_step(M, 0.0, 1.0, prob)
     ros     = ros2_step(0.0, 1.0, prob)
     
@@ -102,8 +102,8 @@ CS3 = plt.contour(nu_vec, alpha_vec, np.absolute(stab_ros), [1.0],  colors='k', 
 plt.xlabel(r'$\nu$', fontsize=fs)
 #plt.ylabel(r'$a$', fontsize=fs)
 plt.ylabel(r'$\alpha$', fontsize=fs)
-#filename = 'stability-K'+str(K_iter)+'-M'+str(M)+'-P'+str(P)+'.pdf'
-#fig.savefig(filename, bbox_inches='tight')
-#call(["pdfcrop", filename, filename])
-plt.show()
+filename = 'stability-K'+str(K_iter)+'-M'+str(M)+'-P'+str(P)+'.pdf'
+fig.savefig(filename, bbox_inches='tight')
+call(["pdfcrop", filename, filename])
+#plt.show()
 
