@@ -18,7 +18,8 @@ class multirateCollocation(object):
 
     self.coll     = CollGaussRadau_Right(num_nodes = M, tleft = tleft, tright = tright)
     self.coll_sub = []
-    self.coll_sub.append(CollGaussRadau_Right(num_nodes=P, tleft = tleft, tright = self.coll.nodes[0]))
+#    self.coll_sub.append(CollGaussRadau_Right(num_nodes=P, tleft = tleft, tright = self.coll.nodes[0]))
+    self.coll_sub.append(EquidistantNoLeft(num_nodes=P, tleft = tleft, tright = self.coll.nodes[0]))
     for i in range(1,M):
       self.coll_sub.append(CollGaussRadau_Right(num_nodes=P, tleft = self.coll.nodes[i-1] , tright=self.coll.nodes[i]))
     # NOTE: this assumes that the last node if self.coll is equal to tright; otherwise need one additional sub-step collocation class
