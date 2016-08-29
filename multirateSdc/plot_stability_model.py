@@ -50,7 +50,7 @@ for kk in range(np.size(alpha_vec)):
     
       R_ros[:,mm] = ros.step(u0_ros[:,mm])
       
-      # run multirate SDC
+      #### run multirate SDC
       u     = np.zeros((M,prob.dim))
       usub  = np.zeros((M,P,prob.dim))
       u_    = np.zeros((M,prob.dim))
@@ -67,7 +67,7 @@ for kk in range(np.size(alpha_vec)):
       #print ("embedded residual: %5.3e" % res_sub)
       R[:,mm] = u[M-1]
   
-      # run standard SDC
+      ### run standard SDC
       u   = np.zeros((M,prob.dim))
       u_  = np.zeros((M,prob.dim))
       sdc_std.predict(u0_std[:,mm], u_)
