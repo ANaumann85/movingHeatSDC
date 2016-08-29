@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+
+\title{drake-problem}
+\begin{document}
+ \section{Drake-with source}
+  Weak formulation:
+  \begin{align}
+   \sum_i \dot{U}_i(v_i,v_j)=&\sum_i U_i (\nabla v_i, \nabla v_j)+\alpha \sum_i ((5) v_i, v_j)_{\Gamma_1(5)}
+  \end{align}
+  as ODE in matrix-vector notation:
+  \begin{align}
+    M \dot U =& L U +\alpha F
+  \end{align}
+   The SDC code is implemented for an ODE
+    \begin{align}
+      \dot u=& f_1(u)+f_2(u)\,.
+    \end{align}
+  Therefore, we have to bind firedrake as
+   \begin{align}
+     \dot U =& \underbrace{M^{-1} LU}_{f_1(U)} + \underbrace{M^{-1} \alpha F}_{f_2(U)}\,.
+   \end{align}
+ In the original firedrake class, we provide the solution $u$ to the linear problem $(M-aJ)u=r$, where $J=L$ in our case. The SDC method needs the solution of 
+ \begin{align}
+  (I-aM^{-1}J)u=&r \cr
+  \Leftrightarrow (M-aJ)u=&Mr
+ \end{align}
+ For the test we choose the initial value $U=0$ and end time $t_{end}=1000$. With $M=3$, $P=2$, we get the following errors, where we used an imex-euler solution with 20000 steps as reference solution:
+ 
+ \begin{tabular}{ccc}
+ K & nStep & err \cr\hline
+2 & 2 & 1.004441598\cr
+2 & 4 & 0.485491360531\cr
+2 & 8 & 0.230674560048\cr
+2 & 16 & 0.10638668058\cr
+2 & 32 & 0.0467005256109\cr
+2 & 64 & 0.0203577040204\cr
+2 & 128 & 0.00833945956404\cr
+3 & 2 & 0.437844609528\cr
+3 & 4 & 0.214329939023\cr
+3 & 8 & 0.103947896825\cr
+3 & 16 & 0.0494451375159\cr
+3 & 32 & 0.0225192769603\cr
+3 & 64 & 0.00967822708173\cr
+3 & 128 & 0.00408284111467\cr
+4 & 2 & 0.0675414596678\cr
+4 & 4 & 0.0353548444419\cr
+4 & 8 & 0.0185274061852\cr
+4 & 16 & 0.00974490213524\cr
+4 & 32 & 0.00505366015876\cr
+4 & 64 & 0.00245311838452\cr
+4 & 128 & 0.00100132428542\cr
+8 & 2 & 0.000562008072805\cr
+8 & 4 & 0.000538299132793\cr
+8 & 8 & 0.00037005174109\cr
+8 & 16 & 0.000238784807549\cr
+8 & 32 & 0.000138742481883\cr
+8 & 64 & 6.79674882481e-05\cr
+8 & 128 & 2.75313554181e-05\cr
+32 & 2 & 0.000193614329443\cr
+32 & 4 & 6.59242380749e-06\cr
+32 & 8 & 6.58370447229e-06\cr
+32 & 16 & 6.58343346132e-06\cr
+32 & 32 & 6.58342330374e-06\cr
+32 & 64 & 6.58342292871e-06\cr
+32 & 128 & 6.5834230109e-06\cr
+64 & 2 & 0.000193614331583\cr
+64 & 4 & 6.59242380939e-06\cr
+64 & 8 & 6.58370447269e-06\cr
+64 & 16 & 6.58343346251e-06\cr
+64 & 32 & 6.58342330506e-06\cr
+64 & 64 & 6.5834229292e-06\cr
+64 & 128 & 6.58342301109e-06\cr
+ \end{tabular}
+
+ As can be seen clearly, the order is always around one, instead of increasing to 2.
+ TODO: residuals as table $\rightarrow$ do not converge
+
+ \section{Drake-without source}
+ The same as above, but without the $\alpha F$ term, but as initial value, we use
+  \begin{align}
+   U(0,x,y)=& x(x-1)y(y-4)
+  \end{align}
+ and obtain nearly the reference solution:
+ 
+ \begin{tabular}{ccc}
+ K & nStep & err \cr
+2&2&0.000431275449874\cr
+2&4&3.86790979824e-05\cr
+2&8&3.47523413897e-05\cr
+3&2&0.00139158193905\cr
+3&4&3.3360423245e-05\cr
+3&8&3.27179417643e-05\cr
+4&2&0.00178835715365\cr
+4&4&3.41011391757e-05\cr
+4&8&3.28696608983e-05\cr
+8&2&0.00172682575008\cr
+8&4&3.21946959052e-05\cr
+8&8&3.30934551733e-05
+ \end{tabular}
+
+ For every number of iterations, the error jumps ones by at least one magnitude and then remains at the error of the reference solution. 
+
+\end{document}

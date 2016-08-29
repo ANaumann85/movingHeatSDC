@@ -105,7 +105,21 @@ class test_sdc_step(unittest.TestCase):
     res = self.sdc.sub_residual(u0, usub)
     assert res<1e-14, ("Solution composed of sub-step collocation solutions failed to produce zero for sub_residual. Error: %5.3e" % res)
 
-  ''' 
+  '''
+  '''
+  def test_collocation_update(self):
+    self.setUp(lambda_1 = 0.0, lambda_2=-1.0)
+    u0     = np.random.rand(1)
+    usub   = np.zeros((self.M,self.P))
+    u0_sub = u0
+    for m in range(self.M):
+      usub[m,:]  = self.sdc.get_collocation_solution_sub(u0_sub, m)
+      u0_coll    = self.sdc.collocation_update(u0_sub, np.zeros((self.M,self.prob.dim)), usub, m)
+      u0_sub     = usub[m,-1]
+      err        = np.linalg.norm(u0_coll - u0_sub)
+      assert err<1e-14, ("For collocation solution, update formula failed to reproduce last stage. Error: %5.3e" % err)
+      
+  '''
   '''
   def test_converge_to_fixpoint_inh(self):
     nu = -1.0
@@ -146,16 +160,15 @@ class test_sdc_step(unittest.TestCase):
   
   ''' 
   '''
-  #@unittest.skip("temporarily disabled")
   def test_converge_to_fixpoint(self):
-    self.prob = problem_model(a = -0.1, nu = -1.0, alpha = 1.0, u0 = 0.1, v0 = 1.0)
+    self.prob = problem_model(a = -0.1, nu = -1.0, alpha = 1.0, v0 = 1.0)
     self.M = 3
     self.P = 4
     tstart = 0.0
     tend   = 0.2
     self.sdc = sdc_step(self.M, self.P, tstart, tend, self.prob)
     
-    u0    = np.reshape([2.0*self.prob.u0, 1.0, 0.0, 1.0, 0.0], (self.prob.dim,))
+    u0    = np.reshape([2.0, 1.0, 0.0, 1.0, 0.0], (self.prob.dim,))
     u_    = np.zeros((self.M,self.prob.dim))
     u     = np.zeros((self.M,self.prob.dim))
     usub_ = np.zeros((self.M,self.P,self.prob.dim))
@@ -177,3 +190,11 @@ class test_sdc_step(unittest.TestCase):
     assert update_embedded<1e-12, ("Embedded update failed to converge to zero. Value: %5.3e" % update_embedded)
     assert res_standard<1e-12, ("Standard residual failed to converge to zero. Value: %5.3e" % res_standard)
     assert res_embedded<1e-12, ("Embedded residual failed to converge to zero. Value: %5.3e" % res_embedded)
+
+    # Continue test to validate collocation update formula
+    u0_sub = u0
+    for m in range(self.M):
+      u0_coll    = self.sdc.collocation_update(u0_sub, u, usub, m)
+      u0_sub     = usub[m,-1]
+      err        = np.linalg.norm(u0_coll - u0_sub)
+      assert err<1e-12, ("For collocation solution, update formula failed to reproduce last stage. Error: %5.3e" % err)

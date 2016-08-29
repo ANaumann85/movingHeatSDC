@@ -261,6 +261,17 @@ For approximations of the collocation solution, this consistency criterion is no
 \end{equation}
 \end{remark}
 
+\paragraph{A comment on updates.}
+Instead of simply overwriting $u^{k+1}_{m}$ with $u^{k+1}_{m-1,P}$ in the multi-rate SDC sweep, it is possible to compute the proper collocation update
+\begin{equation}
+	u^{k+1}_{m} = u^{k+1}_{m-1} + \sum_{p=1}^{P} q_{m, p} f(u^{k+1}_{m,p})
+\end{equation}
+with weights
+\begin{equation}
+	q_{m,p} := \int_{t_{m-1}}^{t_{m}} l_{m,p}(s)~ds.
+\end{equation}
+\todo{effect??}
+
 \subsection*{Zero-to-node formulation}
 Recursively applying the node-to-node collocation equations provides the zero-to-node formulation for both standard and embedded quadrature rules
 ...

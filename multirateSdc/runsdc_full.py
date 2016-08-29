@@ -71,24 +71,3 @@ for n in range(nsteps):
   u0 = u[M-1]
   u_plot[n+1,:] = u0
   t_axis[n+1]   = tend
-
-###
-#print ("error:             %5.3e " % (np.linalg.norm(u0 - u_ex, np.inf)/np.linalg.norm(u_ex, np.inf)))
-
-#rcParams['figure.figsize'] = 2.5, 2.5
-#fig = plt.figure()
-#plt.plot(t_axis, u_plot[:,0], 'k')
-#plt.plot(t_axis, u_euler[:,0], 'k--')
-
-#plt.plot(t_axis, u_plot[:,1], 'b')
-#plt.plot(t_axis, u_euler[:,1], 'b--')
-
-#plt.plot(t_axis, u_plot[:,2], 'r')
-#plt.plot(t_axis, u_euler[:,2], 'r--')
-
-#plt.plot(t_axis, u_plot[:,3], 'g')
-#plt.plot(t_axis, u_euler[:,3], 'g--')
-
-#plt.plot(t_axis, u_plot[:,4], 'k')
-#plt.plot(t_axis, u_euler[:,4], 'k--')
-plt.show()

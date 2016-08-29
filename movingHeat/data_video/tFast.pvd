@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<VTKFile type="Collection" version="0.1" byte_order="LittleEndian">
+<Collection>
+<DataSet timestep="0.5" file="tFast_0.vtu" />
+<DataSet timestep="1.0" file="tFast_1.vtu" />
+<DataSet timestep="1.5" file="tFast_2.vtu" />
+<DataSet timestep="2.0" file="tFast_3.vtu" />
+<DataSet timestep="2.5" file="tFast_4.vtu" />
+<DataSet timestep="3.0" file="tFast_5.vtu" />
+<DataSet timestep="3.5" file="tFast_6.vtu" />
+<DataSet timestep="4.0" file="tFast_7.vtu" />
+<DataSet timestep="4.5" file="tFast_8.vtu" />
+<DataSet timestep="5.0" file="tFast_9.vtu" />
+<DataSet timestep="5.5" file="tFast_10.vtu" />
+<DataSet timestep="6.0" file="tFast_11.vtu" />
+<DataSet timestep="6.5" file="tFast_12.vtu" />
+<DataSet timestep="7.0" file="tFast_13.vtu" />
+<DataSet timestep="7.5" file="tFast_14.vtu" />
+<DataSet timestep="8.0" file="tFast_15.vtu" />
+<DataSet timestep="8.5" file="tFast_16.vtu" />
+<DataSet timestep="9.0" file="tFast_17.vtu" />
+<DataSet timestep="9.5" file="tFast_18.vtu" />
+<DataSet timestep="10.0" file="tFast_19.vtu" />
+<DataSet timestep="10.5" file="tFast_20.vtu" />
+<DataSet timestep="11.0" file="tFast_21.vtu" />
+<DataSet timestep="11.5" file="tFast_22.vtu" />
+<DataSet timestep="12.0" file="tFast_23.vtu" />
+<DataSet timestep="12.5" file="tFast_24.vtu" />
+<DataSet timestep="13.0" file="tFast_25.vtu" />
+<DataSet timestep="13.5" file="tFast_26.vtu" />
+<DataSet timestep="14.0" file="tFast_27.vtu" />
+<DataSet timestep="14.5" file="tFast_28.vtu" />
+<DataSet timestep="15.0" file="tFast_29.vtu" />
+<DataSet timestep="15.5" file="tFast_30.vtu" />
+<DataSet timestep="16.0" file="tFast_31.vtu" />
+<DataSet timestep="16.5" file="tFast_32.vtu" />
+<DataSet timestep="17.0" file="tFast_33.vtu" />
+<DataSet timestep="17.5" file="tFast_34.vtu" />
+<DataSet timestep="18.0" file="tFast_35.vtu" />
+<DataSet timestep="18.5" file="tFast_36.vtu" />
+<DataSet timestep="19.0" file="tFast_37.vtu" />
+<DataSet timestep="19.5" file="tFast_38.vtu" />
+<DataSet timestep="20.0" file="tFast_39.vtu" />
+</Collection>
+</VTKFile>
