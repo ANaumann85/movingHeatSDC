@@ -135,7 +135,7 @@ class Heat
     shared_ptr<VTKWriter<GridView_MV>> vtkWriter_mv(new VTKWriter<GridView_MV>(grid_mv->leafGridView()));
     pvdWriter_mv=std::shared_ptr<PvdWriter_MV>(new PvdWriter_MV(vtkWriter_mv, "grid_mv"));
   }
-  void writeResult(double t)
+  void writeResult(double t) const
   { pvdWriter->write(t); pvdWriter_mv->write(t); }
 
   //initialize dest with func(x,y)
