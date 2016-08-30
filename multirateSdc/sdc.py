@@ -56,6 +56,20 @@ class sdc_step():
     
   '''
   '''
+  def collocation_update(self, u0, u, usub, m):
+    try:
+      usub  = np.reshape(usub, (self.coll.M, self.coll.P, self.prob.dim))
+    except:
+      raise
+    
+    # NOTE: this is inefficient since it updates ALL values
+    fu, fu_sub = self.evaluate_f(u, usub)
+    
+    u0 += self.coll.integrate_m_mp1(fu, m) + self.coll.integrate_m_mp1_sub(fu_sub[m,:,:], m)
+    return u0
+    
+  '''
+  '''
   def residual(self, u0, u):
     try:
       u = np.reshape(u, (self.coll.M,self.prob.dim))
