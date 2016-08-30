@@ -92,21 +92,60 @@ for kk in range(np.size(K_iter)):
     if kk==0:
       err_ros2[ll] = np.linalg.norm(u0_ros - u_ex, np.inf)/np.linalg.norm(u_ex, np.inf)
 
+#
+# Convergence plots
+#
+
 #rcParams['figure.figsize'] = 2.5, 2.5
 fig = plt.figure()
 plt.loglog(nsteps, err_ros2, 'kd', markersize=fs, label="Ros(2)")
 
 plt.loglog(nsteps, err[0,:], 'bo', markersize=fs, label=("K=%1i" % K_iter[0]))
-plt.loglog(nsteps, err_std[0,:], 'b^', markersize=fs, label=("Std-K=%1i" % K_iter[0]))
+#plt.loglog(nsteps, err_std[0,:], 'b^', markersize=fs, label=("Std-K=%1i" % K_iter[0]))
 plt.loglog(nsteps, order[0,:], '-', color='b')
 
 plt.loglog(nsteps, err[1,:], 'ro', markersize=fs, label=("K=%1i" % K_iter[1]))
-plt.loglog(nsteps, err_std[1,:], 'r^', markersize=fs, label=("Std-K=%1i" % K_iter[1]))
+#plt.loglog(nsteps, err_std[1,:], 'r^', markersize=fs, label=("Std-K=%1i" % K_iter[1]))
 plt.loglog(nsteps, order[1,:], '-', color='r')
 
 plt.loglog(nsteps, err[2,:], 'go', markersize=fs, label=("K=%1i" % K_iter[2]))
-plt.loglog(nsteps, err_std[2,:], 'g^', markersize=fs, label=("Std-K=%1i" % K_iter[2]))
+#plt.loglog(nsteps, err_std[2,:], 'g^', markersize=fs, label=("Std-K=%1i" % K_iter[2]))
 plt.loglog(nsteps, order[2,:], '-', color='g')
+plt.xlim([0.95*nsteps[0], 1.05*nsteps[-1]])
+plt.legend(loc='lower left', fontsize=fs, prop={'size':fs})
+
+#plt.gca().get_xaxis().get_major_formatter().labelOnlyBase = False
+#plt.gca().get_xaxis().set_major_formatter(ScalarFormatter())
+plt.show()
+
+#
+# Error constants
+#
+err_c      = np.zeros((np.size(K_iter),np.size(nsteps)))
+err_c_ros2 = np.zeros(np.size(nsteps))
+err_c_std  = np.zeros((np.size(K_iter),np.size(nsteps)))
+for kk in range(np.size(K_iter)):
+  order_p = np.min([K_iter[kk], 2*M-1, 2*P-1])
+
+  for ll in range(np.size(nsteps)):
+    ns = nsteps[ll]
+    dt = tend/float(ns)
+    err_c[kk,ll] = err[kk,ll]/(dt**order_p)
+    err_c_std[kk,ll] = err_std[kk,ll]/(dt**order_p)
+    if kk==0:
+      err_c_ros2[ll] = err_ros2[ll]/(dt**2)
+
+fig = plt.figure()
+plt.semilogy(nsteps, err_c_ros2, 'kd-', markersize=fs, label="Ros(2)")
+
+plt.semilogy(nsteps, err_c[0,:], 'bo-', markersize=fs, label=("K=%1i" % K_iter[0]))
+plt.semilogy(nsteps, err_c_std[0,:], 'b^-', markersize=fs, label=("Std-K=%1i" % K_iter[0]))
+
+plt.semilogy(nsteps, err_c[1,:], 'ro-', markersize=fs, label=("K=%1i" % K_iter[1]))
+plt.semilogy(nsteps, err_c_std[1,:], 'r^-', markersize=fs, label=("Std-K=%1i" % K_iter[1]))
+
+plt.semilogy(nsteps, err_c[2,:], 'go-', markersize=fs, label=("K=%1i" % K_iter[2]))
+plt.semilogy(nsteps, err_c_std[2,:], 'g^-', markersize=fs, label=("Std-K=%1i" % K_iter[2]))
 plt.xlim([0.95*nsteps[0], 1.05*nsteps[-1]])
 plt.legend(loc='lower left', fontsize=fs, prop={'size':fs})
 
