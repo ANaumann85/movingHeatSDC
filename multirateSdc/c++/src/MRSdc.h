@@ -92,9 +92,11 @@ struct MultirateCollocation
 
 };
 
-template<typename Vec, unsigned M, unsigned P>
+template<typename Vec, unsigned M_, unsigned P_>
 struct MRSdc
 {
+	static const unsigned M = M_;
+	static const unsigned P = P_;
 	typedef std::array<Vec, M > US;
 	typedef	std::array<std::array<Vec, P>, M > UE;
 
@@ -137,9 +139,7 @@ struct MRSdc
 
 		for(unsigned m(0); m < M; ++m) {
 			coll.integrate_m_mp1(fu, m, I_m_mp1[m]);
-			print(I_m_mp1, "I_m_mp1[m]");
 			coll.integrate_m_mp1_sub(fu_sub[m], m, iVal);
-			std::cout << "I_m_mp1_sub[" << m << "]:" << iVal[0] << std::endl;
 			axpy(1.0, iVal, I_m_mp1[m]);
 		}
 	}
@@ -160,6 +160,7 @@ struct MRSdc
 			}
 	}
 
+#if 1
 	void print(const US& us, std::string pref="us") const
 	{
 		std::cout << pref << ":[";
@@ -179,6 +180,8 @@ struct MRSdc
 		std::cout << "]\n";
 
 	}
+#endif
+
 	template<typename F >
 	void predict(F& f, const Vec& u0, double t0, double te)
 	{
@@ -207,9 +210,6 @@ struct MRSdc
 			u0_step = ue[m][P-1];
 			us[m]  = ue[m][P-1];
 		}
-		print(us, "us_predict");
-		print(ue, "ue_predict");
-		//std::cout << "ue:" << ue <<std::endl;
 	}
 
 	template<typename F >
@@ -218,8 +218,10 @@ struct MRSdc
 		update_I_m_mp1(f, us, ue);
 		update_I_p_pp1(f, us, ue);
 
+#if 0
 		print(I_m_mp1, "I_m_mp1");
 		print(I_p_pp1, "I_p_pp1");
+#endif
 
 		//TODO: should not need M new values
 		std::array<Vec, M> us_new;
@@ -267,11 +269,41 @@ struct MRSdc
 			u0_step = ue_new[m][P-1];
 			us_new[m] = ue_new[m][P-1];
 		}
+#if 0
 		print(us_new, "us_new");
 		print(ue_new, "ue_new");
+#endif
 		us = us_new;
 		ue = ue_new;
 
+	}
+
+	double residual(const Vec& u0)
+	{
+		double ret=norm(us[0]-u0-I_m_mp1[0]);
+		for(unsigned m(1); m < M; ++m) {
+			ret = std::max(ret, norm(us[m]-us[m-1]-I_m_mp1[m]));
+		}
+		return ret;
+	}
+
+	double sub_residual(const Vec& u0)
+	{
+		double ret(0.0);
+		ret = sub_residual_m(u0, ue[0], 0);
+		for(unsigned m(1); m < M; ++m) {
+			ret = std::max(ret, sub_residual_m(ue[m-1][P-1], ue[m], m));
+		}
+		return ret;
+	}
+
+	double sub_residual_m(const Vec& u0, const std::array<Vec, P>& uem, unsigned m)
+	{
+		double ret(norm(uem[0] - u0 - I_p_pp1[m][0]));
+		for(unsigned p(1); p < P; ++p) {
+			ret = std::max(ret, norm(uem[p] - uem[p-1] - I_p_pp1[m][p]));
+		}
+		return ret;
 	}
 };
 #endif
