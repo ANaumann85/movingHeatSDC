@@ -19,12 +19,6 @@ struct MultirateCollocation
 {
 	typedef std::array<std::array<double, M>, M> Mat;
 
-	Mat Shat_mp;
-	std::array<Mat, M> S_mnp;
-
-	Collocation<M> coll;
-	std::array<Collocation<P>, M> coll_sub;
-
 	MultirateCollocation()
 	{
 		Shat_mp[0] = { 0.33333333 , 0.};
@@ -89,6 +83,13 @@ struct MultirateCollocation
 			axpy( sMat[p+1][j+1], fu_sub[j], iVal);
 		}
 	}
+
+	Collocation<M> coll;
+	std::array<Collocation<P>, M> coll_sub;
+	private:
+	Mat Shat_mp;
+	std::array<Mat, M> S_mnp;
+
 
 };
 
