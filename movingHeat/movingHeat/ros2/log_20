@@ -1,0 +1,560 @@
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.4514e-05 seconds.
+intersection construction took 0.000152454 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0873e-05 seconds.
+intersection construction took 0.000158085 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.2438e-05 seconds.
+intersection construction took 0.000156573 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.1897e-05 seconds.
+intersection construction took 0.000152506 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 5.1018e-05 seconds.
+intersection construction took 0.000172027 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0703e-05 seconds.
+intersection construction took 0.000145916 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0804e-05 seconds.
+intersection construction took 0.000148032 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.2307e-05 seconds.
+intersection construction took 0.000149619 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.097e-05 seconds.
+intersection construction took 0.000145528 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.3042e-05 seconds.
+intersection construction took 0.000154034 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0662e-05 seconds.
+intersection construction took 0.000145441 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.2382e-05 seconds.
+intersection construction took 0.000154701 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.2227e-05 seconds.
+intersection construction took 0.000149133 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0549e-05 seconds.
+intersection construction took 0.000142068 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0377e-05 seconds.
+intersection construction took 0.000141836 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.1061e-05 seconds.
+intersection construction took 0.000144693 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.2706e-05 seconds.
+intersection construction took 0.000148651 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.097e-05 seconds.
+intersection construction took 0.000143132 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0838e-05 seconds.
+intersection construction took 0.00014165 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0332e-05 seconds.
+intersection construction took 0.000138941 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0501e-05 seconds.
+intersection construction took 0.000139942 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.3397e-05 seconds.
+intersection construction took 0.000148653 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.3329e-05 seconds.
+intersection construction took 0.000147192 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.4121e-05 seconds.
+intersection construction took 0.000150337 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0663e-05 seconds.
+intersection construction took 0.000147649 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0302e-05 seconds.
+intersection construction took 0.00013776 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0627e-05 seconds.
+intersection construction took 0.000136346 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.2331e-05 seconds.
+intersection construction took 0.000149905 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.3368e-05 seconds.
+intersection construction took 0.000151357 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0708e-05 seconds.
+intersection construction took 0.000137315 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0887e-05 seconds.
+intersection construction took 0.000136469 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.138e-05 seconds.
+intersection construction took 0.000149047 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0419e-05 seconds.
+intersection construction took 0.000144028 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.2217e-05 seconds.
+intersection construction took 0.000139729 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.1414e-05 seconds.
+intersection construction took 0.000136409 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.2532e-05 seconds.
+intersection construction took 0.000139272 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0584e-05 seconds.
+intersection construction took 0.00013266 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.2058e-05 seconds.
+intersection construction took 0.000136277 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.25e-05 seconds.
+intersection construction took 0.000137008 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10
+This is Codim1Extractor on a <2,2> grid!
+added 40 subfaces
+This is Codim1Extractor on a <2,2> grid!
+added 10 subfaces
+GridGlue: Constructor succeeded!
+>>>> rank 0 coords: 41 and 11
+>>>> rank 0 entities: 80 and 20
+>>>> rank 0 types: 40 and 10
+0 GridGlue::mergePatches : rank 0 / 0
+ContactMerge building grid!
+StandardMerge building merged grid...
+setup took 4.0947e-05 seconds.
+intersection construction took 0.000128984 seconds.
+0 GridGlue::mergePatches : The number of remote intersections is 10

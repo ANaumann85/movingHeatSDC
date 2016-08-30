@@ -17,7 +17,7 @@ class Ros2
     axpy(dt, k1, y0);
     f(t0+dt, y0, rhs);
     f.Mv(k1, k2);
-    axpy(2.0, k2, rhs);
+    axpy(-2.0, k2, rhs);
     f.solveMaJ(rhs, k2);
     //y0 += 0.5*dt*(k1+k2); //0.5*3*dt*k1=dt*k1+0.5*dt*k1
     axpy(0.5*dt, k1, y0);

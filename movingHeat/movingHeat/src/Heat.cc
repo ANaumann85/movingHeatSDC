@@ -210,7 +210,7 @@ void Heat::fastRect(double t, const VectorType& yIn, VectorType& out) const
 
 void Heat::fastGrid(double t, const VectorType& yIn, VectorType& out) const
 {
-  const double center = 2.25-0.1*t;
+  //const double center = 2.25-0.1*t;
   const double dY = -0.1*t;
   //move grid_mv by dY (indirectly through geometrygrid)
   mf.dx[1] = dY;

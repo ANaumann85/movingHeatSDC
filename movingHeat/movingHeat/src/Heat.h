@@ -107,19 +107,23 @@ class Heat
   void operator()(double t, const VectorType& yIn, VectorType& out) const
   {
     lapl.mv(yIn, out);
-    fast(t, yIn, out);
+    fastAdd(t, yIn, out);
   }
 
-  //computes the fast term, i.e. out += B(t)*yIn+b(t)
+  //adds the fast term, i.e. out += B(t)*yIn+b(t)
   void fastGrid(double t, const VectorType& yIn, VectorType& out) const;
   void fastRect(double t, const VectorType& yIn, VectorType& out) const;
-  void fast(double t, const VectorType& yIn, VectorType& out) const
+  void fastAdd(double t, const VectorType& yIn, VectorType& out) const
   //{ fastRect(t, yIn, out); }
   { fastGrid(t, yIn, out); }
 
-  //compute the slow term, i.e. out += L*yIn
+  //sets the fast term, i.e. out = B(t)*yIn+b(t)
+  void fast(double t, const VectorType& yIn, VectorType& out) const
+  { out = 0.0; fastAdd(t, yIn, out); }
+
+  //compute the slow term, i.e. out = L*yIn
   void slow(double t, const VectorType& yIn, VectorType& out) const
-  { lapl.umv(yIn, out); }
+  { lapl.mv(yIn, out); }
 
   //computes out = M*in
   void Mv(const VectorType& in, VectorType& out) const
