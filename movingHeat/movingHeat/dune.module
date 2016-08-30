@@ -1,0 +1,10 @@
+################################
+# Dune module information file #
+################################
+
+#Name of the module
+Module: movingHeat
+Version: 0.1
+Maintainer: andreas.naumann@tu-dresden.de
+#depending on
+Depends: dune-common dune-geometry dune-localfunctions dune-grid dune-grid-glue dune-typetree dune-istl dune-functions
