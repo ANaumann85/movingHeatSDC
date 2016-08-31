@@ -174,29 +174,29 @@ The predictor computes the initial set of values
 \begin{itemize}
 	\item Compute standard step
 	\begin{equation*}
-		u^0_{m} = u^0_{m-1} + \Delta t_m f(u^0_{m})
+		u^*_{m} = u^0_{m-1} + \Delta t_m f(u^*_{m})
 	\end{equation*}
 	\item Compute $P$ embedded steps
 	\begin{equation*}
-		u^0_{m-1,p} = u^0_{m-1,p-1} + \Delta t_{m,p} f(u^0_{m}) + \Delta t_{m,p} g(u^0_{m-1,p-1})
+		u^0_{m-1,p} = u^0_{m-1,p-1} + \Delta t_{m,p} f(u^*_{m}) + \Delta t_{m,p} g(u^0_{m-1,p-1})
 	\end{equation*}
-	\item Overwrite $u^0_{m}$ with $u^0_{m-1,P}$ for use as initial value in next standard step.
+	\item Set $u^0_{m} = u^0_{m-1,P}$ for use as initial value in next standard step.
 \end{itemize}
 
-Given values $\ve{u}^{s,k}$, $\ve{u}^{e,k}$, the multi-rate SDC sweep then consists of
+Given values $f(u^k_m)$ and $g(u^k_{m,p})$, the multi-rate SDC sweep then consists of
 \begin{itemize}
 \item Compute standard step
 	\begin{equation}
-		u^{k+1}_{m} = u^{k+1}_{m-1} + \Delta t_m \left( f(u^{k+1}_{m}) - f(u^k_{m}) \right) + I_{m-1}^{m} \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_m) \right)
+		u^{*}_{m} = u^{k+1}_{m-1} + \Delta t_m \left( f(u^{*}_{m}) - f(u^k_{m}) \right) + I_{m-1}^{m} \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_m) \right)
 	\end{equation}
 \item Compute $P$ embedded steps
 	\begin{align*}
-		u_{m-1,p}^{k+1} = u_{m-1,p-1}^{k+1} &+ \Delta t_{m,p} \left( f(u^{k+1}_{m}) - f(u^k_{m}) \right) \\
+		u_{m-1,p}^{k+1} = u_{m-1,p-1}^{k+1} &+ \Delta t_{m,p} \left( f(u^{*}_{m}) - f(u^k_{m}) \right) \\
 			& + \Delta t_{m,p} \left( g(u^{k+1}_{m-1,p-1}) - g(u^k_{m-1,p-1}) \right) \\
 			& + I_{m,p-1}^{p}  \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_m) \right)
 	\end{align*}
 	for $p=1, \ldots, P$.
-\item Overwrite $u_{m}^{k+1}$ with $u_{m-1,P}^{k+1}$ for use as initial value in next standard step.
+\item Set $u_{m}^{k+1} = u_{m-1,P}^{k+1}$ for use as initial value in next standard step.
 \end{itemize}
 \begin{remark}
 If the iteration converges, that is and $u^{k+1}_{m} - u^{k}_{m} \to 0$ and $u^{k+1}_{m,p} - u^{k}_{m,p} \to 0$, the sweeps reduce to the underlying collocation equations
