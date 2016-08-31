@@ -64,14 +64,16 @@ for kk in range(np.size(K_iter)):
       # reset buffers to zero
       u     = np.zeros((M,prob.dim))
       usub  = np.zeros((M,P,prob.dim))
-      u_    = np.zeros((M,prob.dim))
-      usub_ = np.zeros((M,P,prob.dim))
-
-      sdc.predict(u0, u_, usub_)
+      fu     = np.zeros((M,prob.dim))
+      fu_sub  = np.zeros((M,P,prob.dim))
+      fu_     = np.zeros((M,prob.dim))
+      fu_sub_  = np.zeros((M,P,prob.dim))
+      
+      sdc.predict(u0, u, usub, fu_, fu_sub_)
       for k in range(K_iter[kk]):
-        sdc.sweep(u0, u, usub, u_, usub_)
-        u_    = copy.deepcopy(u)
-        usub_ = copy.deepcopy(usub)
+        sdc.sweep(u0, u, usub, fu, fu_sub, fu_, fu_sub_)
+        fu_    = copy.deepcopy(fu)
+        fu_sub_ = copy.deepcopy(fu_sub)
 
       u0 = u[M-1]
       

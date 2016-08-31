@@ -220,3 +220,42 @@ class test_sdc_step(unittest.TestCase):
       u0_sub     = usub[m,-1]
       err        = np.linalg.norm(u0_coll - u0_sub)
       assert err<1e-12, ("For collocation solution, update formula failed to reproduce last stage. Error: %5.3e" % err)
+
+  '''
+  '''
+  def sdc_regression_test(self):
+    M      = 2
+    P      = 5
+    tstart = 0.0
+    tend   = 0.25
+    nsteps = 5
+    dt     = (tend - tstart)/float(nsteps)
+    prob = problem_model(a=1.0, nu=1.0, alpha=2.0, v0=0.25)
+    K_iter = 12
+    u0         = [2.0, 0.0, 0.0, 0.0, 0.0]
+    for n in range(nsteps):
+      tstart = float(n)*dt
+      tend   = float(n+1)*dt
+      sdc    = sdc_step(M, P, tstart, tend, prob)
+      
+      # reset buffers to zero
+      u     = np.zeros((M,prob.dim))
+      usub  = np.zeros((M,P,prob.dim))
+      fu     = np.zeros((M,prob.dim))
+      fu_sub  = np.zeros((M,P,prob.dim))
+      fu_     = np.zeros((M,prob.dim))
+      fu_sub_  = np.zeros((M,P,prob.dim))
+      
+      sdc.predict(u0, u, usub, fu_, fu_sub_)
+      for k in range(K_iter):
+        sdc.sweep(u0, u, usub, fu, fu_sub, fu_, fu_sub_)
+        fu_    = copy.deepcopy(fu)
+        fu_sub_ = copy.deepcopy(fu_sub)
+      u0 = u[M-1]
+    ###
+    file = open('sdc-model-regression.txt')
+    val = []
+    for line in file:
+      val = np.append(val, float(line))
+    defect = np.linalg.norm(val - u0, np.inf)
+    assert defect == 0.0, ("Regression test failed, different from previous version. Defect: %5.3e" % defect)

@@ -54,14 +54,21 @@ for n in range(nsteps):
   # reset buffers to zero
   u_    = np.zeros((M,prob.dim))
   usub_ = np.zeros((M,P,prob.dim))
+  
   u     = np.zeros((M,prob.dim))
   usub  = np.zeros((M,P,prob.dim))
 
-  sdc.predict(u0, u_, usub_)
+  fu     = np.zeros((M,prob.dim))
+  fu_sub  = np.zeros((M,P,prob.dim))
+  
+  fu_     = np.zeros((M,prob.dim))
+  fu_sub_  = np.zeros((M,P,prob.dim))
+  
+  sdc.predict(u0, u_, usub_, fu_, fu_sub_)
   for k in range(K_iter):
-    sdc.sweep(u0, u, usub, u_, usub_)
-    u_    = copy.deepcopy(u)
-    usub_ = copy.deepcopy(usub)
+    sdc.sweep(u0, u, usub, fu, fu_sub, fu_, fu_sub_)
+    fu_    = copy.deepcopy(fu)
+    fu_sub_ = copy.deepcopy(fu_sub)
   print ("+++ step: %3i +++ " % n)
   print ("standard residual: %5.3e " % sdc.residual(u0, u))
   print ("embedded residual: %5.3e " % sdc.sub_residual(u0, usub))
@@ -79,7 +86,7 @@ for n in range(nsteps):
   u0 = u[M-1]
   u_plot[n+1,:] = u0
   t_axis[n+1]   = tend
-file = open('sdc-model-regression.txt', 'w')
+file = open('sdc-new.txt', 'w')
 for v in u0:
   file.write('%25.20f\n' % v)
 file.close()

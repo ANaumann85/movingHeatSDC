@@ -177,11 +177,12 @@ class sdc_step():
             usub_mm1 = u0
           else:
             usub_mm1 = u[m-1,:]
+          usub[m,p,:]   = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu_[m,:]  ) + self.I_p_pp1[m,p,:]
         else:
           t = self.coll.coll_sub[m].nodes[p-1]
           usub_mm1 = usub[m,p-1,:]
-
-        usub[m,p,:]   = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu_[m,:] + fu_sub[m,p-1,:] - fu_sub_[m,p-1,:] ) + self.I_p_pp1[m,p,:]
+          usub[m,p,:]   = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu_[m,:] + fu_sub[m,p-1,:] - fu_sub_[m,p-1,:] ) + self.I_p_pp1[m,p,:]
+        
         fu_sub[m,p,:] = self.prob.f2(usub[m,p,:], self.coll.coll_sub[m].nodes[p])
         
       # Prepare for next standard time step
