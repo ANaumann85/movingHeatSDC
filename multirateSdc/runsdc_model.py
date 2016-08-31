@@ -18,18 +18,18 @@ def delta(a, t, x):
 M      = 2
 P      = 5
 tstart = 0.0
-tend   = 10.0
-nsteps = 50
+tend   = 0.25
+nsteps = 5
 dt     = (tend - tstart)/float(nsteps)
 
 Nx = 50
 xaxis = np.linspace(0, 2*np.pi, Nx+1)
 xaxis = xaxis[0:Nx]
 
-prob = problem_model(a=1.0, nu=1.0, alpha=2.0, u0=1.5, v0=0.25)
+prob = problem_model(a=1.0, nu=1.0, alpha=2.0, v0=0.25)
 K_iter = 12
 
-u0         = [2.0*prob.u0, 0.0, 0.0, 0.0, 0.0]
+u0         = [2.0, 0.0, 0.0, 0.0, 0.0]
 u_plot     = np.zeros((nsteps+1,prob.dim))
 u_euler    = np.zeros((nsteps+1, prob.dim))
 t_axis     = np.zeros(nsteps+1)
@@ -79,3 +79,7 @@ for n in range(nsteps):
   u0 = u[M-1]
   u_plot[n+1,:] = u0
   t_axis[n+1]   = tend
+file = open('sdc-model-regression.txt', 'w')
+for v in u0:
+  file.write('%25.20f\n' % v)
+file.close()
