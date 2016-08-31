@@ -152,23 +152,28 @@ class sdc_step():
     self.update_I_m_mp1(u_, usub_)
     self.update_I_p_pp1(u_, usub_)
 
-    u0_step = u0
-
     for m in range(self.coll.M):
       
       # standard step
-      rhs  = u0_step - self.coll.coll.delta_m[m]*( self.prob.f1(u_[m,:]) ) + self.I_m_mp1[m,:]
-      u[m,:] = self.prob.solve_f1(self.coll.coll.delta_m[m], rhs)
+      if m==0:
+        rhs  = u0 - self.coll.coll.delta_m[m]*( self.prob.f1(u_[m,:]) ) + self.I_m_mp1[m,:]
+      else:
+        rhs  = u[m-1,:] - self.coll.coll.delta_m[m]*( self.prob.f1(u_[m,:]) ) + self.I_m_mp1[m,:]
+      
+      fu_star = self.prob.f1(self.prob.solve_f1(self.coll.coll.delta_m[m], rhs))
       
       # embedded steps
       t = self.coll.coll_sub[m].tleft
-      usub[m,0,:] = u0_step + self.coll.coll_sub[m].delta_m[0]*( self.prob.f1(u[m,:]) - self.prob.f1(u_[m,:]) + self.prob.f2(u0_step, t) - self.prob.f2(u0_step, t) ) + self.I_p_pp1[m,0,:]
+      if m==0:
+        usub[m,0,:] = u0 + self.coll.coll_sub[m].delta_m[0]*( fu_star - self.prob.f1(u_[m,:]) + self.prob.f2(u0, t) - self.prob.f2(u0, t) ) + self.I_p_pp1[m,0,:]
+      else:
+        usub[m,0,:] = u[m-1,:] + self.coll.coll_sub[m].delta_m[0]*( fu_star - self.prob.f1(u_[m,:]) + self.prob.f2(u[m-1,:], t) - self.prob.f2(u_[m-1,:], t) ) + self.I_p_pp1[m,0,:]
+      
       for p in range(1,self.coll.P):
         t = self.coll.coll_sub[m].nodes[p-1]
-        usub[m,p,:] = usub[m,p-1,:] + self.coll.coll_sub[m].delta_m[p]*( self.prob.f1(u[m,:]) - self.prob.f1(u_[m,:]) + self.prob.f2(usub[m,p-1,:], t) - self.prob.f2(usub_[m,p-1,:], t) ) + self.I_p_pp1[m,p,:]
+        usub[m,p,:] = usub[m,p-1,:] + self.coll.coll_sub[m].delta_m[p]*( fu_star - self.prob.f1(u_[m,:]) + self.prob.f2(usub[m,p-1,:], t) - self.prob.f2(usub_[m,p-1,:], t) ) + self.I_p_pp1[m,p,:]
 
       # overwrite standard value
-      u0_step = usub[m,self.coll.P-1,:]
       u[m,:]  = usub[m,self.coll.P-1,:]
 
     return 0
