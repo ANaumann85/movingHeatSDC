@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 	Problem problem(l1, l2);
 
 	unsigned kIter(10);
-	typedef MRSdc<Problem::Vec, 2, 2> Method;
+	typedef MRSdc<Problem::Vec, 3, 3> Method;
 	Method sdc;
 	std::cout.precision(8);
 	sdc.predict(problem, u0, t0, te);
