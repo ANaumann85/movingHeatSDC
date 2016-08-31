@@ -55,23 +55,30 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	double l1(-0.1), l2(-1.0);
-	double t0 = 1.0;
-	double te   = 3.0;
+	double t0 = 0.0;
+	double te   = 10.0;
+	unsigned nStep(4);
 	Problem::Vec u0({2.0});
 	double u_ex  = u0[0]*exp((te-t0)*(l1+l2));
 
 	Problem problem(l1, l2);
 
-	unsigned kIter(10);
-	typedef MRSdc<Problem::Vec, 3, 3> Method;
+	unsigned kIter(12);
+	typedef MRSdc<Problem::Vec, 5, 4> Method;
 	Method sdc;
 	std::cout.precision(8);
-	sdc.predict(problem, u0, t0, te);
-	for(unsigned k(0); k < kIter; ++k) {
-		sdc.sweep(problem, u0, t0, te);
+	double dt=(te-t0)/nStep;
+	for(unsigned s(0); s < nStep; ++s) {
+		double t0_=t0+s*dt; 
+		double te= t0_+dt;
+		sdc.predict(problem, u0, t0_, te);
+		for(unsigned k(0); k < kIter; ++k) {
+			sdc.sweep(problem, u0, t0_, te);
+		}
 		cout << "standard residual: " << sdc.residual(u0) << std::endl;
 		cout << "embedded residual: " << sdc.sub_residual(u0) << std::endl;
+		u0[0] = sdc.us[Method::M-1][0];
 	}
-	cout << "error:" << abs(sdc.us[Method::M-1][0]-u_ex)/abs(u_ex) << endl;
+	cout << "error:" << abs(u0[0]-u_ex)/abs(u_ex) << endl;
 	return 0;
 }
