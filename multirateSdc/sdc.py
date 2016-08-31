@@ -141,12 +141,11 @@ class sdc_step():
 
   '''
   '''
-  def sweep(self, u0, u, usub, fu, fu_sub, u_, usub_, fu_, fu_sub_):
+  def sweep(self, u0, u, usub, fu, fu_sub, u_, fu_, fu_sub_):
     try:
       u     = np.reshape(u, (self.coll.M,self.prob.dim))
       u_    = np.reshape(u_, (self.coll.M,self.prob.dim))
       usub  = np.reshape(usub, (self.coll.M, self.coll.P, self.prob.dim))
-      usub_ = np.reshape(usub_, (self.coll.M, self.coll.P, self.prob.dim))
       fu    = np.reshape(fu, (self.coll.M,self.prob.dim))
       fu_   = np.reshape(fu_, (self.coll.M,self.prob.dim))
       fu_sub  = np.reshape(fu_sub, (self.coll.M, self.coll.P, self.prob.dim))

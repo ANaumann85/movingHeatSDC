@@ -67,7 +67,7 @@ class test_sdc_step(unittest.TestCase):
     ucoll_sub = np.zeros((self.M,self.P,1))
     fucoll, fucoll_sub = self.sdc.evaluate_f(ucoll, ucoll_sub)
     
-    self.sdc.sweep(u0, ucoll, ucoll_sub, fucoll, fucoll_sub, ucoll_, ucoll_sub_, fucoll_, fucoll_sub_)
+    self.sdc.sweep(u0, ucoll, ucoll_sub, fucoll, fucoll_sub, ucoll_, fucoll_, fucoll_sub_)
     err = np.linalg.norm((ucoll - ucoll_).flatten(), np.inf)
     assert err<1e-14, ("Collocation solution not invariant under standard node SDC sweep with lambda_2=0. Error: %5.3e" % err)
 
@@ -153,7 +153,7 @@ class test_sdc_step(unittest.TestCase):
 
     for k in range(15):
       # run standard node sweep...
-      self.sdc.sweep(u0, u, usub, fu, fu_sub, u_, usub_, fu_, fu_sub_)
+      self.sdc.sweep(u0, u, usub, fu, fu_sub, u_, fu_, fu_sub_)
       update_standard = np.linalg.norm( (u-u_).flatten(), np.inf)
       update_embedded = np.linalg.norm( (usub-usub_).flatten(), np.inf)
       res_standard    = self.sdc.residual(u0, u)
@@ -197,7 +197,7 @@ class test_sdc_step(unittest.TestCase):
 
     for k in range(25):
       # run standard node sweep...
-      self.sdc.sweep(u0, u, usub, fu, fu_sub, u_, usub_, fu_, fu_sub_)
+      self.sdc.sweep(u0, u, usub, fu, fu_sub, u_, fu_, fu_sub_)
       
       update_standard = np.linalg.norm( (u-u_).flatten(), np.inf)
       update_embedded = np.linalg.norm( (usub-usub_).flatten(), np.inf)
