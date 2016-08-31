@@ -55,10 +55,10 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	double l1(-0.1), l2(-1.0);
-	double t0 = 0.0;
-	double te   = 1.0;
+	double t0 = 1.0;
+	double te   = 3.0;
 	Problem::Vec u0({2.0});
-	double u_ex  = u0[0]*exp(te*(l1+l2));
+	double u_ex  = u0[0]*exp((te-t0)*(l1+l2));
 
 	Problem problem(l1, l2);
 
