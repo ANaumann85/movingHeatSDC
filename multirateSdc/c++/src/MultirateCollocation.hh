@@ -11,7 +11,7 @@
 template<unsigned M >
 struct Collocation
 {
-	typedef std::array<std::array<double, M+1>, M+1> Mat;
+	typedef std::array<std::array<double, M>, M> Mat;
 	typedef std::array<double, M> Vec;
 	Vec delta_m, nodes;
 	Mat sMat;
@@ -94,11 +94,9 @@ struct MultirateCollocation
 		S_mnp[1][0]={ 0.25   ,     0.08333333};
 		S_mnp[1][1]={ 0.08333333 , 0.25      };
 	
-		coll.sMat[0]={ 0. , 0. ,         0.        }; 
 		for(unsigned mr(0); mr < M; ++mr) {
-			coll.sMat[mr][0]=0.0;
 			for(unsigned mc(0); mc < M; ++mc) {
-				coll.sMat[mr+1][mc+1] = sMat_M[mr][mc];
+				coll.sMat[mr][mc] = sMat_M[mr][mc];
 			}
 			coll.nodes[mr] = sMat_M[M][mr];
 			coll.delta_m[mr] = mr == 0 ? coll.nodes[mr] : coll.nodes[mr]-coll.nodes[mr-1];
@@ -109,15 +107,13 @@ struct MultirateCollocation
 		coll.delta_m = {1.0/3.0, 2.0/3.0};*/
 		coll.tleft = 0.0;
 
-		coll_sub[0].sMat[0]={ 0.  , 0.  ,  0.        };
-		coll_sub[0].sMat[1]={ 0.  , 0.25, -0.08333333};
-		coll_sub[0].sMat[2]={ 0.  , 0.08333333 , 0.08333333};
+		coll_sub[0].sMat[0]={  0.25, -0.08333333};
+		coll_sub[0].sMat[1]={  0.08333333 , 0.08333333};
 		coll_sub[0].nodes={1.0/6.0, 1.0/3.0};
 		coll_sub[0].tleft=0.0;
 
-		coll_sub[1].sMat[0]={ 0. , 0.    ,      0.        };
-		coll_sub[1].sMat[1]={ 0. , 0.5   ,     -0.16666667};
-		coll_sub[1].sMat[2]={ 0. , 0.16666667 , 0.16666667};
+		coll_sub[1].sMat[0]={  0.5   ,     -0.16666667};
+		coll_sub[1].sMat[1]={  0.16666667 , 0.16666667};
 		coll_sub[1].nodes={2.0/3.0, 1.0};
 		coll_sub[1].tleft=1.0/3.0;
 
@@ -132,7 +128,7 @@ struct MultirateCollocation
 	{
 		setValue(res, 0.0);
 		for(unsigned j(0); j < M; ++j) {
-			axpy(coll.sMat[m+1][j+1], fu[j], res);
+			axpy(coll.sMat[m][j], fu[j], res);
 		}
 	}
 
@@ -160,7 +156,7 @@ struct MultirateCollocation
 		setValue(iVal, 0.0);
 		const typename Collocation<M>::Mat& sMat(coll_sub[m].sMat);
 		for(unsigned j(0); j < P; ++j) {
-			axpy( sMat[p+1][j+1], fu_sub[j], iVal);
+			axpy( sMat[p][j], fu_sub[j], iVal);
 		}
 	}
 
