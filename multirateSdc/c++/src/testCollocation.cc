@@ -138,6 +138,21 @@ void test_p_pp1_sub(const Poly& poly, MultirateCollocation<M, P>& coll)
 	}
 }
 
+void testPoly()
+{
+	array<double, 2 > nodes={1,2};
+	Helper::LagrangePoly<2> lPoly0(nodes, 0);
+	Helper::MonomPoly monPoly0(toMonom(lPoly0));
+	assert(monPoly0.coeffs[0]==-1);
+	assert(monPoly0.coeffs[1]==2);
+	Helper::LagrangePoly<2> lPoly1(nodes, 1);
+	Helper::MonomPoly monPoly1(toMonom(lPoly1));
+	assert(monPoly1.coeffs[0]==1);
+	assert(monPoly1.coeffs[1]==-1);
+
+	assert(monPoly0.integrate(0.0, 1.0)==1.5);
+}
+
 template<unsigned deg >
 PolynomMonomBase<deg> getPoly()
 {
@@ -152,6 +167,7 @@ const unsigned P = 2;
 
 int main(int argc, char* argv[])
 {
+	testPoly();
 	MultirateCollocation<M, P> coll;
 	auto poly(getPoly<1>());
 	test_m_mp1(poly, coll); //, 0.0, 1.0);

@@ -6,8 +6,89 @@
 #include <sstream>
 #include <string>
 #include <cassert>
+#include <vector>
 #include <iostream>
 
+namespace Helper
+{
+	template<std::size_t M>
+	struct LagrangePoly
+	{
+		typedef std::array<double, M> Vec;
+		Vec nodes;
+		double fac;
+		unsigned q;
+		LagrangePoly(const Vec& nodes, unsigned q):
+			nodes(nodes), q(q)
+		{
+			fac=1.0;
+			for(unsigned i(0); i < q; ++i)
+				fac *= (nodes[q]-nodes[i]);
+			for(unsigned i(q+1); i < M; ++i)
+				fac *= (nodes[q]-nodes[i]);
+			fac = 1.0/fac;
+		}
+	};
+
+	struct MonomPoly
+	{
+		std::vector<double > coeffs;
+		unsigned degree;
+
+		MonomPoly(unsigned deg):
+			coeffs(deg+1),
+			degree(deg)
+		{}
+		
+
+		double operator()(const double& t) const
+		{
+			double ret(coeffs[0]);
+			for(unsigned i(1); i <= degree; ++ i)
+				ret = ret*t + coeffs[i];
+			return ret;
+		}
+
+		double integrate(double t0, double t1)
+		{
+			MonomPoly stamm(degree+1);
+			for(unsigned i(0); i < degree; ++i) {
+				stamm.coeffs[i] = coeffs[i]/(degree-i+1);
+			}
+			stamm.coeffs[degree] = coeffs[degree];
+			stamm.coeffs[degree+1] = 0.0;
+			return stamm(t1)-stamm(t0);
+		}
+	};
+
+	MonomPoly operator*(const MonomPoly& l, const MonomPoly& r)
+	{
+		MonomPoly ret(l.degree+r.degree);
+		for(auto& d : ret.coeffs) d= 0.0;
+		for(unsigned q(0); q <= l.degree; ++q)
+		{
+			for(unsigned p(0); p <= r.degree; ++p)
+				ret.coeffs[q+p] += l.coeffs[q]*r.coeffs[p];
+		}
+		return ret;
+	}
+
+	template<std::size_t M>
+	MonomPoly toMonom(const LagrangePoly<M>& lPoly)
+	{
+		MonomPoly ret(0);
+		ret.coeffs[0] = 1.0;
+		MonomPoly mulPoly(1); mulPoly.coeffs[0]=1.0; 
+		for(unsigned i(0); i < lPoly.nodes.size(); ++i) {
+			if(i==lPoly.q)
+				continue;
+			mulPoly.coeffs[1] = -lPoly.nodes[i];
+			ret = ret*mulPoly;
+		}
+		for(auto& d: ret.coeffs) d*=lPoly.fac;
+		return ret;
+	}
+}
 template<unsigned M >
 struct Collocation
 {
@@ -90,46 +171,50 @@ struct MultirateCollocation
 	}
 #endif
 
-
-	MultirateCollocation()
+	void setInterval(double t0, double t1)
 	{
-		MatMp2 sMat_M;
-		MatPp2 sMat_P;
-		readMatrix(sMat_M, "sdc_quad_weights/radau_right-M2.dat");
-		readMatrix(sMat_P, "sdc_quad_weights/equi_noleft-M2.dat");
-#if 0
-		print(sMat_M);
-		print(sMat_P);
-#endif
-		coll.set(sMat_M, 0.0, 1.0);
-
-		Shat_mp[0] = { 0.33333333 , 0.};
-		Shat_mp[1] = { 0.66666667,  0.};
-
-		S_mnp[0][0]={ 0.22916667,  0.1875    };
-		S_mnp[0][1]={-0.0625  ,   -0.02083333};
-		S_mnp[1][0]={ 0.25   ,     0.08333333};
-		S_mnp[1][1]={ 0.08333333 , 0.25      };
-	
-
+		coll.set(sMat_M, t0, t1);
 		coll_sub[0].set(sMat_P, coll.tleft, coll.nodes[0]);
 		for(unsigned m(1); m < M; ++m) {
 			coll_sub[m].set(sMat_P, coll.nodes[m-1], coll.nodes[m]);
 		}
-			
-		/*coll_sub[0].sMat[0]={  0.25, -0.08333333};
-		coll_sub[0].sMat[1]={  0.08333333 , 0.08333333};
-		coll_sub[0].nodes={1.0/6.0, 1.0/3.0};
-		coll_sub[0].tleft=0.0;
 
-		coll_sub[1].sMat[0]={  0.5   ,     -0.16666667};
-		coll_sub[1].sMat[1]={  0.16666667 , 0.16666667};
-		coll_sub[1].nodes={2.0/3.0, 1.0};
-		coll_sub[1].tleft=1.0/3.0;*/
+		for(unsigned mr(0); mr < M; ++mr)
+			for(unsigned mc(0); mc < M; ++mc)
+				Shat_mp[mr][mc] = 0.0;
+		for(unsigned m(0); m < M; ++m) {
+			for(unsigned j(0); j < P; ++j)
+				for(unsigned p(0); p < P; ++p)
+					Shat_mp[m][j] += coll_sub[m].sMat[p][j];
+		}
 
-		/*coll.delta_m={0.33333333 , 0.66666667};
-		coll_sub[0].delta_m={0.16666667 , 0.16666667};
-		coll_sub[1].delta_m={0.33333333 , 0.33333333};*/
+		for(unsigned m(0); m < M; ++m)
+			for(unsigned q(0); q < P; ++q) {
+				Helper::LagrangePoly<M> lPoly(coll.nodes, q);
+				Helper::MonomPoly monPoly(toMonom(lPoly));
+				for(unsigned p(0); p < P; ++p) {
+					double ta = p==0 ? coll_sub[m].tleft : coll_sub[m].nodes[p-1];
+					S_mnp[m][q][p] = monPoly.integrate(ta, coll_sub[m].nodes[p]);
+					//std::cout << m << " " << p << " " << q << " " << S_mnp[m][p][q] << std::endl;
+				}
+			}
+		/*
+		S_mnp[0][0]={ 0.22916667,  0.1875    };
+		S_mnp[0][1]={-0.0625  ,   -0.02083333};
+		S_mnp[1][0]={ 0.25   ,     0.08333333};
+		S_mnp[1][1]={ 0.08333333 , 0.25      };*/
+	}
+
+	MultirateCollocation()
+	{
+		readMatrix(sMat_M, "sdc_quad_weights/radau_right-M2.dat");
+		readMatrix(sMat_P, "sdc_quad_weights/equi_noleft-M2.dat");
+		setInterval(0.0, 1.0);
+#if 0
+		print(sMat_M);
+		print(sMat_P);
+#endif
+	
 	}
 	
 
@@ -175,6 +260,8 @@ struct MultirateCollocation
 	private:
 	Mat Shat_mp;
 	std::array<Mat, M> S_mnp;
+	MatMp2 sMat_M;
+	MatPp2 sMat_P;
 
 
 };
