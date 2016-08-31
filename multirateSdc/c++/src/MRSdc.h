@@ -31,7 +31,7 @@ struct MRSdc
 	{
 		for(unsigned m(0); m < M; ++m) {
 			//todo: set correct time t
-			const double t = 0.0;
+			const double t = coll.coll.nodes[m];
 			f.slow(t, u[m], fu[m]);
 		}
 	}
@@ -115,9 +115,9 @@ struct MRSdc
 		        ue[m][0] = u0_step ;
 
 			double t = coll.coll_sub[m].tleft; 
-			f.slow(t, us[m], fVal); 
+			f.slow(coll.coll_sub[m].nodes[0], us[m], fVal); 
 		        axpy(coll.coll_sub[m].delta_m[0], fVal, ue[m][0]);
-			f.fast(t, u0_step, fVal);
+			f.fast(coll.coll_sub[m].tleft, u0_step, fVal);
 		        axpy(coll.coll_sub[m].delta_m[0], fVal, ue[m][0]);
 
 			for(unsigned p(1); p < P; ++p) {
@@ -168,10 +168,10 @@ struct MRSdc
 			axpy(-coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);
 
 			//TODO: check!
-			f.fast(t, u0_step, fVal);
+			/*f.fast(t, u0_step, fVal);
 			axpy(coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);
 			f.fast(t, u0_step, fVal);
-			axpy(-coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);
+			axpy(-coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);*/
 			axpy(1.0, I_p_pp1[m][0], ue_new[m][0]);
 			for(unsigned p(1); p < P; ++p) {
 				t = coll.coll_sub[m].nodes[p-1];
