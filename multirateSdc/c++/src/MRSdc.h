@@ -20,6 +20,11 @@ struct MRSdc
 	UE ue, I_p_pp1;
 
 	MultirateCollocation<M, P> coll;
+	unsigned nIter;
+
+	MRSdc(unsigned nIter):
+		nIter(nIter)
+	{}
 
 	template<typename F >
 	void evaluate_f(F& f, const US& u, US& fu)
@@ -97,10 +102,11 @@ struct MRSdc
 #endif
 
 	template<typename F >
-	void predict(F& f, const Vec& u0, double t0, double te)
+	void predict(F& f, const Vec& u0, double t0, double te, bool setInter=true)
 	{
 		//const double dt = te-t0;´
-		coll.setInterval(t0, te);
+		if(setInter)
+			coll.setInterval(t0, te);
 		Vec u0_step; u0_step=u0;
 		for(unsigned m(0); m < M; ++m)
 		{
@@ -128,9 +134,10 @@ struct MRSdc
 	}
 
 	template<typename F >
-	void sweep(F& f, Vec& u0, double t0, double te)
+	void sweep(F& f, Vec& u0, double t0, double te, bool setInter=true)
 	{
-		coll.setInterval(t0, te);
+		if(setInter)
+			coll.setInterval(t0, te);
 		update_I_m_mp1(f, us, ue);
 		update_I_p_pp1(f, us, ue);
 
@@ -192,6 +199,19 @@ struct MRSdc
 		us = us_new;
 		ue = ue_new;
 
+	}
+
+	template<typename F >
+	void solve(F& f, Vec& u0, double t0, double te, unsigned nStep)
+	{
+		double dt=(te-t0)/nStep;
+		for(unsigned s(0); s < nStep; ++s, t0+=dt) {
+			predict(f, u0, t0, t0+dt);
+			for(unsigned k(0); k < nIter; ++k) {
+				sweep(f, u0, t0, t0+dt, false);
+			}
+			u0 = us[M-1];
+		}
 	}
 
 	double residual(const Vec& u0)
