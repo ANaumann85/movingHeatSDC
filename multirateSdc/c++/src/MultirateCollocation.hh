@@ -12,10 +12,26 @@ template<unsigned M >
 struct Collocation
 {
 	typedef std::array<std::array<double, M>, M> Mat;
+	typedef std::array<std::array<double, M>, M+2> Mat2;
 	typedef std::array<double, M> Vec;
+
 	Vec delta_m, nodes;
 	Mat sMat;
 	double tleft;
+
+	void set(const Mat2& data, double t0, double t1)
+	{
+		double dt=t1-t0;
+		assert(dt > 0);
+		for(unsigned mr(0); mr < M; ++mr) {
+			for(unsigned mc(0); mc < M; ++mc) {
+				sMat[mr][mc] = dt*data[mr][mc];
+			}
+			nodes[mr] = t0+dt*data[M][mr];
+			delta_m[mr] = mr == 0 ? nodes[mr] : nodes[mr]-nodes[mr-1];
+		}
+		tleft = t0;
+	}
 
 	template<typename F >
 	Vec evalAtNodes(const F& f) const
@@ -85,6 +101,7 @@ struct MultirateCollocation
 		print(sMat_M);
 		print(sMat_P);
 #endif
+		coll.set(sMat_M, 0.0, 1.0);
 
 		Shat_mp[0] = { 0.33333333 , 0.};
 		Shat_mp[1] = { 0.66666667,  0.};
@@ -94,20 +111,13 @@ struct MultirateCollocation
 		S_mnp[1][0]={ 0.25   ,     0.08333333};
 		S_mnp[1][1]={ 0.08333333 , 0.25      };
 	
-		for(unsigned mr(0); mr < M; ++mr) {
-			for(unsigned mc(0); mc < M; ++mc) {
-				coll.sMat[mr][mc] = sMat_M[mr][mc];
-			}
-			coll.nodes[mr] = sMat_M[M][mr];
-			coll.delta_m[mr] = mr == 0 ? coll.nodes[mr] : coll.nodes[mr]-coll.nodes[mr-1];
-		}
-		/*coll.sMat[1]={ 0. , 0.41666667, -0.08333333};
-		coll.sMat[2]={ 0. , 0.33333333,  0.33333333};*/
-		/*coll.nodes = { 1.0/3.0, 1.0};
-		coll.delta_m = {1.0/3.0, 2.0/3.0};*/
-		coll.tleft = 0.0;
 
-		coll_sub[0].sMat[0]={  0.25, -0.08333333};
+		coll_sub[0].set(sMat_P, coll.tleft, coll.nodes[0]);
+		for(unsigned m(1); m < M; ++m) {
+			coll_sub[m].set(sMat_P, coll.nodes[m-1], coll.nodes[m]);
+		}
+			
+		/*coll_sub[0].sMat[0]={  0.25, -0.08333333};
 		coll_sub[0].sMat[1]={  0.08333333 , 0.08333333};
 		coll_sub[0].nodes={1.0/6.0, 1.0/3.0};
 		coll_sub[0].tleft=0.0;
@@ -115,11 +125,11 @@ struct MultirateCollocation
 		coll_sub[1].sMat[0]={  0.5   ,     -0.16666667};
 		coll_sub[1].sMat[1]={  0.16666667 , 0.16666667};
 		coll_sub[1].nodes={2.0/3.0, 1.0};
-		coll_sub[1].tleft=1.0/3.0;
+		coll_sub[1].tleft=1.0/3.0;*/
 
-		coll.delta_m={0.33333333 , 0.66666667};
+		/*coll.delta_m={0.33333333 , 0.66666667};
 		coll_sub[0].delta_m={0.16666667 , 0.16666667};
-		coll_sub[1].delta_m={0.33333333 , 0.33333333};
+		coll_sub[1].delta_m={0.33333333 , 0.33333333};*/
 	}
 	
 
