@@ -180,6 +180,8 @@ int main(int argc, char* argv[])
 	testMRC<3,2>(0,1);
 	testMRC<2,2>(1,4);
 	testMRC<3,2>(1,4);
+	testMRC<2,3>(1,4);
+	testMRC<4,5>(1,4);
 	cout << "OK" << endl;
 	return 0;
 }

@@ -99,7 +99,8 @@ struct MRSdc
 	template<typename F >
 	void predict(F& f, const Vec& u0, double t0, double te)
 	{
-		const double dt = te-t0;
+		//const double dt = te-t0;´
+		coll.setInterval(t0, te);
 		Vec u0_step; u0_step=u0;
 		for(unsigned m(0); m < M; ++m)
 		{
@@ -129,6 +130,7 @@ struct MRSdc
 	template<typename F >
 	void sweep(F& f, Vec& u0, double t0, double te)
 	{
+		coll.setInterval(t0, te);
 		update_I_m_mp1(f, us, ue);
 		update_I_p_pp1(f, us, ue);
 

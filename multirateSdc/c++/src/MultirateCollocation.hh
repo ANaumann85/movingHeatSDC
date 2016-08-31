@@ -104,14 +104,14 @@ struct Collocation
 	{
 		double dt=t1-t0;
 		assert(dt > 0);
+		tleft = t0;
 		for(unsigned mr(0); mr < M; ++mr) {
 			for(unsigned mc(0); mc < M; ++mc) {
 				sMat[mr][mc] = dt*data[mr][mc];
 			}
 			nodes[mr] = t0+dt*data[M][mr];
-			delta_m[mr] = mr == 0 ? nodes[mr] : nodes[mr]-nodes[mr-1];
+			delta_m[mr] = mr == 0 ? nodes[mr]-tleft : nodes[mr]-nodes[mr-1];
 		}
-		tleft = t0;
 	}
 
 	template<typename F >
@@ -159,8 +159,8 @@ struct MultirateCollocation
 	}
 
 #if 0
-	template<std::size_t S >
-	void print(std::array<std::array<double, S>, S+2>& mat)
+	template<std::size_t S1, size_t S2 >
+	void print(std::array<std::array<double, S1>, S2>& mat)
 	{
 		std::cout << "[";
 		for(auto& d:mat) {
@@ -180,13 +180,14 @@ struct MultirateCollocation
 		}
 
 		for(unsigned mr(0); mr < M; ++mr)
-			for(unsigned mc(0); mc < M; ++mc)
+			for(unsigned mc(0); mc < P; ++mc)
 				Shat_mp[mr][mc] = 0.0;
 		for(unsigned m(0); m < M; ++m) {
 			for(unsigned j(0); j < P; ++j)
 				for(unsigned p(0); p < P; ++p)
 					Shat_mp[m][j] += coll_sub[m].sMat[p][j];
 		}
+		//print(Shat_mp);
 
 		for(unsigned m(0); m < M; ++m)
 			for(unsigned q(0); q < M; ++q) {
@@ -254,7 +255,7 @@ struct MultirateCollocation
 	Collocation<M> coll;
 	std::array<Collocation<P>, M> coll_sub;
 	private:
-	Mat Shat_mp;
+	std::array<std::array<double, P>, M> Shat_mp;
 	std::array<std::array<std::array<double, P>, M>, M> S_mnp;
 	MatMp2 sMat_M;
 	MatPp2 sMat_P;
