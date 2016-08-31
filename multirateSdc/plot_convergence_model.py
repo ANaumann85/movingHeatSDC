@@ -66,14 +66,10 @@ for kk in range(np.size(K_iter)):
       usub  = np.zeros((M,P,prob.dim))
       fu     = np.zeros((M,prob.dim))
       fu_sub  = np.zeros((M,P,prob.dim))
-      fu_     = np.zeros((M,prob.dim))
-      fu_sub_  = np.zeros((M,P,prob.dim))
       
-      sdc.predict(u0, u, usub, fu_, fu_sub_)
+      sdc.predict(u0, u, usub, fu, fu_sub)
       for k in range(K_iter[kk]):
-        sdc.sweep(u0, u, usub, fu, fu_sub, fu_, fu_sub_)
-        fu_    = copy.deepcopy(fu)
-        fu_sub_ = copy.deepcopy(fu_sub)
+        sdc.sweep(u0, u, usub, fu, fu_sub)
 
       u0 = u[M-1]
       

@@ -219,6 +219,21 @@ and embedded residual
 %
 %
 %
+\begin{remark}
+In case a set of function values $f(\ve{u}^{s})$, $g(\ve{u}^e)$ and an initial value $u_0$ is given, the solution can be reconstructed iteratively from
+\begin{equation}
+	u_{m,p} = u_{m,p-1} + I_{0,p-1}^{p}
+\end{equation}
+for $p=1, \ldots, P$ with $u_{0,0} = u_0$ in the first standard step and $u_{m,0} = u_{m-1}$ for $m > 1$.
+After the $u_{m,p}$ are computed, the value for the next standard step is obtained from
+\begin{equation}
+	u_{m} := u_{m,P-1}.
+\end{equation}
+\todo{hm... how does this help?}
+\end{remark}
+%
+%
+%
 \begin{lemma}
 The collocation solution is invariant under SDC sweeps. Let $\ve{u}^s$ and $\ve{u}^e$ satisfy the collocation condition.
 Then,
