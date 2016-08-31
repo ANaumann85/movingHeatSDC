@@ -157,6 +157,7 @@ int main(int argc, char* argv[])
 	test_m_mp1(poly, coll); //, 0.0, 1.0);
 	test_m_mp1_sub(poly, coll); //, 0.0, 1.0);
 	test_p_pp1(poly, coll);
+	test_p_pp1_sub(poly, coll);
 	cout << "OK" << endl;
 	return 0;
 }

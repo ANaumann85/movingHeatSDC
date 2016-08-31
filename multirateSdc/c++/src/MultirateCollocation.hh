@@ -2,6 +2,12 @@
 #define MULTIRATE_COLLOCATION_HH
 
 #include <array>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <cassert>
+#include <iostream>
+
 template<unsigned M >
 struct Collocation
 {
@@ -25,9 +31,61 @@ template< unsigned M, unsigned P >
 struct MultirateCollocation
 {
 	typedef std::array<std::array<double, M>, M> Mat;
+	typedef std::array<std::array<double, M>, M+2> MatMp2;
+	typedef std::array<std::array<double, P>, P+2> MatPp2;
+
+	template<std::size_t S>
+	void readMatrix(std::array<std::array<double, S>, S+2>& dest, std::string fname)
+	{
+		std::fstream file(fname);
+		std::string line;
+		unsigned r(0);
+		getline(file, line);
+		while(file.good() || line.length() > 0) {
+			std::stringstream sl;
+			sl << line;
+			double col;
+			unsigned j(0); 
+			sl >> col;
+			while(sl.good()) {
+				dest[r][j] = col;
+				++j;
+				sl >> col;
+			}
+			assert(j == S);
+			++r;
+			line.clear();
+			getline(file, line);
+		}
+		assert(r == S+2);
+		file.close();
+	}
+
+#if 0
+	template<std::size_t S >
+	void print(std::array<std::array<double, S>, S+2>& mat)
+	{
+		std::cout << "[";
+		for(auto& d:mat) {
+			std::cout << "["; for(auto& d2:d) std::cout << " " << d2;
+			std::cout << "]\n";
+		}
+		std::cout << "]\n";
+	}
+#endif
+
 
 	MultirateCollocation()
 	{
+		MatMp2 sMat_M;
+		MatPp2 sMat_P;
+		readMatrix(sMat_M, "sdc_quad_weights/radau_right-M2.dat");
+		readMatrix(sMat_P, "sdc_quad_weights/equi_noleft-M2.dat");
+#if 0
+		print(sMat_M);
+		print(sMat_P);
+#endif
+
 		Shat_mp[0] = { 0.33333333 , 0.};
 		Shat_mp[1] = { 0.66666667,  0.};
 
@@ -37,10 +95,18 @@ struct MultirateCollocation
 		S_mnp[1][1]={ 0.08333333 , 0.25      };
 	
 		coll.sMat[0]={ 0. , 0. ,         0.        }; 
-		coll.sMat[1]={ 0. , 0.41666667, -0.08333333};
-		coll.sMat[2]={ 0. , 0.33333333,  0.33333333};
-		coll.nodes = { 1.0/3.0, 1.0};
-		coll.delta_m = {1.0/3.0, 2.0/3.0};
+		for(unsigned mr(0); mr < M; ++mr) {
+			coll.sMat[mr][0]=0.0;
+			for(unsigned mc(0); mc < M; ++mc) {
+				coll.sMat[mr+1][mc+1] = sMat_M[mr][mc];
+			}
+			coll.nodes[mr] = sMat_M[M][mr];
+			coll.delta_m[mr] = mr == 0 ? coll.nodes[mr] : coll.nodes[mr]-coll.nodes[mr-1];
+		}
+		/*coll.sMat[1]={ 0. , 0.41666667, -0.08333333};
+		coll.sMat[2]={ 0. , 0.33333333,  0.33333333};*/
+		/*coll.nodes = { 1.0/3.0, 1.0};
+		coll.delta_m = {1.0/3.0, 2.0/3.0};*/
 		coll.tleft = 0.0;
 
 		coll_sub[0].sMat[0]={ 0.  , 0.  ,  0.        };
