@@ -16,29 +16,25 @@ class sdc_step():
 
   '''
   '''
-  def update_I_m_mp1(self, u, usub):
+  def update_I_m_mp1(self, fu, fu_sub):
     try:
-      u     = np.reshape(u, (self.coll.M,self.prob.dim))
-      usub  = np.reshape(usub, (self.coll.M, self.coll.P, self.prob.dim))
+      fu     = np.reshape(fu, (self.coll.M,self.prob.dim))
+      fu_sub  = np.reshape(fu_sub, (self.coll.M, self.coll.P, self.prob.dim))
     except:
       raise
-    
-    fu, fu_sub = self.evaluate_f(u, usub)
     
     for m in range(self.coll.M):
       self.I_m_mp1[m,:] = self.coll.integrate_m_mp1(fu, m) + self.coll.integrate_m_mp1_sub(fu_sub[m,:,:], m)
 
   '''
   '''
-  def update_I_p_pp1(self, u, usub):
+  def update_I_p_pp1(self, fu, fu_sub):
     try:
-      u     = np.reshape(u, (self.coll.M,self.prob.dim))
-      usub  = np.reshape(usub, (self.coll.M, self.coll.P, self.prob.dim))
+      fu     = np.reshape(fu, (self.coll.M,self.prob.dim))
+      fu_sub  = np.reshape(fu_sub, (self.coll.M, self.coll.P, self.prob.dim))
     except:
       raise
     
-    fu, fu_sub = self.evaluate_f(u, usub)
-  
     for m in range(self.coll.M):
       for p in range(self.coll.P):
         self.I_p_pp1[m,p,:] = self.coll.integrate_p_pp1( fu, m, p ) + self.coll.integrate_p_pp1_sub( fu_sub[m,:,:], m, p )
@@ -148,30 +144,31 @@ class sdc_step():
     except:
       raise
     
+    fu_, fu_sub_ = self.evaluate_f(u_, usub_)
     # update integral terms
-    self.update_I_m_mp1(u_, usub_)
-    self.update_I_p_pp1(u_, usub_)
-
+    self.update_I_m_mp1(fu_, fu_sub_)
+    self.update_I_p_pp1(fu_, fu_sub_)
+    
     for m in range(self.coll.M):
       
       # standard step
       if m==0:
-        rhs  = u0 - self.coll.coll.delta_m[m]*( self.prob.f1(u_[m,:]) ) + self.I_m_mp1[m,:]
+        rhs  = u0 - self.coll.coll.delta_m[m]*( fu_[m,:] ) + self.I_m_mp1[m,:]
       else:
-        rhs  = u[m-1,:] - self.coll.coll.delta_m[m]*( self.prob.f1(u_[m,:]) ) + self.I_m_mp1[m,:]
+        rhs  = u[m-1,:] - self.coll.coll.delta_m[m]*( fu_[m,:] ) + self.I_m_mp1[m,:]
       
       fu_star = self.prob.f1(self.prob.solve_f1(self.coll.coll.delta_m[m], rhs))
       
       # embedded steps
       t = self.coll.coll_sub[m].tleft
       if m==0:
-        usub[m,0,:] = u0 + self.coll.coll_sub[m].delta_m[0]*( fu_star - self.prob.f1(u_[m,:]) + self.prob.f2(u0, t) - self.prob.f2(u0, t) ) + self.I_p_pp1[m,0,:]
+        usub[m,0,:] = u0 + self.coll.coll_sub[m].delta_m[0]*( fu_star - fu_[m,:] + self.prob.f2(u0, t) - self.prob.f2(u0, t) ) + self.I_p_pp1[m,0,:]
       else:
-        usub[m,0,:] = u[m-1,:] + self.coll.coll_sub[m].delta_m[0]*( fu_star - self.prob.f1(u_[m,:]) + self.prob.f2(u[m-1,:], t) - self.prob.f2(u_[m-1,:], t) ) + self.I_p_pp1[m,0,:]
+        usub[m,0,:] = u[m-1,:] + self.coll.coll_sub[m].delta_m[0]*( fu_star - fu_[m,:] + self.prob.f2(u[m-1,:], t) - self.prob.f2(u_[m-1,:], t) ) + self.I_p_pp1[m,0,:]
       
       for p in range(1,self.coll.P):
         t = self.coll.coll_sub[m].nodes[p-1]
-        usub[m,p,:] = usub[m,p-1,:] + self.coll.coll_sub[m].delta_m[p]*( fu_star - self.prob.f1(u_[m,:]) + self.prob.f2(usub[m,p-1,:], t) - self.prob.f2(usub_[m,p-1,:], t) ) + self.I_p_pp1[m,p,:]
+        usub[m,p,:] = usub[m,p-1,:] + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu_[m,:] + self.prob.f2(usub[m,p-1,:], t) - fu_sub_[m,p-1,:] ) + self.I_p_pp1[m,p,:]
 
       # overwrite standard value
       u[m,:]  = usub[m,self.coll.P-1,:]
@@ -198,4 +195,4 @@ class sdc_step():
     except:
       raise
     assert self.prob.lambda_1==0.0, "Can only compute embedded collocation solution analytically if lambda_1=0"
-    return np.linalg.inv(Mcoll).dot(u0*np.ones(self.coll.P))
+    return np.reshape( np.linalg.inv(Mcoll).dot(u0*np.ones(self.coll.P)), (self.coll.P, 1))

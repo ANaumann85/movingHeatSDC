@@ -72,7 +72,8 @@ class test_sdc_step(unittest.TestCase):
     self.setUp(lambda_2=0.0)
     u0 = np.random.rand(1)
     ucoll = self.sdc.get_collocation_solution(u0)
-    self.sdc.update_I_m_mp1(ucoll, np.zeros((self.M,self.P,1)))
+    fu, fu_sub = self.sdc.evaluate_f(ucoll, np.zeros((self.M,self.P,1)))
+    self.sdc.update_I_m_mp1(fu, fu_sub)
     res = self.sdc.residual(u0, ucoll)
     assert res<1e-14, ("Residual not zero for collocation solution. Error: %5.3e" % res)
 
@@ -83,10 +84,11 @@ class test_sdc_step(unittest.TestCase):
     self.setUp(lambda_1 = 0.0, lambda_2=-1.0)
     u0 = 1.0
     for m in range(self.M):
-      ucoll     = self.sdc.get_collocation_solution_sub(u0, m)
-      usub      = np.zeros((self.M,self.P))
-      usub[m,:] = ucoll
-      self.sdc.update_I_p_pp1(np.zeros(self.M), usub)
+      ucoll         = self.sdc.get_collocation_solution_sub(u0, m)
+      usub          = np.zeros((self.M,self.P,self.prob.dim))
+      usub[m,:,:]   = ucoll
+      fu, fu_sub = self.sdc.evaluate_f(np.zeros((self.M,self.prob.dim)), usub)
+      self.sdc.update_I_p_pp1(fu, fu_sub)
       res = self.sdc.sub_residual_m(u0, ucoll, m)
       assert res<1e-14, ("Individual sub-step collocation solution failed to result in zero sub-step residual. Error: %5.3e" % res)
 
@@ -96,12 +98,13 @@ class test_sdc_step(unittest.TestCase):
   def test_sub_collocation_residual(self):
     self.setUp(lambda_1 = 0.0, lambda_2=-1.0)
     u0     = np.random.rand(1)
-    usub   = np.zeros((self.M,self.P))
+    usub   = np.zeros((self.M,self.P,self.prob.dim))
     u0_sub = u0
     for m in range(self.M):
       usub[m,:]  = self.sdc.get_collocation_solution_sub(u0_sub, m)
       u0_sub     = usub[m,-1]
-    self.sdc.update_I_p_pp1(np.zeros(self.M), usub)
+    fu, fu_sub = self.sdc.evaluate_f(np.zeros((self.M,self.prob.dim)), usub)
+    self.sdc.update_I_p_pp1(fu, fu_sub)
     res = self.sdc.sub_residual(u0, usub)
     assert res<1e-14, ("Solution composed of sub-step collocation solutions failed to produce zero for sub_residual. Error: %5.3e" % res)
 
@@ -110,7 +113,7 @@ class test_sdc_step(unittest.TestCase):
   def test_collocation_update(self):
     self.setUp(lambda_1 = 0.0, lambda_2=-1.0)
     u0     = np.random.rand(1)
-    usub   = np.zeros((self.M,self.P))
+    usub   = np.zeros((self.M,self.P,self.prob.dim))
     u0_sub = u0
     for m in range(self.M):
       usub[m,:]  = self.sdc.get_collocation_solution_sub(u0_sub, m)
