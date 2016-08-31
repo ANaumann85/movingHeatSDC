@@ -171,19 +171,20 @@ class sdc_step():
       # embedded steps
       for p in range(self.coll.P):
       
-        if (m==0 and p==0):
+        if p==0:
           t = self.coll.coll_sub[m].tleft
-          usub[m,0,:] = u0 + self.coll.coll_sub[m].delta_m[0]*( fu_star - fu_[m,:]  ) + self.I_p_pp1[m,0,:]
-        elif (p==0):
-          t = self.coll.coll_sub[m].tleft
-          usub[m,0,:] = u[m-1,:] + self.coll.coll_sub[m].delta_m[0]*( fu_star - fu_[m,:]  ) + self.I_p_pp1[m,0,:]
+          if m==0:
+            usub_mm1 = u0
+          else:
+            usub_mm1 = u[m-1,:]
         else:
           t = self.coll.coll_sub[m].nodes[p-1]
-          usub[m,p,:]   = usub[m,p-1,:] + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu_[m,:] + fu_sub[m,p-1,:] - fu_sub_[m,p-1,:] ) + self.I_p_pp1[m,p,:]
-        
+          usub_mm1 = usub[m,p-1,:]
+
+        usub[m,p,:]   = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu_[m,:] + fu_sub[m,p-1,:] - fu_sub_[m,p-1,:] ) + self.I_p_pp1[m,p,:]
         fu_sub[m,p,:] = self.prob.f2(usub[m,p,:], self.coll.coll_sub[m].nodes[p])
         
-      # overwrite standard value
+      # Prepare for next standard time step
       u[m,:]  = usub[m,self.coll.P-1,:]
       u_mm1   = u[m,:]
       fu[m,:] = self.prob.f1(u[m,:])
