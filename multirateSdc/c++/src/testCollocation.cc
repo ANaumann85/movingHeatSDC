@@ -162,18 +162,24 @@ PolynomMonomBase<deg> getPoly()
 	return PolynomMonomBase<deg>(coeffs);
 }
 
-const unsigned M = 2;
-const unsigned P = 2;
-
-int main(int argc, char* argv[])
+template<unsigned M, unsigned P>
+void testMRC(double t0, double t1)
 {
-	testPoly();
 	MultirateCollocation<M, P> coll;
 	auto poly(getPoly<1>());
 	test_m_mp1(poly, coll); //, 0.0, 1.0);
 	test_m_mp1_sub(poly, coll); //, 0.0, 1.0);
 	test_p_pp1(poly, coll);
 	test_p_pp1_sub(poly, coll);
+}
+
+int main(int argc, char* argv[])
+{
+	testPoly();
+	testMRC<2,2>(0,1);
+	testMRC<3,2>(0,1);
+	testMRC<2,2>(1,4);
+	testMRC<3,2>(1,4);
 	cout << "OK" << endl;
 	return 0;
 }

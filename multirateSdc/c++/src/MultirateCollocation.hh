@@ -189,27 +189,23 @@ struct MultirateCollocation
 		}
 
 		for(unsigned m(0); m < M; ++m)
-			for(unsigned q(0); q < P; ++q) {
+			for(unsigned q(0); q < M; ++q) {
 				Helper::LagrangePoly<M> lPoly(coll.nodes, q);
 				Helper::MonomPoly monPoly(toMonom(lPoly));
 				for(unsigned p(0); p < P; ++p) {
 					double ta = p==0 ? coll_sub[m].tleft : coll_sub[m].nodes[p-1];
 					S_mnp[m][q][p] = monPoly.integrate(ta, coll_sub[m].nodes[p]);
-					//std::cout << m << " " << p << " " << q << " " << S_mnp[m][p][q] << std::endl;
 				}
 			}
-		/*
-		S_mnp[0][0]={ 0.22916667,  0.1875    };
-		S_mnp[0][1]={-0.0625  ,   -0.02083333};
-		S_mnp[1][0]={ 0.25   ,     0.08333333};
-		S_mnp[1][1]={ 0.08333333 , 0.25      };*/
 	}
 
-	MultirateCollocation()
+	MultirateCollocation(double t0=0.0, double t1=1.0)
 	{
-		readMatrix(sMat_M, "sdc_quad_weights/radau_right-M2.dat");
-		readMatrix(sMat_P, "sdc_quad_weights/equi_noleft-M2.dat");
-		setInterval(0.0, 1.0);
+		std::stringstream ssM; ssM << "sdc_quad_weights/radau_right-M" << M << ".dat";
+		std::stringstream ssP; ssP << "sdc_quad_weights/equi_noleft-M" << P << ".dat";
+		readMatrix(sMat_M, ssM.str());
+		readMatrix(sMat_P, ssP.str());
+		setInterval(t0, t1);
 #if 0
 		print(sMat_M);
 		print(sMat_P);
@@ -249,7 +245,7 @@ struct MultirateCollocation
 	void integrate_p_pp1_sub(const std::array<Vec, P>& fu_sub , unsigned m, unsigned p, Vec& iVal)
 	{
 		setValue(iVal, 0.0);
-		const typename Collocation<M>::Mat& sMat(coll_sub[m].sMat);
+		const typename Collocation<P>::Mat& sMat(coll_sub[m].sMat);
 		for(unsigned j(0); j < P; ++j) {
 			axpy( sMat[p][j], fu_sub[j], iVal);
 		}
@@ -259,7 +255,7 @@ struct MultirateCollocation
 	std::array<Collocation<P>, M> coll_sub;
 	private:
 	Mat Shat_mp;
-	std::array<Mat, M> S_mnp;
+	std::array<std::array<std::array<double, P>, M>, M> S_mnp;
 	MatMp2 sMat_M;
 	MatPp2 sMat_P;
 
