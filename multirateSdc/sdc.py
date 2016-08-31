@@ -141,10 +141,9 @@ class sdc_step():
 
   '''
   '''
-  def sweep(self, u0, u, usub, fu, fu_sub, u_, fu_, fu_sub_):
+  def sweep(self, u0, u, usub, fu, fu_sub, fu_, fu_sub_):
     try:
       u     = np.reshape(u, (self.coll.M,self.prob.dim))
-      u_    = np.reshape(u_, (self.coll.M,self.prob.dim))
       usub  = np.reshape(usub, (self.coll.M, self.coll.P, self.prob.dim))
       fu    = np.reshape(fu, (self.coll.M,self.prob.dim))
       fu_   = np.reshape(fu_, (self.coll.M,self.prob.dim))
@@ -161,31 +160,32 @@ class sdc_step():
     
     for m in range(self.coll.M):
       
-      # standard step
       if m==0:
-        rhs  = u0 - self.coll.coll.delta_m[m]*( fu_[m,:] ) + self.I_m_mp1[m,:]
-      else:
-        rhs  = u[m-1,:] - self.coll.coll.delta_m[m]*( fu_[m,:] ) + self.I_m_mp1[m,:]
+        u_mm1 = u0
+      
+      # standard step
+      rhs  = u_mm1 - self.coll.coll.delta_m[m]*( fu_[m,:] ) + self.I_m_mp1[m,:]
       
       fu_star = self.prob.f1(self.prob.solve_f1(self.coll.coll.delta_m[m], rhs))
       
-      # first embedded step
-      t = self.coll.coll_sub[m].tleft
-      if m==0:
-        usub[m,0,:] = u0 + self.coll.coll_sub[m].delta_m[0]*( fu_star - fu_[m,:] + self.prob.f2(u0, t) - self.prob.f2(u0, t) ) + self.I_p_pp1[m,0,:]
-      else:
-        usub[m,0,:] = u[m-1,:] + self.coll.coll_sub[m].delta_m[0]*( fu_star - fu_[m,:] + self.prob.f2(u[m-1,:], t) - self.prob.f2(u_[m-1,:], t) ) + self.I_p_pp1[m,0,:]
-    
-      fu_sub[m,0,:] = self.prob.f2(usub[m,0,:], self.coll.coll_sub[m].nodes[0])
+      # embedded steps
+      for p in range(self.coll.P):
       
-      # rest of embedded steps
-      for p in range(1,self.coll.P):
-        t = self.coll.coll_sub[m].nodes[p-1]
-        usub[m,p,:]   = usub[m,p-1,:] + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu_[m,:] + fu_sub[m,p-1,:] - fu_sub_[m,p-1,:] ) + self.I_p_pp1[m,p,:]
+        if (m==0 and p==0):
+          t = self.coll.coll_sub[m].tleft
+          usub[m,0,:] = u0 + self.coll.coll_sub[m].delta_m[0]*( fu_star - fu_[m,:]  ) + self.I_p_pp1[m,0,:]
+        elif (p==0):
+          t = self.coll.coll_sub[m].tleft
+          usub[m,0,:] = u[m-1,:] + self.coll.coll_sub[m].delta_m[0]*( fu_star - fu_[m,:]  ) + self.I_p_pp1[m,0,:]
+        else:
+          t = self.coll.coll_sub[m].nodes[p-1]
+          usub[m,p,:]   = usub[m,p-1,:] + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu_[m,:] + fu_sub[m,p-1,:] - fu_sub_[m,p-1,:] ) + self.I_p_pp1[m,p,:]
+        
         fu_sub[m,p,:] = self.prob.f2(usub[m,p,:], self.coll.coll_sub[m].nodes[p])
-
+        
       # overwrite standard value
       u[m,:]  = usub[m,self.coll.P-1,:]
+      u_mm1   = u[m,:]
       fu[m,:] = self.prob.f1(u[m,:])
 
     return 0
