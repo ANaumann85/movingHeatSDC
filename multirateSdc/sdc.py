@@ -141,34 +141,32 @@ class sdc_step():
 
   '''
   '''
-  def sweep(self, u0, u, usub, fu, fu_sub, fu_, fu_sub_):
+  def sweep(self, u0, u, usub, fu, fu_sub, fu_sub_):
     try:
       u     = np.reshape(u, (self.coll.M,self.prob.dim))
       usub  = np.reshape(usub, (self.coll.M, self.coll.P, self.prob.dim))
       fu    = np.reshape(fu, (self.coll.M,self.prob.dim))
-      fu_   = np.reshape(fu_, (self.coll.M,self.prob.dim))
       fu_sub  = np.reshape(fu_sub, (self.coll.M, self.coll.P, self.prob.dim))
       fu_sub_  = np.reshape(fu_sub_, (self.coll.M, self.coll.P, self.prob.dim))
     
     except:
       raise
     
-    
     # update integral terms
-    self.update_I_m_mp1(fu_, fu_sub_)
-    self.update_I_p_pp1(fu_, fu_sub_)
+    self.update_I_m_mp1(fu, fu_sub_)
+    self.update_I_p_pp1(fu, fu_sub_)
     
     for m in range(self.coll.M):
       
       if m==0:
         u_mm1 = u0
-      
+    
       # standard step
-      rhs  = u_mm1 - self.coll.coll.delta_m[m]*( fu_[m,:] ) + self.I_m_mp1[m,:]
+      rhs  = u_mm1 - self.coll.coll.delta_m[m]*( fu[m,:] ) + self.I_m_mp1[m,:]
       
       fu_star = self.prob.f1(self.prob.solve_f1(self.coll.coll.delta_m[m], rhs))
       
-      # embedded steps
+      # --- embedded steps ---
       for p in range(self.coll.P):
       
         if p==0:
@@ -177,19 +175,20 @@ class sdc_step():
             usub_mm1 = u0
           else:
             usub_mm1 = u[m-1,:]
-          usub[m,p,:]   = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu_[m,:]  ) + self.I_p_pp1[m,p,:]
+          usub[m,p,:]   = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu[m,:]  ) + self.I_p_pp1[m,p,:]
         else:
           t = self.coll.coll_sub[m].nodes[p-1]
           usub_mm1 = usub[m,p-1,:]
-          usub[m,p,:]   = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu_[m,:] + fu_sub[m,p-1,:] - fu_sub_[m,p-1,:] ) + self.I_p_pp1[m,p,:]
+          usub[m,p,:]   = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu[m,:] + fu_sub[m,p-1,:] - fu_sub_[m,p-1,:] ) + self.I_p_pp1[m,p,:]
         
         fu_sub[m,p,:] = self.prob.f2(usub[m,p,:], self.coll.coll_sub[m].nodes[p])
-        
+      # --- end of embedded steps ---
+      
       # Prepare for next standard time step
       u[m,:]  = usub[m,self.coll.P-1,:]
       u_mm1   = u[m,:]
       fu[m,:] = self.prob.f1(u[m,:])
-
+      
     return 0
 
   '''

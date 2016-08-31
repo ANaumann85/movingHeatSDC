@@ -58,17 +58,19 @@ class test_sdc_step(unittest.TestCase):
   def test_sweep_coll_standard_invariant(self):
     self.setUp(lambda_2=0.0)
     u0         = np.random.rand(1)
-    u0 = 1.0
-    ucoll_     = self.sdc.get_collocation_solution(u0)
-    ucoll_sub_ = np.zeros((self.M,self.P,1))
-    fucoll_, fucoll_sub_ = self.sdc.evaluate_f(ucoll_, ucoll_sub_)
+
+    ucoll               = self.sdc.get_collocation_solution(u0)
+    ucoll_sub           = np.zeros((self.M,self.P,1))
+    fucoll, fucoll_sub  = self.sdc.evaluate_f(ucoll, ucoll_sub)
+
+    # store for comparison after sweep
+    u_                  = copy.deepcopy(ucoll)
+    usub_               = copy.deepcopy(ucoll_sub)
     
-    ucoll     = np.zeros((self.M,1))
-    ucoll_sub = np.zeros((self.M,self.P,1))
-    fucoll, fucoll_sub = self.sdc.evaluate_f(ucoll, ucoll_sub)
+    fucoll_sub_ = np.zeros((self.M,self.P,1))
     
-    self.sdc.sweep(u0, ucoll, ucoll_sub, fucoll, fucoll_sub, fucoll_, fucoll_sub_)
-    err = np.linalg.norm((ucoll - ucoll_).flatten(), np.inf)
+    self.sdc.sweep(u0, ucoll, ucoll_sub, fucoll, fucoll_sub, fucoll_sub_)
+    err = np.linalg.norm((ucoll - u_).flatten(), np.inf)
     assert err<1e-14, ("Collocation solution not invariant under standard node SDC sweep with lambda_2=0. Error: %5.3e" % err)
 
   '''
@@ -140,27 +142,25 @@ class test_sdc_step(unittest.TestCase):
     self.sdc = sdc_step(self.M, self.P, tstart, tend, self.prob)
   
     u0 = 1.0
-    u_ = np.zeros((self.M,self.prob.dim))
     u = np.zeros((self.M,self.prob.dim))
-    usub_ = np.zeros((self.M,self.P,self.prob.dim))
     usub = np.zeros((self.M,self.P,self.prob.dim))
     fu = np.zeros((self.M,self.prob.dim))
     fu_sub = np.zeros((self.M,self.P,self.prob.dim))
-    fu_ = np.zeros((self.M,self.prob.dim))
     fu_sub_ = np.zeros((self.M,self.P,self.prob.dim))
     # run predictor
-    self.sdc.predict(u0, u_, usub_, fu_, fu_sub_)
+    self.sdc.predict(u0, u, usub, fu, fu_sub_)
 
     for k in range(15):
       # run standard node sweep...
-      self.sdc.sweep(u0, u, usub, fu, fu_sub, fu_, fu_sub_)
-      update_standard = np.linalg.norm( (u-u_).flatten(), np.inf)
-      update_embedded = np.linalg.norm( (usub-usub_).flatten(), np.inf)
+      u_old = copy.deepcopy(u)
+      usub_old = copy.deepcopy(usub)
+      self.sdc.sweep(u0, u, usub, fu, fu_sub, fu_sub_)
+      
+      update_standard = np.linalg.norm( (u-u_old).flatten(), np.inf)
+      update_embedded = np.linalg.norm( (usub-usub_old).flatten(), np.inf)
       res_standard    = self.sdc.residual(u0, u)
       res_embedded    = self.sdc.sub_residual(u0, usub)
-      u_    = copy.deepcopy(u)
-      usub_ = copy.deepcopy(usub)
-      fu_   = copy.deepcopy(fu)
+      
       fu_sub_ = copy.deepcopy(fu_sub)
 
     c1  = u0 + 1.0/(nu**2+1)
@@ -183,29 +183,28 @@ class test_sdc_step(unittest.TestCase):
     self.sdc = sdc_step(self.M, self.P, tstart, tend, self.prob)
     
     u0      = np.reshape([2.0, 1.0, 0.0, 1.0, 0.0], (self.prob.dim,))
-    u_      = np.zeros((self.M,self.prob.dim))
     u       = np.zeros((self.M,self.prob.dim))
-    usub_   = np.zeros((self.M,self.P,self.prob.dim))
     usub    = np.zeros((self.M,self.P,self.prob.dim))
     fu      = np.zeros((self.M,self.prob.dim))
     fu_sub  = np.zeros((self.M,self.P,self.prob.dim))
-    fu_     = np.zeros((self.M,self.prob.dim))
     fu_sub_ = np.zeros((self.M,self.P,self.prob.dim))
     
     # run predictor
-    self.sdc.predict(u0, u_, usub_, fu_, fu_sub_)
+    self.sdc.predict(u0, u, usub, fu, fu_sub_)
 
     for k in range(25):
+      
+      u_ = copy.deepcopy(u)
+      usub_ = copy.deepcopy(usub)
+      
       # run standard node sweep...
-      self.sdc.sweep(u0, u, usub, fu, fu_sub, fu_, fu_sub_)
+      self.sdc.sweep(u0, u, usub, fu, fu_sub, fu_sub_)
       
       update_standard = np.linalg.norm( (u-u_).flatten(), np.inf)
       update_embedded = np.linalg.norm( (usub-usub_).flatten(), np.inf)
       res_standard    = self.sdc.residual(u0, u)
       res_embedded    = self.sdc.sub_residual(u0, usub)
-      u_    = copy.deepcopy(u)
-      usub_ = copy.deepcopy(usub)
-      fu_   = copy.deepcopy(fu)
+
       fu_sub_ = copy.deepcopy(fu_sub)
     
     assert update_standard<1e-12, ("Standard update failed to converge to zero. Value: %5.3e" % update_standard)
@@ -243,13 +242,11 @@ class test_sdc_step(unittest.TestCase):
       usub  = np.zeros((M,P,prob.dim))
       fu     = np.zeros((M,prob.dim))
       fu_sub  = np.zeros((M,P,prob.dim))
-      fu_     = np.zeros((M,prob.dim))
       fu_sub_  = np.zeros((M,P,prob.dim))
       
-      sdc.predict(u0, u, usub, fu_, fu_sub_)
+      sdc.predict(u0, u, usub, fu, fu_sub_)
       for k in range(K_iter):
-        sdc.sweep(u0, u, usub, fu, fu_sub, fu_, fu_sub_)
-        fu_    = copy.deepcopy(fu)
+        sdc.sweep(u0, u, usub, fu, fu_sub, fu_sub_)
         fu_sub_ = copy.deepcopy(fu_sub)
       u0 = u[M-1]
     ###
