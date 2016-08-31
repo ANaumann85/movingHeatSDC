@@ -141,20 +141,19 @@ class sdc_step():
 
   '''
   '''
-  def sweep(self, u0, u, usub, fu, fu_sub, fu_sub_):
+  def sweep(self, u0, u, usub, fu, fu_sub):
     try:
       u     = np.reshape(u, (self.coll.M,self.prob.dim))
       usub  = np.reshape(usub, (self.coll.M, self.coll.P, self.prob.dim))
       fu    = np.reshape(fu, (self.coll.M,self.prob.dim))
       fu_sub  = np.reshape(fu_sub, (self.coll.M, self.coll.P, self.prob.dim))
-      fu_sub_  = np.reshape(fu_sub_, (self.coll.M, self.coll.P, self.prob.dim))
     
     except:
       raise
     
     # update integral terms
-    self.update_I_m_mp1(fu, fu_sub_)
-    self.update_I_p_pp1(fu, fu_sub_)
+    self.update_I_m_mp1(fu, fu_sub)
+    self.update_I_p_pp1(fu, fu_sub)
     
     for m in range(self.coll.M):
       
@@ -168,7 +167,7 @@ class sdc_step():
       
       # --- embedded steps ---
       for p in range(self.coll.P):
-      
+        
         if p==0:
           t = self.coll.coll_sub[m].tleft
           if m==0:
@@ -179,8 +178,10 @@ class sdc_step():
         else:
           t = self.coll.coll_sub[m].nodes[p-1]
           usub_mm1 = usub[m,p-1,:]
-          usub[m,p,:]   = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu[m,:] + fu_sub[m,p-1,:] - fu_sub_[m,p-1,:] ) + self.I_p_pp1[m,p,:]
+          usub[m,p,:]   = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu[m,:] + fu_sub[m,p-1,:] - fu_pm1_old ) + self.I_p_pp1[m,p,:]
         
+        # save value in fu_sub[m,p,:] for next iteration before overwriting it
+        fu_pm1_old = fu_sub[m,p,:]
         fu_sub[m,p,:] = self.prob.f2(usub[m,p,:], self.coll.coll_sub[m].nodes[p])
       # --- end of embedded steps ---
       

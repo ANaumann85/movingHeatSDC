@@ -69,7 +69,7 @@ class test_sdc_step(unittest.TestCase):
     
     fucoll_sub_ = np.zeros((self.M,self.P,1))
     
-    self.sdc.sweep(u0, ucoll, ucoll_sub, fucoll, fucoll_sub, fucoll_sub_)
+    self.sdc.sweep(u0, ucoll, ucoll_sub, fucoll, fucoll_sub)
     err = np.linalg.norm((ucoll - u_).flatten(), np.inf)
     assert err<1e-14, ("Collocation solution not invariant under standard node SDC sweep with lambda_2=0. Error: %5.3e" % err)
 
@@ -146,23 +146,20 @@ class test_sdc_step(unittest.TestCase):
     usub = np.zeros((self.M,self.P,self.prob.dim))
     fu = np.zeros((self.M,self.prob.dim))
     fu_sub = np.zeros((self.M,self.P,self.prob.dim))
-    fu_sub_ = np.zeros((self.M,self.P,self.prob.dim))
     # run predictor
-    self.sdc.predict(u0, u, usub, fu, fu_sub_)
+    self.sdc.predict(u0, u, usub, fu, fu_sub)
 
     for k in range(15):
       # run standard node sweep...
       u_old = copy.deepcopy(u)
       usub_old = copy.deepcopy(usub)
-      self.sdc.sweep(u0, u, usub, fu, fu_sub, fu_sub_)
+      self.sdc.sweep(u0, u, usub, fu, fu_sub)
       
       update_standard = np.linalg.norm( (u-u_old).flatten(), np.inf)
       update_embedded = np.linalg.norm( (usub-usub_old).flatten(), np.inf)
       res_standard    = self.sdc.residual(u0, u)
       res_embedded    = self.sdc.sub_residual(u0, usub)
-      
-      fu_sub_ = copy.deepcopy(fu_sub)
-
+    
     c1  = u0 + 1.0/(nu**2+1)
     uex = c1*np.exp(nu*tend) - (nu*np.sin(tend) + np.cos(tend))/(nu**2+1)
     err =  abs(uex - u[-1])
@@ -187,10 +184,9 @@ class test_sdc_step(unittest.TestCase):
     usub    = np.zeros((self.M,self.P,self.prob.dim))
     fu      = np.zeros((self.M,self.prob.dim))
     fu_sub  = np.zeros((self.M,self.P,self.prob.dim))
-    fu_sub_ = np.zeros((self.M,self.P,self.prob.dim))
     
     # run predictor
-    self.sdc.predict(u0, u, usub, fu, fu_sub_)
+    self.sdc.predict(u0, u, usub, fu, fu_sub)
 
     for k in range(25):
       
@@ -198,7 +194,7 @@ class test_sdc_step(unittest.TestCase):
       usub_ = copy.deepcopy(usub)
       
       # run standard node sweep...
-      self.sdc.sweep(u0, u, usub, fu, fu_sub, fu_sub_)
+      self.sdc.sweep(u0, u, usub, fu, fu_sub)
       
       update_standard = np.linalg.norm( (u-u_).flatten(), np.inf)
       update_embedded = np.linalg.norm( (usub-usub_).flatten(), np.inf)
@@ -242,12 +238,10 @@ class test_sdc_step(unittest.TestCase):
       usub  = np.zeros((M,P,prob.dim))
       fu     = np.zeros((M,prob.dim))
       fu_sub  = np.zeros((M,P,prob.dim))
-      fu_sub_  = np.zeros((M,P,prob.dim))
       
-      sdc.predict(u0, u, usub, fu, fu_sub_)
+      sdc.predict(u0, u, usub, fu, fu_sub)
       for k in range(K_iter):
-        sdc.sweep(u0, u, usub, fu, fu_sub, fu_sub_)
-        fu_sub_ = copy.deepcopy(fu_sub)
+        sdc.sweep(u0, u, usub, fu, fu_sub)
       u0 = u[M-1]
     ###
     file = open('sdc-model-regression.txt')
@@ -255,4 +249,4 @@ class test_sdc_step(unittest.TestCase):
     for line in file:
       val = np.append(val, float(line))
     defect = np.linalg.norm(val - u0, np.inf)
-    assert defect == 0.0, ("Regression test failed, different from previous version. Defect: %5.3e" % defect)
+    assert defect < 1e-15, ("Regression test failed, different from previous version. Defect: %5.3e" % defect)
