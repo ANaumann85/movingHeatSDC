@@ -163,7 +163,7 @@ PolynomMonomBase<deg> getPoly()
 }
 
 template<unsigned M, unsigned P>
-void testMRC()
+void testMRC(double t0, double t1)
 {
 	MultirateCollocation<M, P> coll;
 	auto poly(getPoly<1>());
@@ -176,8 +176,10 @@ void testMRC()
 int main(int argc, char* argv[])
 {
 	testPoly();
-	testMRC<2,2>();
-	testMRC<3,2>();
+	testMRC<2,2>(0,1);
+	testMRC<3,2>(0,1);
+	testMRC<2,2>(1,4);
+	testMRC<3,2>(1,4);
 	cout << "OK" << endl;
 	return 0;
 }

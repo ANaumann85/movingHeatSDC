@@ -199,13 +199,13 @@ struct MultirateCollocation
 			}
 	}
 
-	MultirateCollocation()
+	MultirateCollocation(double t0=0.0, double t1=1.0)
 	{
 		std::stringstream ssM; ssM << "sdc_quad_weights/radau_right-M" << M << ".dat";
 		std::stringstream ssP; ssP << "sdc_quad_weights/equi_noleft-M" << P << ".dat";
 		readMatrix(sMat_M, ssM.str());
 		readMatrix(sMat_P, ssP.str());
-		setInterval(0.0, 1.0);
+		setInterval(t0, t1);
 #if 0
 		print(sMat_M);
 		print(sMat_P);
