@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 	double l1(-0.1), l2(-1.0);
 	double t0 = 0.0;
 	double te   = 10.0;
-	unsigned nStep(4);
+	unsigned nStep(1);
 	Problem::Vec u0({2.0});
 	double u_ex  = u0[0]*exp((te-t0)*(l1+l2));
 
@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 
 	unsigned kIter(12);
 	typedef MRSdc<Problem::Vec, 5, 4> Method;
-	Method sdc(kIter);
+	Method sdc(kIter, "radau_right", "equi_noleft");
 	std::cout.precision(8);
 #if 0
 	double dt=(te-t0)/nStep;
@@ -80,9 +80,14 @@ int main(int argc, char* argv[])
 		cout << "embedded residual: " << sdc.sub_residual(u0) << std::endl;
 		u0[0] = sdc.us[Method::M-1][0];
 	}
-#else
-	sdc.solve(problem, u0, t0, te, nStep);
-#endif
 	cout << "error:" << abs(u0[0]-u_ex)/abs(u_ex) << endl;
+#else
+	unsigned nTest(10);
+	for(unsigned n(0); n < nTest; ++n, nStep *=2) {
+		u0[0] = 2.0;
+		sdc.solve(problem, u0, t0, te, nStep);
+		cout << "error(" << nStep << "):" << abs(u0[0]-u_ex)/abs(u_ex) << endl;
+	}
+#endif
 	return 0;
 }

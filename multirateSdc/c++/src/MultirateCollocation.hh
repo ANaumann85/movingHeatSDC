@@ -12,6 +12,37 @@
 namespace Helper
 {
 	template<std::size_t M>
+	struct NewtonPoly
+	{
+		typedef std::array<double, M> Vec;
+		typedef std::array<std::array<double, M>, M> Mat;
+		Vec   nodes, coeffs;
+
+		NewtonPoly(const Vec& nodes, const Vec& fVals):
+			nodes(nodes)
+		{
+			Mat mat;
+			for(unsigned i(0); i < M; ++i) {
+				mat[i][0] = fVals[i];
+			}
+			for(unsigned j(2); j < M+1; ++j) 
+				for(unsigned k(j); k < M+1; ++k)
+					mat[k-1][j-1]=(mat[k-1][j-2]-mat[k-2][j-2])/(nodes[k-1]-nodes[k-1-(j-1)]);
+			for(unsigned i(0); i < M; ++i) 
+				coeffs[i] = mat[i][i];
+		}
+
+		double operator()(double x) const
+		{
+			double ret(coeffs[M-1]);
+			for(unsigned i(1); i < M; ++i) {
+				ret = ret*(x-nodes[M-1-i])+coeffs[M-1-i];
+			}
+			return ret;
+		}
+	};
+
+	template<std::size_t M>
 	struct LagrangePoly
 	{
 		typedef std::array<double, M> Vec;
@@ -89,6 +120,7 @@ namespace Helper
 		return ret;
 	}
 }
+
 template<unsigned M >
 struct Collocation
 {
@@ -96,7 +128,7 @@ struct Collocation
 	typedef std::array<std::array<double, M>, M+2> Mat2;
 	typedef std::array<double, M> Vec;
 
-	Vec delta_m, nodes;
+	Vec delta_m, nodes, weights;
 	Mat sMat;
 	double tleft;
 
@@ -111,15 +143,21 @@ struct Collocation
 			}
 			nodes[mr] = t0+dt*data[M][mr];
 			delta_m[mr] = mr == 0 ? nodes[mr]-tleft : nodes[mr]-nodes[mr-1];
+			weights[mr] = dt*data[M+1][mr];
 		}
 	}
 
 	template<typename F >
+	void evalAtNodes(const F& f, Vec& ret) const
+	{
+		for(unsigned i(0); i < M; ++i)
+			ret[i] = f(nodes[i]);
+	}
+	template<typename F >
 	Vec evalAtNodes(const F& f) const
 	{
 		Vec ret;
-		for(unsigned i(0); i < M; ++i)
-			ret[i] = f(nodes[i]);
+		evalAtNodes(f, ret);
 		return ret;
 	}
 };
@@ -189,21 +227,40 @@ struct MultirateCollocation
 		}
 		//print(Shat_mp);
 
+		std::array<double, M> fVals, polyVals;
+		MatMp2 quadLegData;
+		Collocation<M> quadLeg;
+		{
+			std::stringstream ssM; ssM << "sdc_quad_weights/legendre-M" << M << ".dat";
+			readMatrix(quadLegData, ssM.str()); 
+		}
+		for(auto& d:fVals) d= 0.0;
 		for(unsigned m(0); m < M; ++m)
 			for(unsigned q(0); q < M; ++q) {
-				Helper::LagrangePoly<M> lPoly(coll.nodes, q);
-				Helper::MonomPoly monPoly(toMonom(lPoly));
+				fVals[q] = 1.0;
+				Helper::NewtonPoly<M> nPoly(coll.nodes, fVals);
+				/*Helper::LagrangePoly<M> lPoly(coll.nodes, q);
+				Helper::MonomPoly monPoly(toMonom(lPoly));*/
 				for(unsigned p(0); p < P; ++p) {
 					double ta = p==0 ? coll_sub[m].tleft : coll_sub[m].nodes[p-1];
-					S_mnp[m][q][p] = monPoly.integrate(ta, coll_sub[m].nodes[p]);
+					quadLeg.set(quadLegData, ta, coll_sub[m].nodes[p]);
+					quadLeg.evalAtNodes(nPoly, polyVals);
+					//quadLeg.evalAtNodes(monPoly, polyVals);
+					double legVal=0.0;
+					S_mnp[m][q][p] = 0.0;
+					for(unsigned i(0); i < M; ++i) {
+						 legVal += quadLeg.weights[i]*polyVals[i];
+						 S_mnp[m][q][p] = legVal;
+					}
 				}
+				fVals[q]=0.0;
 			}
 	}
 
-	MultirateCollocation(double t0=0.0, double t1=1.0)
+	MultirateCollocation(std::string mQuad, std::string pQuad, double t0=0.0, double t1=1.0)
 	{
-		std::stringstream ssM; ssM << "sdc_quad_weights/radau_right-M" << M << ".dat";
-		std::stringstream ssP; ssP << "sdc_quad_weights/equi_noleft-M" << P << ".dat";
+		std::stringstream ssM; ssM << "sdc_quad_weights/" << mQuad << "-M" << M << ".dat";
+		std::stringstream ssP; ssP << "sdc_quad_weights/" << pQuad << "-M" << P << ".dat";
 		readMatrix(sMat_M, ssM.str());
 		readMatrix(sMat_P, ssP.str());
 		setInterval(t0, t1);
