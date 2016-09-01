@@ -28,14 +28,16 @@ for n in range(nsteps):
   sdc    = sdc_step(M, P, tstart, tend, prob)
   
   # reset buffers to zero
-  u     = np.zeros((M,1,1))
-  usub  = np.zeros((M,P,1))
-  u_    = np.zeros((M,1,1))
-  usub_ = np.zeros((M,P,1))
+  u      = np.zeros((M,1,1))
+  usub   = np.zeros((M,P,1))
+  u_     = np.zeros((M,1,1))
+  usub_  = np.zeros((M,P,1))
+  fu     = np.zeros((M, 1))
+  fu_sub = np.zeros((M,P,1))
 
-  sdc.predict(u0, u_, usub_)
+  sdc.predict(u0, u_, usub_, fu, fu_sub)
   for k in range(K_iter):
-    sdc.sweep(u0, u, usub, u_, usub_)
+    sdc.sweep(u0, u, usub, fu, fu_sub)
     u_    = copy.deepcopy(u)
     usub_ = copy.deepcopy(usub)
 
