@@ -193,7 +193,7 @@ Given values $f(u^k_m)$ and $g(u^k_{m,p})$, the multi-rate SDC sweep then consis
 	\begin{align*}
 		u_{m-1,p}^{k+1} = u_{m-1,p-1}^{k+1} &+ \Delta t_{m,p} \left( f(u^{*}_{m}) - f(u^k_{m}) \right) \\
 			& + \Delta t_{m,p} \left( g(u^{k+1}_{m-1,p-1}) - g(u^k_{m-1,p-1}) \right) \\
-			& + I_{m,p-1}^{p}  \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_m) \right)
+			& + I_{m-1,p-1}^{p}  \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_{m-1}) \right) (?????)
 	\end{align*}
 	for $p=1, \ldots, P$.
 \item Set $u_{m}^{k+1} = u_{m-1,P}^{k+1}$ for use as initial value in next standard step.
