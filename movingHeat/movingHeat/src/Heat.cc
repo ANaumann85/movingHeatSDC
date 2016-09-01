@@ -62,13 +62,13 @@ namespace Helper
   };
 }
 
-Heat::Heat(int nInter):
+Heat::Heat(int nInter, double nu, double alpha):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
   grid_mv(new GridType_MV(hgtmv, mf)),
   gridView(grid->leafGridView()), basis(gridView),
-  nu(1.0e-3), alpha(1.0e-4)
+  nu(nu), alpha(alpha)
 { 
   buildMatrices(); 
 }
@@ -288,9 +288,99 @@ void Heat::fastGrid(double t, const VectorType& yIn, VectorType& out) const
   }
 }
 
+void Heat::addFastMatrix(double t, MatrixType& dest) const
+{
+  //const double center = 2.25-0.1*t;
+  const double dY = -0.1*t;
+  //move grid_mv by dY (indirectly through geometrygrid)
+  mf.dx[1] = dY;
+
+  typedef GridType_MV::LeafGridView GridView_MV;
+
+  Helper::VerticalFaceDescriptor<GridView> facePredicate0;
+  Helper::VerticalFaceDescriptor<GridView_MV> facePredicate1;
+
+  typedef GridGlue::Codim1Extractor<GridView> Extractor0;
+  typedef GridGlue::Codim1Extractor<GridView_MV> Extractor1;
+
+  GridGlue::Codim1Extractor<GridView> domEx(grid->leafGridView(), facePredicate0);
+  GridGlue::Codim1Extractor<GridView_MV> tarEx(grid_mv->leafGridView(), facePredicate1);
+
+  typedef GridGlue::GridGlue<Extractor0,Extractor1> GlueType;
+
+  // Backend for the computation of the remote intersections
+  GridGlue::ContactMerge<dim,double> merger;
+  GlueType glue(domEx, tarEx, &merger);
+
+  glue.build();
+
+  const GridView::IndexSet& indexSet0 = grid->leafGridView().indexSet();
+  const GridView_MV::IndexSet& indexSet1 = grid_mv->leafGridView().indexSet();
+
+  typedef PQkLocalFiniteElementCache<GridType::ctype, double, dim, 1> TestFECache;
+  typedef PQkLocalFiniteElementCache<GridType::ctype, double, dim, 1> FiniteElementCache0;
+  FiniteElementCache0 cache0, cache1;
+  TestFECache testCache;
+
+  for (const auto& intersection : intersections(glue))
+  {
+    const FiniteElementCache0::FiniteElementType& nonmortarFiniteElement = cache0.get(intersection.inside().type());
+    const FiniteElementCache0::FiniteElementType& mortarFiniteElement    = cache1.get(intersection.outside().type());
+    const TestFECache::FiniteElementType&         testFiniteElement      = testCache.get(intersection.inside().type());
+
+    // Select a quadrature rule:  Use order = 2 just for simplicity
+    int quadOrder = 2;
+    const auto& quad = QuadratureRules<double, dim-1>::rule(intersection.type(), quadOrder);
+
+    // Loop over all quadrature points
+    for (size_t l=0; l<quad.size(); l++)
+    {
+      // compute integration element of overlap
+      double integrationElement = intersection.geometry().integrationElement(quad[l].position());
+
+      // quadrature point positions on the reference element
+      FieldVector<double,dim> nonmortarQuadPos = intersection.geometryInInside().global(quad[l].position());
+      //FieldVector<double,dim> mortarQuadPos    = intersection.geometryInOutside().global(quad[l].position());
+
+      //evaluate all shapefunctions at the quadrature point
+      std::vector<FieldVector<double,1> > nonmortarValues,testValues; // mortarValues
+
+      nonmortarFiniteElement.localBasis().evaluateFunction(nonmortarQuadPos,nonmortarValues);
+      //mortarFiniteElement   .localBasis().evaluateFunction(mortarQuadPos,mortarValues);
+      testFiniteElement     .localBasis().evaluateFunction(nonmortarQuadPos,testValues);
+
+      /*double uh(0.0);
+      for (size_t j=0; j<nonmortarValues.size(); j++) { 
+        auto r = indexSet0.subIndex(intersection.inside(), j, dim);
+        uh += nonmortarValues[j]*yIn[r];
+      }
+      const double fVal = (5.0-uh)*alpha;*/
+      // Loop over all shape functions of the test space
+      for (size_t j=0; j<testFiniteElement.size(); j++)
+      {
+        int testR = indexSet0.subIndex(intersection.inside(),j,dim);
+        for (size_t c=0; c<testFiniteElement.size(); c++) {
+          int basC = indexSet0.subIndex(intersection.inside(),c,dim);
+          dest[testR][basC] -= alpha*integrationElement*quad[l].weight()*testValues[j]*nonmortarValues[c];
+        }
+      }
+
+    }
+
+  }
+}
+
 void Heat::writeResult(std::string fname, const VectorType& res)
 {
   VTKWriter<GridView> vtkWriter(gridView);
   vtkWriter.addVertexData(res, "solution");
   vtkWriter.write(fname);
+}
+
+Heat::MatrixType Heat::getLaplaceWithMove(double t)
+{
+  MatrixType lwm;
+  lwm = lapl;
+  addFastMatrix(t, lwm);
+  return lwm;
 }

@@ -87,7 +87,7 @@ class Heat
   void buildMatrices();
 
   public:
-  Heat(int nInter);
+  Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4);
 
   //updates M-a*J(t) with given a
   void updateMatrix(double t, double a)
@@ -149,5 +149,12 @@ class Heat
 
   inline void init(VectorType& dest) const
   { dest.resize(basis.size()); }
+
+  const MatrixType& getLaplacian() const
+  { return lapl; }
+  const MatrixType& getMass() const
+  { return mass; }
+  MatrixType getLaplaceWithMove(double t);
+  void addFastMatrix(double t, MatrixType& dest) const;
 };
 #endif
