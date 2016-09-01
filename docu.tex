@@ -227,8 +227,22 @@ Given values $f(u^k_m)$ and $g(u^k_{m,p})$, the multi-rate SDC sweep then consis
 	\caption{Multi-rate SDC prediction sweep.}
         \SetKwInOut{Input}{input}
          \SetKwInOut{Output}{output}
-         \Input{}
-         \Output{}
+         \Input{$u_0$ and $f(u^k_m)$, $g(u^k_{m,p})$ for $m=1,\ldots,M$ and $p=1,\ldots,P$.}
+         \Output{updated values $f(u^{k+1}_m)$, $g(u^{k+1}_{m,p})$}
+         Compute $I_{m-1}^{m}$, $m=1, \ldots, M$\\
+         Compute $I_{m-1,p-1}^{p}$, $m=1,\ldots,M$; $p=1,\ldots,P$ \\
+         $u^{k+1}_0 \leftarrow u_0$ \\
+         \For{$m=1,M$}{
+         	Solve $u^* = u^{k+1}_{m-1} + \Delta t_m \left( f(u^{*}_{m}) - f(u^k_{m}) \right) + I_{m-1}^{m}$ \\
+		$f^* \leftarrow f(u^*)$\\
+		$u^{k+1}_{m-1,0} \leftarrow u^{k+1}_{m-1}$\\
+		\For{$p=1,P$}{
+			$u_{m-1,p}^{k+1} = u_{m-1,p-1}^{k+1} + \Delta t_{m,p} \left( f(u^{*}) - f(u^k_{m}) \right) + \Delta t_{m,p} \left( g(u^{k+1}_{m-1,p-1}) - g(u^k_{m-1,p-1}) \right)  + I_{m,p-1}^{p}$\\
+			Evaluate $g(u^{k+1}_{m-1,p})$\\
+		}
+		$u^{k+1}_m \leftarrow u^{k+1}_{m-1,P}$\\
+		Evaluate $f(u^{k+1}_m)$\\
+         }
 \end{algorithm2e}
 %
 %
@@ -371,4 +385,26 @@ To assess stability, we need to find a matrix $\ve{R}$ such that
 \end{equation}
 for a single time step of length $1$.
 If $\sigma(\ve{R}) \leq 1$, the series generated from repeatedly applying $\ve{R}$ won't diverge and the method is stable.
+
+\section{Underlying continuous collocation formula}
+The initial value problem over a time step $[T_n, T_{n+1}]$ is
+\begin{equation}
+	\dot{u}(t) = f(u(t)) + g(u(t), t), \ u(T_n) = u_0.
+\end{equation}
+The first interpolation polynomial, with respect to the standard nodes, reads
+\begin{equation}
+	p^s(t) = \sum_{m=1}^{M} u^s_m l_m(t)
+\end{equation}
+with the Lagrange polynomials $l_m$ defined by $l_m(t_j) = \delta_{mj}$.
+Furthermore, we have $M$ interpolation polynomials with respect to the embedded nodes, reading
+\begin{equation}
+	p^e_m(t) = \sum_{p=1}^{P} u_{m,p} l_{m,p}(t)
+\end{equation}
+with $l_{m,p}(t_{m,q}) = \delta_{p q}$.
+From the ODE in integral form, we have the conditions that
+\begin{equation}
+	p^s(t_m) = u_0 + \int_{T_n}^{t_m} f(p^e(s))~ds + \int_{T_n}^{t_m} g(p^e(s))~ds
+\end{equation}
+\todo{is that so? what exactly are the continuous collocation conditions here???}
 \end{document}
+
