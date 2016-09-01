@@ -22,7 +22,8 @@ struct MRSdc
 	MultirateCollocation<M, P> coll;
 	unsigned nIter;
 
-	MRSdc(unsigned nIter):
+	MRSdc(unsigned nIter, std::string mQuad, std::string pQuad):
+		coll(mQuad, pQuad),
 		nIter(nIter)
 	{}
 
@@ -204,11 +205,12 @@ struct MRSdc
 	template<typename F >
 	void solve(F& f, Vec& u0, double t0, double te, unsigned nStep)
 	{
-		double dt=(te-t0)/nStep;
-		for(unsigned s(0); s < nStep; ++s, t0+=dt) {
-			predict(f, u0, t0, t0+dt);
+		double dt=(te-t0)/((double) nStep);
+		for(unsigned s(0); s < nStep; ++s) { //, t0+=dt
+			double t0_ = t0+dt*s;
+			predict(f, u0, t0_, t0_+dt);
 			for(unsigned k(0); k < nIter; ++k) {
-				sweep(f, u0, t0, t0+dt, false);
+				sweep(f, u0, t0_, t0_+dt);
 			}
 			u0 = us[M-1];
 		}

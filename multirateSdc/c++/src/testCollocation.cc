@@ -1,6 +1,7 @@
 inline void setValue(double& d, double v) { d=v; }
 inline void axpy(double a, double x, double& y) { y += a*x ;}
 
+#include <cmath>
 #include "MultirateCollocation.hh"
 #include <array>
 #include <cmath>
@@ -153,6 +154,25 @@ void testPoly()
 	assert(monPoly0.integrate(0.0, 1.0)==1.5);
 }
 
+void testNewtonPoly()
+{
+	array<double, 2 > nodes={1,2}, fVals={2,3};
+	Helper::NewtonPoly<2> nPoly(nodes, fVals);
+	assert(nPoly.coeffs[0] ==2); 
+	assert(nPoly.coeffs[1] ==1); 
+	assert(nPoly(0.5)==1.5);
+
+	array<double, 3 > nodes3={1,2,4}, fVals3={2,3,6};
+	Helper::NewtonPoly<3> nPoly3(nodes3, fVals3);
+	assert(nPoly3.coeffs[0] ==2); 
+	assert(nPoly3.coeffs[1] ==1); 
+	assert(nPoly3.coeffs[2] ==1.0/6.0); 
+
+	assert(nPoly3(1.0)==2.0);
+	assert(nPoly3(2.0)==3.0);
+	assert(nPoly3(4.0)==6.0);
+}
+
 template<unsigned deg >
 PolynomMonomBase<deg> getPoly()
 {
@@ -165,7 +185,7 @@ PolynomMonomBase<deg> getPoly()
 template<unsigned M, unsigned P>
 void testMRC(double t0, double t1)
 {
-	MultirateCollocation<M, P> coll;
+	MultirateCollocation<M, P> coll("radau_right", "equi_noleft");
 	auto poly(getPoly<1>());
 	test_m_mp1(poly, coll); //, 0.0, 1.0);
 	test_m_mp1_sub(poly, coll); //, 0.0, 1.0);
@@ -176,8 +196,10 @@ void testMRC(double t0, double t1)
 int main(int argc, char* argv[])
 {
 	testPoly();
+	testNewtonPoly();
 	testMRC<2,2>(0,1);
 	testMRC<3,2>(0,1);
+	testMRC<3,3>(0,1);
 	testMRC<2,2>(1,4);
 	testMRC<3,2>(1,4);
 	testMRC<2,3>(1,4);

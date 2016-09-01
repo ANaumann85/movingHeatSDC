@@ -1,6 +1,7 @@
 #include "MRSdc.h"
 #include <array>
 #include <cmath>
+#include <fstream>
 
 struct Problem
 {
@@ -63,8 +64,7 @@ int main(int argc, char* argv[])
 	double nu(-1.0);
 	double t0 = 0.0;
 	double te   = 0.5;
-	unsigned nStep(1);
-	unsigned nTest(10);
+	const unsigned nStep(10);
 	Problem::Vec u0({1.0});
 
 	Problem problem(nu);
@@ -75,16 +75,24 @@ int main(int argc, char* argv[])
 	Method sdc(kIter, "radau_right", "radau_right");
 	std::cout.precision(8);
 	double errOld;
-	sdc.solve(problem, u0, t0, te, nStep);
+	double dt=(te-t0)/nStep;
+	std::array<double, nStep> cppRes;
+	for(unsigned i(0); i < nStep; ++i) {
+		double ts=t0+dt*i;
+		sdc.solve(problem, u0, ts, ts+dt, 1);
+		cppRes[i] = u0[0];
+	}
 	errOld = abs(u0[0]-u_ex);
 	cout << "error(" << nStep << "): " << u0[0] << " " << u_ex << " " << errOld << " " << endl;///abs(u_ex)
-	nStep *=2;
-	for( ; nTest > 0; --nTest, nStep *=2) {
-		u0[0] = 1.0;
-		sdc.solve(problem, u0, t0, te, nStep);
-		double errNew = abs(u0[0]-u_ex);
-		cout << "error(" << nStep << "): " << u0[0] << " " << u_ex << " " << errOld << " " << log(errOld/errNew)/log(2) << endl;///abs(u_ex)
-		errOld = errNew;
-	}
+	std::array<double, nStep> pyRes;
+	fstream file("problem_inh.dat");
+	for(unsigned i(0); i < nStep; ++i)
+		file >> pyRes[i];
+	file.close();
+	errOld = abs(pyRes[0]-cppRes[0]);
+	for(unsigned i(1); i < nStep; ++i)
+		errOld = max(errOld, abs(pyRes[i]-cppRes[i]));
+	std::cout << "maxabs(py-cpp):" << errOld << endl;
+	//cout << "pyRes:"; for(auto& d:pyRes) cout << " " << d; cout << endl;
 	return 0;
 }
