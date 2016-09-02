@@ -164,9 +164,9 @@ struct MRSdc
 #endif
 
 		//TODO: should not need M new values
-		std::array<Vec, M> us_new;
+		//std::array<Vec, M> us_new;
 		//TODO: should not need M*P new values
-		UE ue_new;
+		//UE ue_new;
 		Vec u0_step; u0_step = u0;
 		Vec fuStar, fuPm1Old;
 		for(unsigned m(0); m < M; ++m) {
@@ -176,11 +176,11 @@ struct MRSdc
 			axpy(- coll.coll.delta_m[m], fVal, rhs); //rhs=Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)
 			axpy(1.0, I_m_mp1[m], rhs); //rhs=Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)+I^m_{m}
 			f.updateMatrix(coll.coll.nodes[m], coll.coll.delta_m[m]); //set (M-dt_m J(t_m))
-			f.solveMaJ(rhs, us_new[m]); //u^*_m=us_new[m]=(M-dt_m J(t_m))^{-1}(Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)+I^m_{m})
-			f.slow(coll.coll.nodes[m], us_new[m], fuStar); //fuStar=f(t_m, u^*_m)
+			f.solveMaJ(rhs, fuPm1Old); //u^*_m=fuPm1Old=(M-dt_m J(t_m))^{-1}(Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)+I^m_{m})
+			f.slow(coll.coll.nodes[m], fuPm1Old, fuStar); //fuStar=f(t_m, u^*_m)
 
 			//embedded steps
-			double t = coll.coll_sub[m].tleft;
+			//double t = coll.coll_sub[m].tleft;
 			//ue_new[m][0] = u0_step;
 			f.Mv(u0_step, rhs); //rhs=M u^{k+1}_{m}
 			axpy(coll.coll_sub[m].delta_m[0], fuStar, rhs); //rhs=M u^{k+1}_{m}+dt_{m,0}f(t_m, u^*_m)
@@ -196,11 +196,11 @@ struct MRSdc
 			  axpy(-coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);*/
 
 			axpy(1.0, I_p_pp1[m][0], rhs); //rhs = Mu^{k+1}_m+dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)+I^p_{m,0}
-			f.MinvV(rhs, ue_new[m][0]); //ue_new[m][0] = u^{k+1}_m+M^{-1}(dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)+I^{1}_{m,0})
+			f.MinvV(rhs, ue[m][0]); //ue[m][0] = u^{k+1}_m+M^{-1}(dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)+I^{1}_{m,0})
 			fuPm1Old = fue[m][0];
-			f.fast(coll.coll_sub[m].nodes[0], ue_new[m][0], fue[m][0]); //store g(u^{k+1}_{m,p})
+			f.fast(coll.coll_sub[m].nodes[0], ue[m][0], fue[m][0]); //store g(u^{k+1}_{m,p})
 			for(unsigned p(1); p < P; ++p) {
-				f.Mv(ue_new[m][p-1], rhs); //rhs=M u^{k+1}_{m,p-1}
+				f.Mv(ue[m][p-1], rhs); //rhs=M u^{k+1}_{m,p-1}
 				axpy(coll.coll_sub[m].delta_m[p], fuStar, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)
 				//f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^{k}_m)
 				axpy(-coll.coll_sub[m].delta_m[p], fus[m], rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)
@@ -211,20 +211,20 @@ struct MRSdc
 				axpy(-coll.coll_sub[m].delta_m[p], fuPm1Old, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})
 
 				axpy(1.0, I_p_pp1[m][p], rhs);//rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p}
-				f.MinvV(rhs, ue_new[m][p]); //ue_new[m][p]=u^{k+1}_{m,p-1}+M^{-1}(dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p});
+				f.MinvV(rhs, ue[m][p]); //ue[m][p]=u^{k+1}_{m,p-1}+M^{-1}(dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p});
 				fuPm1Old = fue[m][p]; //backup g(u^{k}_{m,p})
-				f.fast(coll.coll_sub[m].nodes[p], ue_new[m][p], fue[m][p]); //store fue[m][p]=g(u^{k+1}_{m,p})
+				f.fast(coll.coll_sub[m].nodes[p], ue[m][p], fue[m][p]); //store fue[m][p]=g(u^{k+1}_{m,p})
 			}
-			u0_step = ue_new[m][P-1]; //u0_step=u^{k+1}_{m,P}
-			us_new[m] = ue_new[m][P-1]; //us_new[m]=u^{k+1}_{m,P}
-			f.slow(coll.coll.nodes[m], us_new[m], fus[m]); //fus[m]=f(t_m, u^k_m)
+			u0_step = ue[m][P-1]; //u0_step=u^{k+1}_{m,P}
+			us[m] = ue[m][P-1]; //us[m]=u^{k+1}_{m,P}
+			f.slow(coll.coll.nodes[m], us[m], fus[m]); //fus[m]=f(t_m, u^k_m)
 		}
 #if 0
 		print(us_new, "us_new");
 		print(ue_new, "ue_new");
 #endif
-		us = us_new;
-		ue = ue_new;
+		//us = us_new;
+		//ue = ue_new;
 
 	}
 
