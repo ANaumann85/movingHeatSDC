@@ -5,6 +5,7 @@
 #include <array>
 #include <iostream>
 #include <string>
+#include <functional>
 
 template<typename Vec, unsigned M_, unsigned P_>
 struct MRSdc
@@ -13,6 +14,7 @@ struct MRSdc
 	static const unsigned P = P_;
 	typedef std::array<Vec, M > US;
 	typedef	std::array<std::array<Vec, P>, M > UE;
+	typedef std::function<void(Vec&)> Init;
 
 	US us, I_m_mp1, fus;
 	Vec fVal, rhs;
@@ -22,10 +24,26 @@ struct MRSdc
 	MultirateCollocation<M, P> coll;
 	unsigned nIter;
 
-	MRSdc(unsigned nIter, std::string mQuad, std::string pQuad):
+	const Init& init;
+
+	MRSdc(const Init& init, unsigned nIter, std::string mQuad, std::string pQuad):
 		coll(mQuad, pQuad),
-		nIter(nIter)
-	{}
+		nIter(nIter),
+		init(init)
+	{
+		init(fVal); init(rhs);
+		for(unsigned m(0); m < M; ++m) {
+			init(us[m]);
+			init(I_m_mp1[m]);
+			init(fus[m]);
+		}
+		for(unsigned m(0); m < M; ++m) 
+			for(unsigned p(0); p < P; ++p) {
+				init(ue[m][p]);
+				init(I_p_pp1[m][p]);
+				init(fue[m][p]);
+			}
+	}
 
 	template<typename F >
 	void evaluate_f(F& f, const US& u, US& fu)
@@ -60,6 +78,7 @@ struct MRSdc
 	void update_I_m_mp1()
 	{
 		Vec	iVal;
+		init(iVal);
 		for(unsigned m(0); m < M; ++m) {
 			coll.integrate_m_mp1(fus, m, I_m_mp1[m]);
 			coll.integrate_m_mp1_sub(fue[m], m, iVal);
@@ -79,6 +98,7 @@ struct MRSdc
 	void update_I_p_pp1()
 	{
 		Vec	iVal;
+		init(iVal);
 		for(unsigned m(0); m < M; ++m) 
 			for(unsigned p(0); p < P; ++p) {
 				coll.integrate_p_pp1( fus, m, p, I_p_pp1[m][p]);
@@ -163,6 +183,7 @@ struct MRSdc
 
 		Vec u0_step; u0_step = u0;
 		Vec fuStar, fuPm1Old;
+		init(fuStar); init(fuPm1Old);
 		for(unsigned m(0); m < M; ++m) {
 			//standard step for u*
 			f.Mv(u0_step, rhs); //rhs=Mu^{k+1}_{m}

@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 
 	unsigned kIter(15);
 	typedef MRSdc<Problem::Vec, 5, 5> Method;
-	Method sdc(kIter, "radau_right", "radau_right");
+	Method sdc([](Problem::Vec& ) {}, kIter, "radau_right", "radau_right");
 	std::cout.precision(8);
 	double errOld;
 	sdc.solve(problem, u0, t0, te, nStep);
