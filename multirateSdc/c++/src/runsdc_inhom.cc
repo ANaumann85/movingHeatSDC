@@ -12,17 +12,23 @@ struct Problem
 		nu(nu)
 	{}
 
-	inline void fast(double t, const Vec& in, Vec& out)
+	inline void fast(double t, const Vec& in, Vec& out) const
 	{ out[0] = sin(t); }
 
-	inline void slow(double t, const Vec& in, Vec& out)
+	inline void slow(double t, const Vec& in, Vec& out) const
 	{ out[0] = nu*in[0]; }
 
 	inline void updateMatrix(double t, double a)
 	{ fac = 1.0/(1.0-a*nu); }
 
-	inline void solveMaJ(const Vec& in, Vec& out)
+	inline void solveMaJ(const Vec& in, Vec& out) const
 	{ out[0] = fac*in[0]; }
+
+	inline void Mv(const Vec& in, Vec& out) const
+	{ out[0] = in[0]; }
+
+	inline void MinvV(const Vec& in, Vec& out) const
+	{ out[0] = in[0]; }
 
 	double uex(double t, double u0)
 	{

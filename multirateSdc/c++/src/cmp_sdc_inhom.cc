@@ -25,6 +25,12 @@ struct Problem
 	inline void solveMaJ(const Vec& in, Vec& out)
 	{ out[0] = fac*in[0]; }
 
+	inline void Mv(const Vec& in, Vec& out) const
+	{ out[0] = in[0]; }
+
+	inline void MinvV(const Vec& in, Vec& out) const
+	{ out[0] = in[0]; }
+
 	double uex(double t, double u0)
 	{
 		double c1=u0 + 1.0/(nu*nu+1);

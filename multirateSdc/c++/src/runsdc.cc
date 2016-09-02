@@ -23,6 +23,12 @@ struct Problem
 
 	inline void solveMaJ(const Vec& in, Vec& out)
 	{ out[0] = fac*in[0]; }
+
+	inline void Mv(const Vec& in, Vec& out) const
+	{ out[0] = in[0]; }
+
+	inline void MinvV(const Vec& in, Vec& out) const
+	{ out[0] = in[0]; }
 };
 
 namespace std

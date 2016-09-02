@@ -80,7 +80,7 @@ struct MRSdc
 			}
 	}
 
-#if 1
+#if 0
 	void print(const US& us, std::string pref="us") const
 	{
 		std::cout << pref << ":[";
@@ -105,29 +105,36 @@ struct MRSdc
 	template<typename F >
 	void predict(F& f, const Vec& u0, double t0, double te, bool setInter=true)
 	{
-		//const double dt = te-t0;´
 		if(setInter)
 			coll.setInterval(t0, te);
 		Vec u0_step; u0_step=u0;
+		Vec swap; swap = u0;
 		for(unsigned m(0); m < M; ++m)
 		{
-			f.updateMatrix(t0, coll.coll.delta_m[m]);
-			f.solveMaJ(u0_step, us[m]);
-		        ue[m][0] = u0_step ;
+			//swap=Mu^0_{m}
+			f.Mv(us[m], swap);
+			//compute u^*_{m+1}, w.r. (M-dtm*J(t_{m+1}))u^*_{m+1}=Mu^0_{m}
+			//us[m]=u^*_{m+1}
+			f.updateMatrix(coll.coll.nodes[m], coll.coll.delta_m[m]);
+			f.solveMaJ(swap, us[m]);
 
-			double t = coll.coll_sub[m].tleft; 
-			f.slow(coll.coll_sub[m].nodes[0], us[m], fVal); 
-		        axpy(coll.coll_sub[m].delta_m[0], fVal, ue[m][0]);
-			f.fast(coll.coll_sub[m].tleft, u0_step, fVal);
-		        axpy(coll.coll_sub[m].delta_m[0], fVal, ue[m][0]);
+			//compute Mu^0_{m,p-1}+dt_{m+1,p} f(u^*_{m+1})+dt_{m+1,p}g(u^0_{m,p-1})
+			f.Mv(u0_step, swap);//swap=Mu^0_{m,0} 
+
+			f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^*_m)
+		        axpy(coll.coll_sub[m].delta_m[0], fVal, swap);//swap=Mu^0_{m,0}+dt_{m,0}f(t_m,u^*_m)
+			f.fast(coll.coll_sub[m].tleft, u0_step, fVal);//fVal=g(t_m, u^0_m)
+		        axpy(coll.coll_sub[m].delta_m[0], fVal, swap);//swap=Mu^0_{m,0}+dt_{m,0}f(t_m,u^*_m)+dt_{m,0}*g(t_m,u^0_m)
+			f.MinvV(swap, ue[m][0]); //ue[m][0]=u^0_{m,0}+M^{-1}(dt_{m,0}f(t_m,u^*_m)+dt_{m,0}*g(t_m,u^0_m))
 
 			for(unsigned p(1); p < P; ++p) {
-				t = coll.coll_sub[m].nodes[p-1];
-				ue[m][p] = ue[m][p-1];
-				f.slow(t, us[m], fVal); //same as before?
-				axpy(coll.coll_sub[m].delta_m[p], fVal, ue[m][p]);
-				f.fast(t, ue[m][p-1], fVal);
-				axpy(coll.coll_sub[m].delta_m[p], fVal, ue[m][p]);
+				//compute Mu^0_{m,p-1}+dt_{m+1,p} f(u^*_{m+1})+dt_{m+1,p}g(u^0_{m,p-1})
+				f.Mv(ue[m][p-1], swap); //swap=Mu^0_{m,p-1}
+				f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^*_m) //same as before!
+				axpy(coll.coll_sub[m].delta_m[p], fVal, swap);//swap=Mu^0_{m,0}+dt_{m,p}f(t_m,u^*_m)
+				f.fast(coll.coll_sub[m].nodes[p-1], ue[m][p-1], fVal);//fVal=g(t_{m,p-1}, u^0_{m,p-1})
+				axpy(coll.coll_sub[m].delta_m[p], fVal, swap); //swap=Mu^0_{m,0}+dt_{m,p}f(t_m,u^*_m)+dt_{m,p}g(t_{m,p-1}, u^0_{m,p-1})
+				f.MinvV(swap, ue[m][p]); //ue[m][p]=u^0_{m,p-1}+M^{-1}(dt_{m,p}f(t_m,u^*_m)+dt_{m,p}*g(t_m,u^0_{m,p-1}))
 			}
 			u0_step = ue[m][P-1];
 			us[m]  = ue[m][P-1];
@@ -152,46 +159,50 @@ struct MRSdc
 		//TODO: should not need M*P new values
 		UE ue_new;
 		Vec u0_step; u0_step = u0;
+		Vec swap;
 		for(unsigned m(0); m < M; ++m) {
-			rhs = u0_step;
-			f.slow(t0, us[m], fVal);
-			axpy(- coll.coll.delta_m[m], fVal, rhs);
-			axpy(1.0, I_m_mp1[m], rhs);
-			f.updateMatrix(t0, coll.coll.delta_m[m]);
-			f.solveMaJ(rhs, us_new[m]);
+			//standard step for u*
+			f.Mv(u0_step, rhs); //rhs=Mu^{k+1}_{m}
+			f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^k_m)
+			axpy(- coll.coll.delta_m[m], fVal, rhs); //rhs=Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)
+			axpy(1.0, I_m_mp1[m], rhs); //rhs=Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)+I^m_{m}
+			f.updateMatrix(coll.coll.nodes[m], coll.coll.delta_m[m]); //set (M-dt_m J(t_m))
+			f.solveMaJ(rhs, us_new[m]); //u^*_m=us_new[m]=(M-dt_m J(t_m))^{-1}(Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)+I^m_{m})
 
+			//embedded steps
 			double t = coll.coll_sub[m].tleft;
-			ue_new[m][0] = u0_step;
-
-			f.slow(t, us_new[m], fVal);
-			axpy(coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);
-			f.slow(t, us[m], fVal);
-			axpy(-coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);
+			//ue_new[m][0] = u0_step;
+			f.Mv(u0_step, swap); //swap=M u^{k+1}_{m}
+			f.slow(coll.coll.nodes[m], us_new[m], fVal); //fVal=f(t_m, u^*_m)
+			axpy(coll.coll_sub[m].delta_m[0], fVal, swap); //swap=M u^{k+1}_{m}+dt_{m,0}f(t_m, u^*_m)
+			f.slow(coll.coll.nodes[m], us[m], fVal); //fVal = f(t_m, u^k_m)
+			axpy(-coll.coll_sub[m].delta_m[0], fVal, swap); //swap = Mu^{k+1}_m+dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)
 
 			//TODO: check!
 			/*f.fast(t, u0_step, fVal);
 			axpy(coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);
 			f.fast(t, u0_step, fVal);
 			axpy(-coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);*/
-			axpy(1.0, I_p_pp1[m][0], ue_new[m][0]);
+
+			axpy(1.0, I_p_pp1[m][0], swap); //swap = Mu^{k+1}_m+dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)+I^p_{m,0}
+			f.MinvV(swap, ue_new[m][0]); //ue_new[m][0] = u^{k+1}_m+M^{-1}(dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)+I^{1}_{m,0})
 			for(unsigned p(1); p < P; ++p) {
-				t = coll.coll_sub[m].nodes[p-1];
-				ue_new[m][p]=ue_new[m][p-1];
+				f.Mv(ue_new[m][p-1], swap); //swap=M u^{k+1}_{m,p-1}
+				f.slow(coll.coll.nodes[m],us_new[m], fVal); //fVal=f(t_m, u^*_m)
+				axpy(coll.coll_sub[m].delta_m[p], fVal, swap); //swap=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)
+				f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^{k}_m)
+				axpy(-coll.coll_sub[m].delta_m[p], fVal, swap); //swap=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)
 
-				f.slow(t,us_new[m], fVal);
-				axpy(coll.coll_sub[m].delta_m[p], fVal, ue_new[m][p]);
-				f.slow(t,us[m], fVal);
-				axpy(-coll.coll_sub[m].delta_m[p], fVal, ue_new[m][p]);
+				f.fast(coll.coll_sub[m].nodes[p-1], ue_new[m][p-1], fVal);//fVal=g(t_{m,p-1}, u^{k+1}_{m,p-1})
+				axpy(coll.coll_sub[m].delta_m[p], fVal, swap); //swap=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)-dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})
+				f.fast(coll.coll_sub[m].nodes[p-1], ue[m][p-1], fVal); //fVal=g(t_{m,p-1}, u^k_{m,p-1})
+				axpy(-coll.coll_sub[m].delta_m[p], fVal, swap); //swap=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)-dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})
 
-				f.fast(t, ue_new[m][p-1], fVal);
-				axpy(coll.coll_sub[m].delta_m[p], fVal, ue_new[m][p]);
-				f.fast(t, ue[m][p-1], fVal);
-				axpy(-coll.coll_sub[m].delta_m[p], fVal, ue_new[m][p]);
-
-				axpy(1.0, I_p_pp1[m][p], ue_new[m][p]);
+				axpy(1.0, I_p_pp1[m][p], swap);//swap=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)-dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p}
+				f.MinvV(swap, ue_new[m][p]); //ue_new[m][p]=u^{k+1}_{m,p-1}+M^{-1}(dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)-dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p});
 			}
-			u0_step = ue_new[m][P-1];
-			us_new[m] = ue_new[m][P-1];
+			u0_step = ue_new[m][P-1]; //u0_step=u^{k+1}_{m,P}
+			us_new[m] = ue_new[m][P-1]; //us_new[m]=u^{k+1}_{m,P}
 		}
 #if 0
 		print(us_new, "us_new");
