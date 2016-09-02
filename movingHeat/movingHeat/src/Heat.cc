@@ -83,6 +83,7 @@ void Heat::buildMatrices()
   fillMatrices();
   /*storeMatrixMarket(lapl, "lapl-matrix.mm");
   storeMatrixMarket(mass, "mass-matrix.mm");*/
+  mSolver.reset(new MSolver(mass));
 }
 
 void Heat::fillMatrices()

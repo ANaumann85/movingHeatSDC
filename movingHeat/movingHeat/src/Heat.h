@@ -75,6 +75,8 @@ class Heat
 
   MatrixType mass, lapl;
   MatrixType mMaJ;
+  typedef UMFPack<MatrixType > MSolver;
+  std::shared_ptr<MSolver> mSolver;
 
   typedef VTKSequenceWriter< GridView > PvdWriter;
   typedef VTKSequenceWriter< GridView_MV > PvdWriter_MV;
@@ -128,6 +130,13 @@ class Heat
   //computes out = M*in
   void Mv(const VectorType& in, VectorType& out) const
   { mass.mv(in, out); }
+
+  //computes out = M^{-1}in
+  void MinvV(VectorType& in, VectorType& out) const
+  { 
+    InverseOperatorResult statistics;
+    mSolver->apply(out, in, statistics);
+  }
 
   void writeResult(std::string fname, const VectorType& sol);
   void startFile(std::string fname, VectorType& data)
