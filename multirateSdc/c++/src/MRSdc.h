@@ -51,10 +51,15 @@ struct MRSdc
 	template<typename F >
 	void update_I_m_mp1(F& f, const US& u, const UE& usub)
 	{
-		Vec	iVal;
 		evaluate_f(f, u, fus);
 		evaluate_f(f, usub, fue);
+		update_I_m_mp1();
 
+	}
+
+	void update_I_m_mp1()
+	{
+		Vec	iVal;
 		for(unsigned m(0); m < M; ++m) {
 			coll.integrate_m_mp1(fus, m, I_m_mp1[m]);
 			coll.integrate_m_mp1_sub(fue[m], m, iVal);
@@ -65,9 +70,15 @@ struct MRSdc
 	template<typename F >
 	void update_I_p_pp1(F& f, const US& u, const UE& usub)
 	{
-		Vec	iVal;
 		evaluate_f(f, u, fus);
 		evaluate_f(f, usub, fue);
+
+		update_I_p_pp1();
+	}
+
+	void update_I_p_pp1()
+	{
+		Vec	iVal;
 		for(unsigned m(0); m < M; ++m) 
 			for(unsigned p(0); p < P; ++p) {
 				coll.integrate_p_pp1( fus, m, p, I_p_pp1[m][p]);
@@ -75,7 +86,6 @@ struct MRSdc
 				axpy(1.0, iVal, I_p_pp1[m][p]);
 			}
 	}
-
 #if 0
 	void print(const US& us, std::string pref="us") const
 	{
@@ -120,6 +130,7 @@ struct MRSdc
 			f.fast(coll.coll_sub[m].tleft, u0_step, fVal);//fVal=g(t_m, u^0_m)
 		        axpy(coll.coll_sub[m].delta_m[0], fVal, rhs);//rhs=Mu^0_{m,0}+dt_{m,0}f(t_m,u^*_m)+dt_{m,0}*g(t_m,u^0_m)
 			f.MinvV(rhs, ue[m][0]); //ue[m][0]=u^0_{m,0}+M^{-1}(dt_{m,0}f(t_m,u^*_m)+dt_{m,0}*g(t_m,u^0_m))
+			f.fast(coll.coll_sub[m].delta_m[0], ue[m][0], fue[m][0]);//store ue[m][0]=g(u^1_{m,0})
 
 			for(unsigned p(1); p < P; ++p) {
 				//compute Mu^0_{m,p-1}+dt_{m+1,p} f(u^*_{m+1})+dt_{m+1,p}g(u^0_{m,p-1})
@@ -129,9 +140,11 @@ struct MRSdc
 				f.fast(coll.coll_sub[m].nodes[p-1], ue[m][p-1], fVal);//fVal=g(t_{m,p-1}, u^0_{m,p-1})
 				axpy(coll.coll_sub[m].delta_m[p], fVal, rhs); //rhs=Mu^0_{m,0}+dt_{m,p}f(t_m,u^*_m)+dt_{m,p}g(t_{m,p-1}, u^0_{m,p-1})
 				f.MinvV(rhs, ue[m][p]); //ue[m][p]=u^0_{m,p-1}+M^{-1}(dt_{m,p}f(t_m,u^*_m)+dt_{m,p}*g(t_m,u^0_{m,p-1}))
+				f.fast(coll.coll_sub[m].delta_m[p], ue[m][p], fue[m][p]);//store fue[m][p]=g(u^1_{m,p})
 			}
 			u0_step = ue[m][P-1];
-			us[m]  = ue[m][P-1];
+			us[m]  = ue[m][P-1]; //update u^1_{m}=u^1_{m,P}
+			f.slow(coll.coll.nodes[m], us[m], fus[m]); //store fus[m]=f(u^1_{m})
 		}
 	}
 
@@ -140,8 +153,10 @@ struct MRSdc
 	{
 		if(setInter)
 			coll.setInterval(t0, te);
-		update_I_m_mp1(f, us, ue);
-		update_I_p_pp1(f, us, ue);
+		/*update_I_m_mp1(f, us, ue);
+		update_I_p_pp1(f, us, ue);*/
+		update_I_m_mp1();
+		update_I_p_pp1();
 
 #if 0
 		print(I_m_mp1, "I_m_mp1");
@@ -153,49 +168,56 @@ struct MRSdc
 		//TODO: should not need M*P new values
 		UE ue_new;
 		Vec u0_step; u0_step = u0;
+		Vec fuStar, fuPm1Old;
 		for(unsigned m(0); m < M; ++m) {
 			//standard step for u*
 			f.Mv(u0_step, rhs); //rhs=Mu^{k+1}_{m}
-		f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^k_m)
-		axpy(- coll.coll.delta_m[m], fVal, rhs); //rhs=Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)
-		axpy(1.0, I_m_mp1[m], rhs); //rhs=Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)+I^m_{m}
-		f.updateMatrix(coll.coll.nodes[m], coll.coll.delta_m[m]); //set (M-dt_m J(t_m))
-		f.solveMaJ(rhs, us_new[m]); //u^*_m=us_new[m]=(M-dt_m J(t_m))^{-1}(Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)+I^m_{m})
+			f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^k_m)
+			axpy(- coll.coll.delta_m[m], fVal, rhs); //rhs=Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)
+			axpy(1.0, I_m_mp1[m], rhs); //rhs=Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)+I^m_{m}
+			f.updateMatrix(coll.coll.nodes[m], coll.coll.delta_m[m]); //set (M-dt_m J(t_m))
+			f.solveMaJ(rhs, us_new[m]); //u^*_m=us_new[m]=(M-dt_m J(t_m))^{-1}(Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)+I^m_{m})
+			f.slow(coll.coll.nodes[m], us_new[m], fuStar); //fuStar=f(t_m, u^*_m)
 
-		//embedded steps
-		double t = coll.coll_sub[m].tleft;
-		//ue_new[m][0] = u0_step;
-		f.Mv(u0_step, rhs); //rhs=M u^{k+1}_{m}
-		f.slow(coll.coll.nodes[m], us_new[m], fVal); //fVal=f(t_m, u^*_m)
-		axpy(coll.coll_sub[m].delta_m[0], fVal, rhs); //rhs=M u^{k+1}_{m}+dt_{m,0}f(t_m, u^*_m)
-		f.slow(coll.coll.nodes[m], us[m], fVal); //fVal = f(t_m, u^k_m)
-		axpy(-coll.coll_sub[m].delta_m[0], fVal, rhs); //rhs = Mu^{k+1}_m+dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)
+			//embedded steps
+			double t = coll.coll_sub[m].tleft;
+			//ue_new[m][0] = u0_step;
+			f.Mv(u0_step, rhs); //rhs=M u^{k+1}_{m}
+			axpy(coll.coll_sub[m].delta_m[0], fuStar, rhs); //rhs=M u^{k+1}_{m}+dt_{m,0}f(t_m, u^*_m)
+			//f.slow(coll.coll.nodes[m], us[m], fVal); //fVal = f(t_m, u^k_m)
+			//axpy(-coll.coll_sub[m].delta_m[0], fVal, rhs); //rhs = Mu^{k+1}_m+dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)
+			axpy(-coll.coll_sub[m].delta_m[0], fus[m], rhs); //rhs = Mu^{k+1}_m+dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)
 
-		//TODO: check!
-		/*f.fast(t, u0_step, fVal);
-		  axpy(coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);
-		  f.fast(t, u0_step, fVal);
-		  axpy(-coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);*/
 
-		axpy(1.0, I_p_pp1[m][0], rhs); //rhs = Mu^{k+1}_m+dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)+I^p_{m,0}
-		f.MinvV(rhs, ue_new[m][0]); //ue_new[m][0] = u^{k+1}_m+M^{-1}(dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)+I^{1}_{m,0})
-		for(unsigned p(1); p < P; ++p) {
-			f.Mv(ue_new[m][p-1], rhs); //rhs=M u^{k+1}_{m,p-1}
-		f.slow(coll.coll.nodes[m],us_new[m], fVal); //fVal=f(t_m, u^*_m)
-		axpy(coll.coll_sub[m].delta_m[p], fVal, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)
-		f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^{k}_m)
-		axpy(-coll.coll_sub[m].delta_m[p], fVal, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)
+			//TODO: check!
+			/*f.fast(t, u0_step, fVal);
+			  axpy(coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);
+			  f.fast(t, u0_step, fVal);
+			  axpy(-coll.coll_sub[m].delta_m[0], fVal, ue_new[m][0]);*/
 
-		f.fast(coll.coll_sub[m].nodes[p-1], ue_new[m][p-1], fVal);//fVal=g(t_{m,p-1}, u^{k+1}_{m,p-1})
-		axpy(coll.coll_sub[m].delta_m[p], fVal, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)-dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})
-		f.fast(coll.coll_sub[m].nodes[p-1], ue[m][p-1], fVal); //fVal=g(t_{m,p-1}, u^k_{m,p-1})
-		axpy(-coll.coll_sub[m].delta_m[p], fVal, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)-dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})
+			axpy(1.0, I_p_pp1[m][0], rhs); //rhs = Mu^{k+1}_m+dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)+I^p_{m,0}
+			f.MinvV(rhs, ue_new[m][0]); //ue_new[m][0] = u^{k+1}_m+M^{-1}(dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)+I^{1}_{m,0})
+			fuPm1Old = fue[m][0];
+			f.fast(coll.coll_sub[m].nodes[0], ue_new[m][0], fue[m][0]); //store g(u^{k+1}_{m,p})
+			for(unsigned p(1); p < P; ++p) {
+				f.Mv(ue_new[m][p-1], rhs); //rhs=M u^{k+1}_{m,p-1}
+				axpy(coll.coll_sub[m].delta_m[p], fuStar, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)
+				//f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^{k}_m)
+				axpy(-coll.coll_sub[m].delta_m[p], fus[m], rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)
 
-		axpy(1.0, I_p_pp1[m][p], rhs);//rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)-dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p}
-		f.MinvV(rhs, ue_new[m][p]); //ue_new[m][p]=u^{k+1}_{m,p-1}+M^{-1}(dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)-dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p});
-		}
-		u0_step = ue_new[m][P-1]; //u0_step=u^{k+1}_{m,P}
-		us_new[m] = ue_new[m][P-1]; //us_new[m]=u^{k+1}_{m,P}
+				//f.fast(coll.coll_sub[m].nodes[p-1], ue_new[m][p-1], fVal);//fVal=g(t_{m,p-1}, u^{k+1}_{m,p-1})
+				axpy(coll.coll_sub[m].delta_m[p], fue[m][p-1], rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})
+				//f.fast(coll.coll_sub[m].nodes[p-1], ue[m][p-1], fVal); //fVal=g(t_{m,p-1}, u^k_{m,p-1})
+				axpy(-coll.coll_sub[m].delta_m[p], fuPm1Old, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})
+
+				axpy(1.0, I_p_pp1[m][p], rhs);//rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p}
+				f.MinvV(rhs, ue_new[m][p]); //ue_new[m][p]=u^{k+1}_{m,p-1}+M^{-1}(dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p});
+				fuPm1Old = fue[m][p]; //backup g(u^{k}_{m,p})
+				f.fast(coll.coll_sub[m].nodes[p], ue_new[m][p], fue[m][p]); //store fue[m][p]=g(u^{k+1}_{m,p})
+			}
+			u0_step = ue_new[m][P-1]; //u0_step=u^{k+1}_{m,P}
+			us_new[m] = ue_new[m][P-1]; //us_new[m]=u^{k+1}_{m,P}
+			f.slow(coll.coll.nodes[m], us_new[m], fus[m]); //fus[m]=f(t_m, u^k_m)
 		}
 #if 0
 		print(us_new, "us_new");
