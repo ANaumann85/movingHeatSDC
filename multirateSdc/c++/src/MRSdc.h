@@ -218,7 +218,7 @@ struct MRSdc
 			double t0_ = t0+dt*s;
 			predict(f, u0, t0_, t0_+dt);
 			for(unsigned k(0); k < nIter; ++k) {
-				sweep(f, u0, t0_, t0_+dt);
+				sweep(f, u0, t0_, t0_+dt, false);
 			}
 			u0 = us[M-1];
 		}
