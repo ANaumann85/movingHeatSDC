@@ -99,6 +99,8 @@ int main(int argc, char* argv[])
 	for(unsigned i(1); i < nStep; ++i)
 		errOld = max(errOld, abs(pyRes[i]-cppRes[i]));
 	std::cout << "maxabs(py-cpp):" << errOld << endl;
+	if(errOld > 5e-13)
+		return 1;
 	//cout << "pyRes:"; for(auto& d:pyRes) cout << " " << d; cout << endl;
 	return 0;
 }

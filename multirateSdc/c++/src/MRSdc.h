@@ -14,10 +14,10 @@ struct MRSdc
 	typedef std::array<Vec, M > US;
 	typedef	std::array<std::array<Vec, P>, M > UE;
 
-	US us, I_m_mp1;
+	US us, I_m_mp1, fus;
 	Vec fVal, rhs;
 
-	UE ue, I_p_pp1;
+	UE ue, I_p_pp1, fue;
 
 	MultirateCollocation<M, P> coll;
 	unsigned nIter;
@@ -51,15 +51,13 @@ struct MRSdc
 	template<typename F >
 	void update_I_m_mp1(F& f, const US& u, const UE& usub)
 	{
-		US fu;
-		UE fu_sub;
 		Vec	iVal;
-		evaluate_f(f, u, fu);
-		evaluate_f(f, usub, fu_sub);
+		evaluate_f(f, u, fus);
+		evaluate_f(f, usub, fue);
 
 		for(unsigned m(0); m < M; ++m) {
-			coll.integrate_m_mp1(fu, m, I_m_mp1[m]);
-			coll.integrate_m_mp1_sub(fu_sub[m], m, iVal);
+			coll.integrate_m_mp1(fus, m, I_m_mp1[m]);
+			coll.integrate_m_mp1_sub(fue[m], m, iVal);
 			axpy(1.0, iVal, I_m_mp1[m]);
 		}
 	}
@@ -67,15 +65,13 @@ struct MRSdc
 	template<typename F >
 	void update_I_p_pp1(F& f, const US& u, const UE& usub)
 	{
-		US fu;
-		UE fu_sub;
 		Vec	iVal;
-		evaluate_f(f, u, fu);
-		evaluate_f(f, usub, fu_sub);
+		evaluate_f(f, u, fus);
+		evaluate_f(f, usub, fue);
 		for(unsigned m(0); m < M; ++m) 
 			for(unsigned p(0); p < P; ++p) {
-				coll.integrate_p_pp1( fu, m, p, I_p_pp1[m][p]);
-				coll.integrate_p_pp1_sub( fu_sub[m] , m, p, iVal);
+				coll.integrate_p_pp1( fus, m, p, I_p_pp1[m][p]);
+				coll.integrate_p_pp1_sub( fue[m] , m, p, iVal);
 				axpy(1.0, iVal, I_p_pp1[m][p]);
 			}
 	}

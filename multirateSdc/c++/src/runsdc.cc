@@ -95,5 +95,7 @@ int main(int argc, char* argv[])
 		cout << "error(" << nStep << "):" << abs(u0[0]-u_ex)/abs(u_ex) << endl;
 	}
 #endif
+	if(abs(u0[0]-u_ex)/abs(u_ex) > 3.2e-12)
+		return 1;
 	return 0;
 }

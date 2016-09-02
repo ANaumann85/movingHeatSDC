@@ -92,5 +92,7 @@ int main(int argc, char* argv[])
 		cout << "error(" << nStep << "): " << u0[0] << " " << u_ex << " " << errOld << " " << log(errOld/errNew)/log(2) << endl;///abs(u_ex)
 		errOld = errNew;
 	}
+	if(errOld > 3e-15)
+		return 1;
 	return 0;
 }

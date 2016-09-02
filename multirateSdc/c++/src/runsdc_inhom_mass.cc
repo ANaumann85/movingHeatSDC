@@ -92,9 +92,11 @@ int main(int argc, char* argv[])
 		u0[0] = 1.0;
 		sdc.solve(problem, u0, t0, te, nStep);
 		double errNew = abs(u0[0]-u_ex);
-		cout << "error(" << nStep << "): " << u0[0] << " " << u_ex << " " << errOld << " " << log(errOld/errNew)/log(2) << endl;///abs(u_ex)
+		cout << "error(" << nStep << "): " << u0[0] << " " << u_ex << " " << errOld << " " << errNew << " " << log(errOld/errNew)/log(2) << endl;///abs(u_ex)
 		errOld = errNew;
 	}
+	if(errOld > 6.7e-15)
+		return 1;
 	return 0;
 }
 
