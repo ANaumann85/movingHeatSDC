@@ -153,8 +153,6 @@ struct MRSdc
 	{
 		if(setInter)
 			coll.setInterval(t0, te);
-		/*update_I_m_mp1(f, us, ue);
-		update_I_p_pp1(f, us, ue);*/
 		update_I_m_mp1();
 		update_I_p_pp1();
 
@@ -163,10 +161,6 @@ struct MRSdc
 		print(I_p_pp1, "I_p_pp1");
 #endif
 
-		//TODO: should not need M new values
-		//std::array<Vec, M> us_new;
-		//TODO: should not need M*P new values
-		//UE ue_new;
 		Vec u0_step; u0_step = u0;
 		Vec fuStar, fuPm1Old;
 		for(unsigned m(0); m < M; ++m) {
@@ -180,12 +174,8 @@ struct MRSdc
 			f.slow(coll.coll.nodes[m], fuPm1Old, fuStar); //fuStar=f(t_m, u^*_m)
 
 			//embedded steps
-			//double t = coll.coll_sub[m].tleft;
-			//ue_new[m][0] = u0_step;
 			f.Mv(u0_step, rhs); //rhs=M u^{k+1}_{m}
 			axpy(coll.coll_sub[m].delta_m[0], fuStar, rhs); //rhs=M u^{k+1}_{m}+dt_{m,0}f(t_m, u^*_m)
-			//f.slow(coll.coll.nodes[m], us[m], fVal); //fVal = f(t_m, u^k_m)
-			//axpy(-coll.coll_sub[m].delta_m[0], fVal, rhs); //rhs = Mu^{k+1}_m+dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)
 			axpy(-coll.coll_sub[m].delta_m[0], fus[m], rhs); //rhs = Mu^{k+1}_m+dt_{m,0}f(t_m, u^*_m)-dt_{m,0}f(t_m, u^k_m)
 
 
@@ -202,12 +192,9 @@ struct MRSdc
 			for(unsigned p(1); p < P; ++p) {
 				f.Mv(ue[m][p-1], rhs); //rhs=M u^{k+1}_{m,p-1}
 				axpy(coll.coll_sub[m].delta_m[p], fuStar, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)
-				//f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^{k}_m)
 				axpy(-coll.coll_sub[m].delta_m[p], fus[m], rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)
 
-				//f.fast(coll.coll_sub[m].nodes[p-1], ue_new[m][p-1], fVal);//fVal=g(t_{m,p-1}, u^{k+1}_{m,p-1})
 				axpy(coll.coll_sub[m].delta_m[p], fue[m][p-1], rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})
-				//f.fast(coll.coll_sub[m].nodes[p-1], ue[m][p-1], fVal); //fVal=g(t_{m,p-1}, u^k_{m,p-1})
 				axpy(-coll.coll_sub[m].delta_m[p], fuPm1Old, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})
 
 				axpy(1.0, I_p_pp1[m][p], rhs);//rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p}
