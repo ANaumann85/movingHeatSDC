@@ -169,12 +169,13 @@ class sdc_step():
         
         if p==0:
           t = self.coll.coll_sub[m].tleft
-          f2_term = 0.0
           # Define initial value for embedded step
           if m==0:
             usub_mm1 = u0
+            f2_term = 0.0
           else:
             usub_mm1 = u[m-1,:]
+            f2_term = self.prob.f2(u[m-1,:], self.coll.coll.nodes[m-1])-fu_pm1_old
           # --------
         else:
           t            = self.coll.coll_sub[m].nodes[p-1]
@@ -189,6 +190,7 @@ class sdc_step():
       # --- end of embedded steps ---
       
       # Prepare for next standard time step
+      fu_pm1_old = self.prob.f2(u[m,:], self.coll.coll.nodes[m])
       u[m,:]  = usub[m,self.coll.P-1,:]
       u_mm1   = u[m,:]
       fu[m,:] = self.prob.f1(u[m,:])
