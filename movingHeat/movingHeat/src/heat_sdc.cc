@@ -22,8 +22,8 @@ int main(int argc, char* argv[])
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
   Heat heat(10);
-  auto init([&heat](Heat::VectorType& d) { heat.init(d); });
   typedef MRSdc<Heat::VectorType, 3,2> Method;
+  Method::Init init([&heat](Heat::VectorType& d) { heat.init(d); });
   Method sdc(init, 5, "radau_right", "equi_noleft");
   Heat::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
