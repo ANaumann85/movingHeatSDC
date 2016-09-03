@@ -20,7 +20,7 @@ Denote as $l_m$, $m=1, \ldots, M$ the Lagrange polynomials satisfying
 \begin{equation}
 	l_m(t_j) = \delta_{m,j} \ \text{for} \ m,j=1, \ldots, M.
 \end{equation}
-In each sub step $[t_m, t_{m+1}]$, place a set of embedded nodes $t_{m,p}$, $m=1,\ldots,M$, $p=1,\ldots,P$ with $t_{m} \leq t_{m,1} < \ldots < t_{m,P} \leq t_{m}$.
+In each sub step $[t_m, t_{m+1}]$ with length $\Delta t_{m+1}=t_{m+1}-t_m$, place a set of embedded nodes $t_{m,p}$, $m=1,\ldots,M$, $p=1,\ldots,P$ with $t_{m} \leq t_{m,1} < \ldots < t_{m,P} \leq t_{m}$.
 Denote as $l_{m,p}$ the Lagrange polynomials for an embedded set of quadrature nodes satisfying
 \begin{equation}
 	l_{m,p}(t_{m,q}) = \delta_{p,q} \ \text{for} \ p,q=1,\ldots,P.
@@ -190,11 +190,13 @@ Given values $f(u^k_m)$ and $g(u^k_{m,p})$, the multi-rate SDC sweep then consis
 		u^{*}_{m} = u^{k+1}_{m-1} + \Delta t_m \left( f(u^{*}_{m}) - f(u^k_{m}) \right) + I_{m-1}^{m} \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_m) \right)
 	\end{equation}
 \item Compute $P$ embedded steps
-	\begin{align*}
+	\begin{equation}
+	\begin{aligned}
 		u_{m-1,p}^{k+1} = u_{m-1,p-1}^{k+1} &+ \Delta t_{m,p} \left( f(u^{*}_{m}) - f(u^k_{m}) \right) \\
 			& + \Delta t_{m,p} \left( g(u^{k+1}_{m-1,p-1}) - g(u^k_{m-1,p-1}) \right) \\
-			& + I_{m-1,p-1}^{p}  \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_{m-1}) \right) (?????)
-	\end{align*}
+			& + I_{m-1,p-1}^{p}  \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_{m-1}) \right) 
+	\end{aligned}
+	\end{equation}
 	for $p=1, \ldots, P$.
 \item Set $u_{m}^{k+1} = u_{m-1,P}^{k+1}$ for use as initial value in next standard step.
 \end{itemize}
