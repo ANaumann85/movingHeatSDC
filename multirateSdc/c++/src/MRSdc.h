@@ -77,12 +77,12 @@ struct MRSdc
 
 	void update_I_m_mp1()
 	{
-		Vec	iVal;
-		init(iVal);
+		//Vec iVal;
+		//init(iVal);
 		for(unsigned m(0); m < M; ++m) {
 			coll.integrate_m_mp1(fus, m, I_m_mp1[m]);
-			coll.integrate_m_mp1_sub(fue[m], m, iVal);
-			axpy(1.0, iVal, I_m_mp1[m]);
+			coll.integrate_m_mp1_sub(fue[m], m, fVal);
+			axpy(1.0, fVal, I_m_mp1[m]);
 		}
 	}
 
@@ -97,13 +97,13 @@ struct MRSdc
 
 	void update_I_p_pp1()
 	{
-		Vec	iVal;
-		init(iVal);
+		/*Vec	iVal;
+		init(iVal);*/
 		for(unsigned m(0); m < M; ++m) 
 			for(unsigned p(0); p < P; ++p) {
 				coll.integrate_p_pp1( fus, m, p, I_p_pp1[m][p]);
-				coll.integrate_p_pp1_sub( fue[m] , m, p, iVal);
-				axpy(1.0, iVal, I_p_pp1[m][p]);
+				coll.integrate_p_pp1_sub( fue[m] , m, p, fVal);
+				axpy(1.0, fVal, I_p_pp1[m][p]);
 			}
 	}
 #if 0
