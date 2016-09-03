@@ -153,7 +153,7 @@ class Heat
 
   //initialize dest with func(x,y)
   template<typename F >
-  void init(VectorType& dest, const F& func) const
+  inline void init(VectorType& dest, const F& func) const
   { Functions::interpolate(basis, dest, func); }
 
   inline void init(VectorType& dest) const
