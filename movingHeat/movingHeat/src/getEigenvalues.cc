@@ -15,7 +15,7 @@ void writeFile(const M& m, std::string fname)
 int main(int argc, char* argv[])
 {
 	MPIHelper::instance(argc, argv);
-	Heat heat(10, 1.0e-3, 1.0);
+	Heat heat(10, 1.0e-1, 1.0);
 	const Heat::MatrixType& L(heat.getLaplacian());
 	const Heat::MatrixType& M(heat.getMass());
 	writeFile(L, "laplace.mm");
