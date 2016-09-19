@@ -1,5 +1,5 @@
 #include "Heat.h"
-#include "Ros2.h"
+#include "MRSdc.h"
 #include <fstream>
 #include <vector>
 
@@ -8,6 +8,10 @@ namespace Dune
   template< typename A, typename B >
   inline void axpy(double a, const BlockVector<A, B>& x, BlockVector<A, B>& y)
   { y.axpy(a, x); }
+
+  template< typename A, typename B >
+  inline void setValue(BlockVector<A, B>& x, const double& v)
+  { x=v; }
 }
 
 std::vector<double > linspace(double v0, double ve, unsigned nValues)
@@ -108,59 +112,61 @@ double getMaxAbsEig(ColMat& cm)
 
 int main(int argc, char* argv[])
 {
-	/*if(argc < 2) {
-		std::cerr << "usage: " << argv[0] << " <Values>\n";
-		return 1;
-	}*/
-	//mpi-helper from dune
-	MPIHelper::instance(argc, argv);
-	double al = 1e-4, nu=1e-3;
-	Heat heat(10, nu, al);
-	Ros2<Heat::VectorType > ros2([&heat](auto& in) { heat.init(in); in=0.0; });
-	Heat::VectorType y0;
-	heat.init(y0); y0 = 0.0;
+  /*if(argc < 2) {
+    std::cerr << "usage: " << argv[0] << " <Values>\n";
+    return 1;
+    }*/
+  //mpi-helper from dune
+  MPIHelper::instance(argc, argv);
+  double al = 1e-4, nu=1e-3;
+  Heat heat(10, nu, al);
+  typedef MRSdc<Heat::VectorType, 3,2> Method;
+  Method::Init init([&heat](Heat::VectorType& d) { heat.init(d); d=0.0; });
+  Method sdc(init, 5, "radau_right", "equi_noleft");
+  Heat::VectorType y0;
+  heat.init(y0); y0 = 0.0;
 
-	unsigned nTests(2);
-	auto alpha_vec=linspace(0.0, 0.001, nTests);
-	auto nu_vec=linspace(0.0, 5.0, 2);
-	ColMat colMat(y0.size(), y0.size());
-	ColMat maxEigs(alpha_vec.size()+1, nu_vec.size()+1);
+  unsigned nTests(2);
+  auto alpha_vec=linspace(0.0, 0.001, nTests);
+  auto nu_vec=linspace(0.0, 5.0, 2);
+  ColMat colMat(y0.size(), y0.size());
+  ColMat maxEigs(alpha_vec.size()+1, nu_vec.size()+1);
 #if 0
-	for(unsigned aln(0); aln < alpha_vec.size(); ++aln) {
-		const double al = alpha_vec[aln];
-		maxEigs(aln+1,0)=al;
-		for(unsigned nun(0); nun < nu_vec.size(); ++nun) {
-			const double nu=nu_vec[nun];
-			maxEigs(0,nun+1)=nu;
+  for(unsigned aln(0); aln < alpha_vec.size(); ++aln) {
+    const double al = alpha_vec[aln];
+    maxEigs(aln+1,0)=al;
+    for(unsigned nun(0); nun < nu_vec.size(); ++nun) {
+      const double nu=nu_vec[nun];
+      maxEigs(0,nun+1)=nu;
 #endif
-			//heat.setParam(nu, al);
-			for(unsigned i(0); i < y0.size(); ++i) {
-				y0[i]=1.0;
-				ros2.solve(heat, y0, 0.0, 1.0, 1);
-				colMat.setColumn(i, y0);
-				y0=0.0;
-			}
+      //heat.setParam(nu, al);
+      for(unsigned i(0); i < y0.size(); ++i) {
+        y0[i]=1.0;
+        sdc.solve(heat, y0, 0.0, 1.0, 1);
+        colMat.setColumn(i, y0);
+        y0=0.0;
+      }
 #if 0
-			maxEigs(aln+1,nun+1)=getMaxAbsEig(colMat);
-			std::cout << "maxEig:" << maxEigs(aln+1, nun+1) << std::endl;
+      maxEigs(aln+1,nun+1)=getMaxAbsEig(colMat);
+      std::cout << "maxEig:" << maxEigs(aln+1, nun+1) << std::endl;
 
-		}
-	}
+    }
+  }
 #endif
 
 #if 1
-	std::fstream mat("mat.mtx", std::ios_base::out | std::ios_base::trunc);
-	mat << colMat;
-	mat.close();
-	std::cout << "maxEig:" <<getMaxAbsEig(colMat)  << std::endl;
+  std::fstream mat("mat.mtx", std::ios_base::out | std::ios_base::trunc);
+  mat << colMat;
+  mat.close();
+  std::cout << "maxEig:" <<getMaxAbsEig(colMat)  << std::endl;
 #endif
 #if 0
-	std::fstream eigOut("stabEigs_ros2.mtx", std::ios_base::out | std::ios_base::trunc);
-	eigOut << maxEigs;
-	eigOut.close();
+  std::fstream eigOut("stabEigs_sdc.mtx", std::ios_base::out | std::ios_base::trunc);
+  eigOut << maxEigs;
+  eigOut.close();
 #endif
 
-	return 0;
+  return 0;
 }
 
 
