@@ -124,11 +124,11 @@ int main(int argc, char* argv[])
 	ColMat colMat(y0.size(), y0.size());
 	ColMat maxEigs(nTests+1, nTests+1);
 	for(unsigned aln(0); aln < alpha_vec.size(); ++aln) {
-		const double al = alpha_vec[aln];
-		maxEigs(aln,0)=al;
+		const double al = -alpha_vec[aln];
+		maxEigs(aln+1,0)=-al;
 		for(unsigned nun(0); nun < nu_vec.size(); ++nun) {
 			const double nu=nu_vec[nun];
-			maxEigs(0,nun)=nu;
+			maxEigs(0,nun+1)=nu;
 			heat.setParam(nu, al);
 			for(unsigned i(0); i < y0.size(); ++i) {
 				y0[i]=1.0;
