@@ -1,25 +1,13 @@
 #include "Heat.h"
-#include "Ros2.h"
 #include <fstream>
 #include <vector>
+#include <complex>
 
 namespace Dune
 {
   template< typename A, typename B >
   inline void axpy(double a, const BlockVector<A, B>& x, BlockVector<A, B>& y)
   { y.axpy(a, x); }
-}
-
-std::vector<double > linspace(double v0, double ve, unsigned nValues)
-{
-	if(nValues < 2)
-		nValues == 2;
-	double dv=(ve-v0)/(nValues-1);
-	std::vector<double > ret(nValues);
-	ret[0]=v0;
-	for(unsigned i(1); i < nValues; ++i)
-		ret[i] = v0+i*dv;
-	return ret;
 }
 
 struct ColMat
@@ -68,7 +56,9 @@ extern "C" {
                        double* VL, const int* LDVL, double* VR, const int* LDVR,
                        double* WORK, const int* LWORK, int* INFO);
 }
-double getMaxAbsEig(ColMat& cm)
+//typedef std::vector<std::complex<double> > VCD;
+typedef std::vector<double > VCD;
+VCD getEig(ColMat& cm)
 {
 	char job('N');
 	int N(cm.nr), one(1), lwork(-1), info(0);	
@@ -90,20 +80,18 @@ double getMaxAbsEig(ColMat& cm)
 	dgeev_(&job, &job, &N, cm.getData(), &N, lr.data(), li.data(), &vl, &one, &vl, &one, work.data(), 
 			&lwork, &info);
 
-#if 1
-	{std::fstream eigs("eigs.mtx",  std::ios_base::out | std::ios_base::trunc);
+#if 0
+	if(0){std::fstream eigs("eigs.mtx",  std::ios_base::out | std::ios_base::trunc);
 		eigs.precision(15);
-	//for(auto& d:lr) eigs << d << std::endl;}
-	for(unsigned i(0); i < N; ++i) eigs << std::complex<double>(lr[i], li[i]) << std::endl;}
+	for(auto& d:lr) eigs << d << std::endl;}
 #endif
 
-	vl = lr[0]*lr[0]+li[0]*li[0];
-	for(unsigned i(1); i < N; ++i) {
-		double cur = lr[i]*lr[i]+li[i]*li[i];
-		if( cur > vl)
-			vl=cur;
+	VCD ret(N);
+	for(unsigned i(0); i < N; ++i) {
+		//ret[i] = std::complex<double>(lr[i], li[i]);
+		ret[i] = lr[i];
 	}
-	return sqrt(vl);
+	return ret;
 }
 
 int main(int argc, char* argv[])
@@ -114,53 +102,37 @@ int main(int argc, char* argv[])
 	}*/
 	//mpi-helper from dune
 	MPIHelper::instance(argc, argv);
-	double al = 1e-4, nu=1e-3;
-	Heat heat(10, nu, al);
-	Ros2<Heat::VectorType > ros2([&heat](auto& in) { heat.init(in); });
-	Heat::VectorType y0;
+	Heat heat(10);
+	Heat::VectorType y0, fVal, fVal0;
 	heat.init(y0); y0 = 0.0;
-
-	unsigned nTests(2);
-	auto alpha_vec=linspace(0.0, 0.001, nTests);
-	auto nu_vec=linspace(0.0, 5.0, 2);
+	heat.init(fVal); fVal=0.0;
+	heat.init(fVal0); fVal0=0.0;
+	double al=1e-2;
+	double nu=1e-1;
+	double delta=1e-8;
+	heat.setParam(nu, al);
 	ColMat colMat(y0.size(), y0.size());
-	ColMat maxEigs(alpha_vec.size()+1, nu_vec.size()+1);
-#if 0
-	for(unsigned aln(0); aln < alpha_vec.size(); ++aln) {
-		const double al = alpha_vec[aln];
-		maxEigs(aln+1,0)=al;
-		for(unsigned nun(0); nun < nu_vec.size(); ++nun) {
-			const double nu=nu_vec[nun];
-			maxEigs(0,nun+1)=nu;
-#endif
-			//heat.setParam(nu, al);
-			for(unsigned i(0); i < y0.size(); ++i) {
-				y0[i]=1.0;
-				ros2.solve(heat, y0, 0.0, 1.0, 1);
-				colMat.setColumn(i, y0);
-				y0=0.0;
-			}
-#if 0
-			maxEigs(aln+1,nun+1)=getMaxAbsEig(colMat);
-			std::cout << "maxEig:" << maxEigs(aln+1, nun+1) << std::endl;
 
-		}
+	heat(0.0, y0, fVal0);
+	for(unsigned i(0); i < y0.size(); ++i) {
+		y0[i]=delta;
+		heat(0.0, y0, fVal);
+		fVal -= fVal0;
+		fVal *= 1.0/delta;
+		colMat.setColumn(i, fVal);
+		y0[i]=0.0;
 	}
-#endif
 
-#if 1
-	std::fstream mat("mat.mtx", std::ios_base::out | std::ios_base::trunc);
-	mat << colMat;
-	mat.close();
-	std::cout << "maxEig:" <<getMaxAbsEig(colMat)  << std::endl;
-#endif
-#if 0
-	std::fstream eigOut("stabEigs_ros2.mtx", std::ios_base::out | std::ios_base::trunc);
-	eigOut << maxEigs;
+	VCD eigs(getEig(colMat));
+
+	std::fstream eigOut("eigsHeat.mtx", std::ios_base::out | std::ios_base::trunc);
+	eigOut.precision(15);
+	for(auto& d : eigs)
+		eigOut << d << std::endl;
 	eigOut.close();
-#endif
 
 	return 0;
 }
+
 
 

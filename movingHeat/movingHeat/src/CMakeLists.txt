@@ -12,6 +12,8 @@ add_executable(getEigenvalues getEigenvalues.cc)
 target_link_libraries(getEigenvalues heat)
 add_executable(stability_ros2 stability_ros2.cc)
 target_link_libraries(stability_ros2 heat)
+add_executable(getJacobian getJacobian.cc)
+target_link_libraries(getJacobian heat)
 
 target_link_dune_default_libraries("heat_imexEuler")
 target_link_dune_default_libraries("heat_ros2")
