@@ -90,6 +90,8 @@ class Heat
 
   public:
   Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4);
+  //sets nu and alpha to the new values and updates matrices
+  void setParam(double nu, double alpha);
 
   //updates M-a*J(t) with given a
   void updateMatrix(double t, double a)

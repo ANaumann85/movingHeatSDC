@@ -73,6 +73,13 @@ Heat::Heat(int nInter, double nu, double alpha):
   buildMatrices(); 
 }
 
+void Heat::setParam(double nu, double alpha)
+{
+	this->nu=nu;
+	this->alpha=alpha;
+	buildMatrices(); 
+}
+
 void Heat::buildMatrices()
 {
   //set nnz structure
