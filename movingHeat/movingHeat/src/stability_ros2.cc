@@ -44,6 +44,9 @@ struct ColMat
 	inline const double& operator()(unsigned r, unsigned c) const
 	{ return data[c*nr+r]; }
 
+	inline double& operator()(unsigned r, unsigned c)
+	{ return data[c*nr+r]; }
+
 	double* getData() 
 	{ return data.data(); }
 };
@@ -73,9 +76,11 @@ double getMaxAbsEig(ColMat& cm)
 
 	double vl;
 	
+#if 0
 	{std::fstream mat("mat_in.mtx", std::ios_base::out | std::ios_base::trunc);
 	mat << cm;
 	mat.close();}
+#endif
 	//request memory
 	dgeev_(&job, &job, &N, cm.getData(), &N, lr.data(), li.data(), &vl, &one, &vl, &one, work.data(), 
 			&lwork, &info);
@@ -85,9 +90,11 @@ double getMaxAbsEig(ColMat& cm)
 	dgeev_(&job, &job, &N, cm.getData(), &N, lr.data(), li.data(), &vl, &one, &vl, &one, work.data(), 
 			&lwork, &info);
 
-	{std::fstream eigs("eigs.mtx",  std::ios_base::out | std::ios_base::trunc);
+#if 0
+	if(0){std::fstream eigs("eigs.mtx",  std::ios_base::out | std::ios_base::trunc);
 		eigs.precision(15);
 	for(auto& d:lr) eigs << d << std::endl;}
+#endif
 
 	vl = lr[0]*lr[0]+li[0]*li[0];
 	for(unsigned i(1); i < N; ++i) {
@@ -111,26 +118,39 @@ int main(int argc, char* argv[])
 	Heat::VectorType y0;
 	heat.init(y0); y0 = 0.0;
 
-	auto alpha_vec=linspace(0.0, 35.0, 4);
-	auto nu_vec=linspace(0.0, 5.0, 4);
+	unsigned nTests(50);
+	auto alpha_vec=linspace(0.0, 0.01, nTests);
+	auto nu_vec=linspace(0.0, 5.0, nTests);
 	ColMat colMat(y0.size(), y0.size());
-	double al(10.0), nu(1.0);
-	//  for(double& al : alpha_vec) {
-	//	  for(double& nu: nu_vec) {
-	heat.setParam(nu, al);
-	for(unsigned i(0); i < y0.size(); ++i) {
-		y0[i]=1.0;
-		ros2.solve(heat, y0, 0.0, 1.0, 1);
-		colMat.setColumn(i, y0);
-		y0=0.0;
-	}
-	//	  }
-	//  }
+	ColMat maxEigs(nTests+1, nTests+1);
+	for(unsigned aln(0); aln < alpha_vec.size(); ++aln) {
+		const double al = alpha_vec[aln];
+		maxEigs(aln,0)=al;
+		for(unsigned nun(0); nun < nu_vec.size(); ++nun) {
+			const double nu=nu_vec[nun];
+			maxEigs(0,nun)=nu;
+			heat.setParam(nu, al);
+			for(unsigned i(0); i < y0.size(); ++i) {
+				y0[i]=1.0;
+				ros2.solve(heat, y0, 0.0, 1.0, 1);
+				colMat.setColumn(i, y0);
+				y0=0.0;
+			}
+			maxEigs(aln+1,nun+1)=getMaxAbsEig(colMat);
+			std::cout << "maxEig:" << maxEigs(aln+1, nun+1) << std::endl;
 
+		}
+	}
+
+#if 0
 	std::fstream mat("mat.mtx", std::ios_base::out | std::ios_base::trunc);
 	mat << colMat;
 	mat.close();
-	std::cout << "maxEig:" << getMaxAbsEig(colMat);
+#endif
+	std::fstream eigOut("stabEigs_ros2.mtx", std::ios_base::out | std::ios_base::trunc);
+	eigOut << maxEigs;
+	eigOut.close();
+
 	return 0;
 }
 
