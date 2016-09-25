@@ -83,13 +83,13 @@ class Heat
   std::shared_ptr<PvdWriter > pvdWriter;
   std::shared_ptr<PvdWriter_MV > pvdWriter_mv;
 
-  double nu, alpha;
+  double nu, alpha, v0;
     
   void fillMatrices();
   void buildMatrices();
 
   public:
-  Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4);
+  Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0);
   //sets nu and alpha to the new values and updates matrices
   void setParam(double nu, double alpha);
 
@@ -117,9 +117,14 @@ class Heat
   //adds the fast term, i.e. out += B(t)*yIn+b(t)
   void fastGrid(double t, const VectorType& yIn, VectorType& out) const;
   void fastRect(double t, const VectorType& yIn, VectorType& out) const;
+  void fastFull(double t, const VectorType& yIn, VectorType& out) const;
   void fastAdd(double t, const VectorType& yIn, VectorType& out) const
   //{ fastRect(t, yIn, out); }
-  { fastGrid(t, yIn, out); }
+  //{ fastGrid(t, yIn, out); }
+  { fastFull(t, yIn, out); }
+
+  template<typename F >
+  void fastBoundary(const VectorType& yIn, const F& flux, VectorType& out) const;
 
   //sets the fast term, i.e. out = B(t)*yIn+b(t)
   void fast(double t, const VectorType& yIn, VectorType& out) const

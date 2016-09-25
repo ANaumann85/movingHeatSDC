@@ -62,13 +62,13 @@ namespace Helper
   };
 }
 
-Heat::Heat(int nInter, double nu, double alpha):
+Heat::Heat(int nInter, double nu, double alpha, double v0):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
   grid_mv(new GridType_MV(hgtmv, mf)),
   gridView(grid->leafGridView()), basis(gridView),
-  nu(nu), alpha(alpha)
+  nu(nu), alpha(alpha), v0(v0)
 { 
   buildMatrices(); 
 }
@@ -169,7 +169,19 @@ void Heat::fillMatrices()
 void Heat::fastRect(double t, const VectorType& yIn, VectorType& out) const
 {
   const double center = 2.25-0.1*t;
+  auto rect = [center](const auto& x) { return std::abs(center-x[1]) <= 0.25 ? 1.0 : 0.0 ; };
   //add the neumann part
+  fastBoundary(yIn, [&](double uh, const auto& posGlobal) { return rect(posGlobal)*alpha*(v0-uh); }, out);
+}
+
+void Heat::fastFull(double t, const VectorType& yIn, VectorType& out) const
+{
+  fastBoundary(yIn, [&](double uh, const auto& ) { return alpha*(v0-uh); }, out); 
+}
+
+template<typename F >
+void Heat::fastBoundary(const VectorType& yIn, const F& flux, VectorType& out) const
+{
   auto localView = basis.localView();
   auto localIndexSet = basis.localIndexSet();
   for (const auto& bdEl : elements(gridView))
@@ -200,8 +212,7 @@ void Heat::fastRect(double t, const VectorType& yIn, VectorType& out) const
             const auto row = localIndexSet.index(i);
             uh += shapeFunctionValues[i]*yIn[row];
           }
-          auto rect = [center](const auto& x) { return std::abs(center-x[1]) <= 0.25 ? 1.0 : 0.0 ; };
-          const double fVal = alpha*(5.0-uh)*rect(posGlobal);
+          const double fVal = flux(uh, posGlobal); 
           //std::cout << "shapeVals:[";
           for(unsigned i(0); i < localFiniteElement.size(); ++i) {
             //std::cout << shapeFunctionValues[i] << " ";
