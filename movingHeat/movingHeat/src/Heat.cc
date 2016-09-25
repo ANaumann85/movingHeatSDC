@@ -293,7 +293,7 @@ void Heat::fastGrid(double t, const VectorType& yIn, VectorType& out) const
         auto r = indexSet0.subIndex(intersection.inside(), j, dim);
         uh += nonmortarValues[j]*yIn[r];
       }
-      const double fVal = (5.0-uh)*alpha;
+      const double fVal = (v0-uh)*alpha;
       // Loop over all shape functions of the test space
       for (size_t j=0; j<testFiniteElement.size(); j++)
       {

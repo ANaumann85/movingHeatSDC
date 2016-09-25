@@ -120,8 +120,8 @@ class Heat
   void fastFull(double t, const VectorType& yIn, VectorType& out) const;
   void fastAdd(double t, const VectorType& yIn, VectorType& out) const
   //{ fastRect(t, yIn, out); }
-  //{ fastGrid(t, yIn, out); }
-  { fastFull(t, yIn, out); }
+  { fastGrid(t, yIn, out); }
+  //{ fastFull(t, yIn, out); }
 
   template<typename F >
   void fastBoundary(const VectorType& yIn, const F& flux, VectorType& out) const;
