@@ -121,8 +121,8 @@ int main(int argc, char* argv[])
   Heat::VectorType y0;
   heat.init(y0); y0 = 0.0;
 
-  unsigned nTests(5);
-  auto alpha_vec=linspace(0.0, 10.0, 4*nTests);
+  unsigned nTests(20);
+  auto alpha_vec=linspace(0.0, 4.0, nTests);
   auto nu_vec=linspace(0.0, 5.0, nTests);
   ColMat colMat(y0.size(), y0.size());
   ColMat maxEigs(alpha_vec.size()+1, nu_vec.size()+1);
