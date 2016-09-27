@@ -55,12 +55,12 @@ for kk in range(np.size(alpha_vec)):
       usub  = np.zeros((M,P,prob.dim))
       u_    = np.zeros((M,prob.dim))
       usub_ = np.zeros((M,P,prob.dim))
+      fu     = np.zeros((M,prob.dim))
+      fu_sub  = np.zeros((M,P,prob.dim))
 
-      sdc.predict(u0[:,mm], u_, usub_)
+      sdc.predict(u0[:,mm], u, usub, fu, fu_sub)
       for k in range(K_iter):
-        sdc.sweep(u0[:,mm], u, usub, u_, usub_)
-        u_    = copy.deepcopy(u)
-        usub_ = copy.deepcopy(usub)
+        sdc.sweep(u0[:,mm], u, usub, fu, fu_sub)
       #res = sdc.residual(u0[:,mm], u)
       #res_sub = sdc.sub_residual(u0[:,mm], usub)
       #print ("standard residual: %5.3e" % res)

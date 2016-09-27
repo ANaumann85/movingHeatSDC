@@ -16,6 +16,7 @@ add_executable(stability_sdc stability_sdc.cc)
 target_link_libraries(stability_sdc heat)
 add_executable(getJacobian getJacobian.cc)
 target_link_libraries(getJacobian heat)
+add_executable(stability_model_sdc stability_model_sdc.cc)
 
 target_link_dune_default_libraries("heat_imexEuler")
 target_link_dune_default_libraries("heat_ros2")
