@@ -7,6 +7,10 @@ add_executable(runsdc_inhom src/runsdc_inhom.cc)
 add_executable(runsdc_inhom_mass src/runsdc_inhom_mass.cc)
 add_executable(testCollocation src/testCollocation.cc)
 add_executable(cmp_sdc_inhom src/cmp_sdc_inhom.cc)
+add_executable(runsdc_model src/runsdc_model.cc)
+
+add_executable(stability_model_sdc src/stability_model_sdc.cc)
+target_link_libraries(stability_model_sdc lapack)
 
 enable_testing()
 add_test(cmp_sdc_inhom cmp_sdc_inhom)

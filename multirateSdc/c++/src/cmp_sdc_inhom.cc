@@ -95,11 +95,11 @@ int main(int argc, char* argv[])
 	for(unsigned i(0); i < nStep; ++i)
 		file >> pyRes[i];
 	file.close();
-	errOld = abs(pyRes[0]-cppRes[0]);
+	errOld = abs(pyRes[0]-cppRes[0])/abs(pyRes[0]);
 	for(unsigned i(1); i < nStep; ++i)
-		errOld = max(errOld, abs(pyRes[i]-cppRes[i]));
+		errOld = max(errOld, abs(pyRes[i]-cppRes[i])/abs(pyRes[i]));
 	std::cout << "maxabs(py-cpp):" << errOld << endl;
-	if(errOld > 5e-13)
+	if(errOld > 6e-13)
 		return 1;
 	//cout << "pyRes:"; for(auto& d:pyRes) cout << " " << d; cout << endl;
 	return 0;
