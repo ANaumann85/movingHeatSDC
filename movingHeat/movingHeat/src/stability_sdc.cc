@@ -35,15 +35,16 @@ int main(int argc, char* argv[])
   Heat::VectorType y0;
   heat.init(y0); y0 = 0.0;
 
-  unsigned nTests(5);
-  auto alpha_vec=linspace(0.0, 15, nTests);
+  unsigned nTests(10);
+  auto alpha_vec=linspace(0.0, 1.0e-3, nTests);
   auto nu_vec=linspace(0.0, 2.0, nTests);
+  //std::vector<double> nu_vec(1); nu_vec[0]=2.0;
   ColMat colMat(y0.size(), y0.size());
   ColMat maxEigs(alpha_vec.size()+1, nu_vec.size()+1);
 #if 1
   for(unsigned nun(0); nun < nu_vec.size(); ++nun) {
-	  const double nu=nu_vec[nun];
-	  maxEigs(0,nun+1)=nu;
+    const double nu=nu_vec[nun];
+    maxEigs(0,nun+1)=nu;
     bool hasSpecial(false);
     for(unsigned aln(0); aln < alpha_vec.size(); ++aln) {
       const double al = alpha_vec[aln];
