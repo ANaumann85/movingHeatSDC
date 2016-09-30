@@ -19,11 +19,11 @@ import matplotlib.pyplot as plt
 #\dot u_{N}=(u_{N-1}-2u_N+u_1)/h^2+al*tri(x_N-at,h)(v_0-u_N)/h
 #utilizing tri(x,h)=1-|x/h| 0<=x<h, 0 else
 
-alpha=1.0 #5e-4
-nu=1.0 #1e-3
+alpha=16.0/248.28 #5e-4
+nu=alpha #1e-3
 L=1.0
-N=10
-h=L/N
+N=9
+h=L/(N-1)
 a=1
 t0=0.0
 te=1.0
@@ -32,7 +32,7 @@ nT=5
 A=np.diag(np.ones(N-1),-1)-2*np.diag(np.ones(N))+np.diag(np.ones(N-1),1)
 A[0,N-1]=1
 A[N-1,0]=1
-A=A*nu
+A=A*nu/(h*h)
 
 eigLapl, v=dLA.eigh(A)
 eigLapl=np.sort(eigLapl)
@@ -68,8 +68,8 @@ eigsN4=np.sort([-0.07957747152, -1.272238367, -4.341755173, -9.173960806, -16.16
 eigsN4=eigsN4[::-1]
 posN4=range(N-1,N-len(eigsN4)-1,-1)
 
-plt.plot(posN2, eigsN2, 'x', label='N=2')
-plt.plot(posN3, eigsN3, 'x', label='N=3')
+#plt.plot(posN2, eigsN2, 'x', label='N=2')
+#plt.plot(posN3, eigsN3, 'x', label='N=3')
 plt.plot(posN4, eigsN4, 'x', label='N=4')
 plt.legend(loc='upper center', bbox_to_anchor=(0.5,-0.0), fancybox=True, shadow=True, ncol=3)
 #plt.legend(loc='best')#, ncol=6)
