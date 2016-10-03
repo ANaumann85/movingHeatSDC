@@ -132,8 +132,9 @@ class sdc_step():
           fu_sub[m,p,:] = self.prob.f2(usub[m,p,:], self.coll.coll_sub[m].nodes[p])
         
         # overwrite standard value
-        u0_step = usub[m,self.coll.P-1,:]
-        u[m,:]  = usub[m,self.coll.P-1,:]
+        u0_step = np.copy(usub[m,self.coll.P-1,:])
+        #u0_step = self.prob.solve_f1(self.coll.coll.delta_m[m], u0_step)
+        u[m,:] = np.copy(u0_step)
         fu[m,:] = self.prob.f1(u[m,:])
 
     return 0
@@ -190,8 +191,10 @@ class sdc_step():
       # --- end of embedded steps ---
       
       # Prepare for next standard time step
-      u[m,:]  = usub[m,self.coll.P-1,:]
-      u_mm1   = u[m,:]
+      u[m,:]  = np.copy(usub[m,self.coll.P-1,:])
+      #rhs     = u_mm1 - self.coll.coll.delta_m[m]*( self.prob.f1(usub[m, self.coll.P-1,:])) + self.I_m_mp1[m,:]
+      #u[m,:] = self.prob.solve_f1(self.coll.coll.delta_m[m], rhs)
+      u_mm1   = np.copy(u[m,:])
       fu[m,:] = self.prob.f1(u[m,:])
       
     return 0
