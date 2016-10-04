@@ -24,7 +24,7 @@ fig1  = plt.figure(0)
 fig2 =plt.figure(1)
 cmap=plt.get_cmap('Accent')
 for P in P_vec:
-  fname='stability-K-%d-M-%d-P-%d-nue_%d.txt' %(K_iter, M, P, nue)
+  fname='stability-K-%d-M-%d-P-%d-nue_%d_implStep.txt' %(K_iter, M, P, nue)
   stab=np.loadtxt(fname)
   scal=(P-M)/(M+11.0)
   curColor=cmap(scal)
@@ -42,7 +42,7 @@ plt.xlabel(r'$\nu$', fontsize=fs)
 #plt.ylabel(r'$a$', fontsize=fs)
 plt.ylabel(r'$\alpha$', fontsize=fs)
 plt.legend(bbox_to_anchor=(-0.1, -0.02, 1., -0.102), loc=2,ncol=len(P_vec)/2)
-filename = 'stabilityP-K'+str(K_iter)+'-M'+str(M)+'-nue_'+str(nue)+'.pdf'
+filename = 'stabilityP-K'+str(K_iter)+'-M'+str(M)+'-nue_'+str(nue)+'_implStep.pdf'
 fig2.savefig(filename, bbox_inches='tight')
 call(["pdfcrop", filename, filename])
 #plt.show()

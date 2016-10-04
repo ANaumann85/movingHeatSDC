@@ -31,14 +31,12 @@ for kk in range(np.size(lambda_1)):
     # reset buffers to zero
     u     = np.zeros((M,1))
     usub  = np.zeros((M,P))
-    u_    = np.zeros((M,1))
-    usub_ = np.zeros((M,P))
+    fu     = np.zeros((M,prob.dim))
+    fu_sub  = np.zeros((M,P,prob.dim))
 
-    sdc.predict(u0, u_, usub_)
+    sdc.predict(u0, u, usub, fu, fu_sub)
     for k in range(K_iter):
-      sdc.sweep(u0, u, usub, u_, usub_)
-      u_    = copy.deepcopy(u)
-      usub_ = copy.deepcopy(usub)
+      sdc.sweep(u0, u, usub, fu, fu_sub)
 
     err[kk,ll] = abs(u[M-1] - u_ex)/abs(u_ex)
 

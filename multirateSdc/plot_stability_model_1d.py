@@ -17,8 +17,8 @@ tstart = 0.0
 tend   = 1.0
 
 a = 0.2
-alpha_vec = np.linspace(0.0, 5.0, 40)
-nu_vec    = np.linspace(0.0, 10.0,  40)
+alpha_vec = np.linspace(0.0, 1.0, 20)
+nu_vec    = np.linspace(0.0, 10.0, 20)
 
 stab     = np.zeros((np.size(alpha_vec), np.size(nu_vec)))
 stab_ros = np.zeros((np.size(alpha_vec), np.size(nu_vec)))
@@ -26,7 +26,7 @@ stab_std = np.zeros((np.size(alpha_vec), np.size(nu_vec)))
 
 stab_c = np.zeros((np.size(alpha_vec), np.size(nu_vec)))
 
-K_iter = 4
+K_iter = 2
 
 for kk in range(np.size(alpha_vec)):
   for ll in range(np.size(nu_vec)):
@@ -86,6 +86,9 @@ for kk in range(np.size(alpha_vec)):
 #    eval, evec  = np.linalg.eig(R_std)
 #    stab_std[kk,ll] = np.linalg.norm(eval, np.inf)
 
+fname='stability-1d-K-%d-M-%d-P-%d.txt' %(K_iter, M, P)
+np.savetxt(fname, stab)
+print "save:",fname
 #rcParams['figure.figsize'] = 1.5, 1.5
 #print stab
 #print stab_ros

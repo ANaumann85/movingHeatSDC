@@ -10,10 +10,10 @@ import copy
 M = 3
 tstart = 0.0
 tend   = 1.0
-nue=50
+nue=500
 a = 1.0
 alpha_vec = np.linspace(0.0, 35.0, 20)
-nu_vec    = np.linspace(0.0, nue, 20)
+nu_vec    = np.linspace(0.0, nue, 40)
 P_vec = range(M,M+11)
 
 stab     = np.zeros((np.size(alpha_vec), np.size(nu_vec)))
