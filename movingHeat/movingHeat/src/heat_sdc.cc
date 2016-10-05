@@ -17,7 +17,7 @@ template<int M, int P>
 void solve(Heat& heat, unsigned k_iter, unsigned nStep)
 {
   typedef MRSdc<Heat::VectorType, M,P> Method;
-  Method::Init init([&heat](Heat::VectorType& d) { heat.init(d); });
+  typename Method::Init init([&heat](Heat::VectorType& d) { heat.init(d); });
   Method sdc(init, k_iter, "radau_right", "equi_noleft");
   Heat::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });

@@ -6,12 +6,12 @@ def order(e2h, eh):
 
 nTest=9
 nStepsRef=5*(2**nTest)
-refFile="heat_sdc_%d-00001.vtu" % nStepsRef
+refFile="heat_sdc_M-3_P-2_nStep-%d-00001.vtu" % nStepsRef
 #refFile="../ros2/heat_ros2_40960-00001.vtu"
-dFile="heat_sdc_%d-00001.vtu" % (5)
+dFile="heat_sdc_M-3_P-2_nStep-%d-00001.vtu" % (5)
 e2h=getDiff(refFile, dFile)
 print e2h, "-", "-"
-dFile1="heat_sdc_%d-00001.vtu" % (5*2)
+dFile1="heat_sdc_M-3_P-2_nStep-%d-00001.vtu" % (5*2)
 res=getDiff(refFile, dFile1)
 e2h2=getDiff(dFile, dFile1)
 print res, order(e2h, res), "-" #order(e2h2, res2)
@@ -19,7 +19,7 @@ e2h=res
 dFile=dFile1
 
 for n in range(2, nTest):
-    dFile1="heat_sdc_%d-00001.vtu" % (5*(2**n))
+    dFile1="heat_sdc_M-3_P-2_nStep-%d-00001.vtu" % (5*(2**n))
     res=getDiff(refFile, dFile1)
     res2=getDiff(dFile, dFile1)
     print res, order(e2h, res), order(e2h2, res2)
