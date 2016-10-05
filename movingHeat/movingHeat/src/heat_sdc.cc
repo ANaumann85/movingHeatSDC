@@ -32,10 +32,74 @@ void solve(Heat& heat, unsigned k_iter, unsigned nStep)
   heat.writeResult(tend);
 }
 
+template<int M>
+void solve(Heat& heat, unsigned k_iter, unsigned nStep, unsigned P)
+{
+ switch(P) 
+ {
+   case 1:
+     solve<M,1>(heat, k_iter, nStep);
+     break;
+   case 2:
+     solve<M,2>(heat, k_iter, nStep);
+     break;
+   case 3:
+     solve<M,3>(heat, k_iter, nStep);
+     break;
+   case 4:
+     solve<M,4>(heat, k_iter, nStep);
+     break;
+   case 5:
+     solve<M,5>(heat, k_iter, nStep);
+     break;
+   case 6:
+     solve<M,6>(heat, k_iter, nStep);
+     break;
+   case 7:
+     solve<M,7>(heat, k_iter, nStep);
+     break;
+   case 8:
+     solve<M,8>(heat, k_iter, nStep);
+     break;
+   default:
+     throw std::runtime_error("not supported");
+ } 
+}
+
+void solve(Heat& heat, unsigned k_iter, unsigned nStep, unsigned M, unsigned P)
+{
+	switch(M) {
+   case 1:
+     solve<1>(heat, k_iter, nStep, P);
+     break;
+   case 2:
+     solve<2>(heat, k_iter, nStep, P);
+     break;
+   case 3:
+     solve<3>(heat, k_iter, nStep, P);
+     break;
+   case 4:
+     solve<4>(heat, k_iter, nStep, P);
+     break;
+   case 5:
+     solve<5>(heat, k_iter, nStep, P);
+     break;
+   case 6:
+     solve<6>(heat, k_iter, nStep, P);
+     break;
+   case 7:
+     solve<7>(heat, k_iter, nStep, P);
+     break;
+   case 8:
+     solve<8>(heat, k_iter, nStep, P);
+     break;
+  }
+}
+
 int main(int argc, char* argv[])
 {
-  if(argc < 2) {
-    std::cerr << "usage: " << argv[0] << " <nStep>\n";
+  if(argc < 4) {
+    std::cerr << "usage: " << argv[0] << " <nStep> <M> <P>\n";
     return 1;
   }
   //mpi-helper from dune
@@ -44,7 +108,11 @@ int main(int argc, char* argv[])
 
   unsigned nStep(40);
   {std::stringstream ss; ss << argv[1]; ss >> nStep; }
-  solve<3,2>(heat, 5, nStep);
+  unsigned M, P;
+  {std::stringstream ss; ss << argv[2]; ss >> M; }
+  {std::stringstream ss; ss << argv[3]; ss >> P; }
+
+  solve(heat, 5, nStep, M,P);
   return 0;
 }
 
