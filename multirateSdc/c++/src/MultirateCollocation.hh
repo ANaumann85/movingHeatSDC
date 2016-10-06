@@ -8,6 +8,7 @@
 #include <cassert>
 #include <vector>
 #include <iostream>
+#include <stdexcept>
 
 namespace Helper
 {
@@ -192,7 +193,9 @@ struct MultirateCollocation
 			line.clear();
 			getline(file, line);
 		}
-		assert(r == S+2);
+		//assert(r == S+2);
+		if(r != S+2)
+			throw std::runtime_error("could not read the nodes");
 		file.close();
 	}
 
