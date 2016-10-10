@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
   {std::stringstream ss; ss << argv[2]; ss >> M; }
   {std::stringstream ss; ss << argv[3]; ss >> P; }
 
-  solve(heat, 2, nStep, M,P);
+  solve(heat, 1, nStep, M,P);
   return 0;
 }
 

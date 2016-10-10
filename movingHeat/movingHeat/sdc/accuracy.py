@@ -8,7 +8,7 @@ nStepsRef=5*(2**nTest)
 P_vec=[2,3,6,8]
 refFile="../kiter_5/heat_sdc_M-3_P-8_nStep-%d-00001.vtu" % nStepsRef
 #refFile="../ros2/heat_ros2_40960-00001.vtu"
-M=3
+M=2
 for P in P_vec:
     acname="accuracy_M_%d_P_%d.dat" %(M,P)
     f=open(acname,'w')
