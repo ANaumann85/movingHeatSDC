@@ -1,6 +1,6 @@
 #!/bin/bash
 
-M=2
+M=3
 Pv="2 3 6 8"
 for P in $Pv; do
 nTest=10
