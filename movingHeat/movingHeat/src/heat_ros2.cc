@@ -1,6 +1,7 @@
 #include "Heat.h"
 #include "Ros2.h"
 #include <sstream>
+#include "Timer.h"
 
 namespace Dune
 {
@@ -30,7 +31,9 @@ int main(int argc, char* argv[])
   std::stringstream ss; ss << "heat_ros2_" << nStep;
   heat.startFile(ss.str(), y0);
   heat.writeResult(t0);
+  { MyTimer timer("ros2-solve");
   ros2.solve(heat, y0, t0, tend, nStep);
+  }
   heat.writeResult(tend);
   return 0;
 }

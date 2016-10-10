@@ -1,6 +1,7 @@
 #include "Heat.h"
 #include "MRSdc.h"
 #include <sstream>
+#include "Timer.h"
 
 namespace Dune
 {
@@ -28,7 +29,9 @@ void solve(Heat& heat, unsigned k_iter, unsigned nStep)
   std::stringstream ss; ss << "heat_sdc_M-" << M << "_P-" << P << "_nStep-" << nStep;
   heat.startFile(ss.str(), y0);
   heat.writeResult(t0);
+  { MyTimer timer("mrsdc-solve");
   sdc.solve(heat, y0, t0, tend, nStep);
+  }
   heat.writeResult(tend);
 }
 
