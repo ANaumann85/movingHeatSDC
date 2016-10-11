@@ -10,8 +10,11 @@ add_executable(cmp_sdc_inhom src/cmp_sdc_inhom.cc)
 add_executable(runsdc_model src/runsdc_model.cc)
 add_executable(test_sdc_model src/test_sdc_model.cc)
 
+add_executable(runsdc_standard src/runsdc_standard.cc)
 add_executable(stability_model_sdc src/stability_model_sdc.cc)
 target_link_libraries(stability_model_sdc lapack)
+add_executable(stability_model_sdc_standard src/stability_model_sdc_standard.cc)
+target_link_libraries(stability_model_sdc_standard lapack)
 
 enable_testing()
 add_test(cmp_sdc_inhom cmp_sdc_inhom)
