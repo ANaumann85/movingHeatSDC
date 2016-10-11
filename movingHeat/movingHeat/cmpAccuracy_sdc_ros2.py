@@ -13,17 +13,26 @@ P_vec=[2,3,6,8]
 M_vec=[2,3]
 kiter_vec=[1,2]
 markers={2:'s', 3:'o'}
-colors={2:'k',3:'b',6:'r',8:'g'}
+colors={0:'m',2:'k',3:'b',6:'r',8:'g'}
 figStep=plt.figure(0)
 figTime=plt.figure(1)
 for k_iter in kiter_vec:
+    plt.figure(0)
+    plt.clf()
+    plt.figure(1)
+    plt.clf()
     for M in M_vec:
+        acsdc=np.loadtxt('sdc/kiter_%d/accuracy_M_%d.dat' %(k_iter,M))
+        plt.figure(0)
+        plt.loglog(20.0/acsdc[:,0],acsdc[:,2],label='sdc-M%d_kiter%d' %(M,k_iter),marker=markers[M],color=colors[0],linestyle='dashed')
+        plt.figure(1)
+        plt.loglog(acsdc[:,4],acsdc[:,2],label='sdc-M%d_kiter%d' %(M,k_iter),marker=markers[M],color=colors[0],linestyle='dashed')
         for p in P_vec:
-            acsdc=np.loadtxt('sdc/kiter_%d/accuracy_M_%d_P_%d.dat' %(k_iter,M,p))
+            acsdc=np.loadtxt('mrsdc/kiter_%d/accuracy_M_%d_P_%d.dat' %(k_iter,M,p))
             plt.figure(0)
-            plt.loglog(20.0/acsdc[:,0],acsdc[:,2],label='sdc-M%d_P%d_kiter%d' %(M,p,k_iter),marker=markers[M],color=colors[p])
+            plt.loglog(20.0/acsdc[:,0],acsdc[:,2],label='mrsdc-M%d_P%d_kiter%d' %(M,p,k_iter),marker=markers[M],color=colors[p])
             plt.figure(1)
-            plt.loglog(acsdc[:,4],acsdc[:,2],label='sdc-M%d_P%d_kiter%d' %(M,p,k_iter),marker=markers[M],color=colors[p])
+            plt.loglog(acsdc[:,4],acsdc[:,2],label='mrsdc-M%d_P%d_kiter%d' %(M,p,k_iter),marker=markers[M],color=colors[p])
     plt.figure(0)
     plt.loglog(20.0/acros2[:,0],acros2[:,2],label='ros2',color='y')
     plt.xlabel('nStep')
