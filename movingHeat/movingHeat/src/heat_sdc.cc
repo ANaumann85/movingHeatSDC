@@ -19,7 +19,7 @@ void solve(Heat& heat, unsigned k_iter, unsigned nStep)
 {
   typedef MRSdc<Heat::VectorType, M,P> Method;
   typename Method::Init init([&heat](Heat::VectorType& d) { heat.init(d); });
-  Method sdc(init, k_iter, "radau_right", "equi_noleft");
+  Method sdc(init, k_iter, "radau_right", "radau_right");
   Heat::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
   heat.init(y0); y0 = 0.0;
@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
   {std::stringstream ss; ss << argv[2]; ss >> M; }
   {std::stringstream ss; ss << argv[3]; ss >> P; }
 
-  solve(heat, 1, nStep, M,P);
+  solve(heat, 2, nStep, M,P);
   return 0;
 }
 
