@@ -83,13 +83,13 @@ class Heat
   std::shared_ptr<PvdWriter > pvdWriter;
   std::shared_ptr<PvdWriter_MV > pvdWriter_mv;
 
-  double nu, alpha, v0;
+  double nu, alpha, v0, sourceVal;
     
   void fillMatrices();
   void buildMatrices();
 
   public:
-  Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0);
+  Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100);
   //sets nu and alpha to the new values and updates matrices
   void setParam(double nu, double alpha);
 

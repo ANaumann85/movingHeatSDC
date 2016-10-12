@@ -62,22 +62,22 @@ namespace Helper
   };
 }
 
-Heat::Heat(int nInter, double nu, double alpha, double v0):
+Heat::Heat(int nInter, double nu, double alpha, double v0, double source):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
   grid_mv(new GridType_MV(hgtmv, mf)),
   gridView(grid->leafGridView()), basis(gridView),
-  nu(nu), alpha(alpha), v0(v0)
+  nu(nu), alpha(alpha), v0(v0), sourceVal(source)
 { 
   buildMatrices(); 
 }
 
 void Heat::setParam(double nu, double alpha)
 {
-	this->nu=nu;
-	this->alpha=alpha;
-	buildMatrices(); 
+  this->nu=nu;
+  this->alpha=alpha;
+  buildMatrices(); 
 }
 
 void Heat::buildMatrices()
@@ -293,7 +293,7 @@ void Heat::fastGrid(double t, const VectorType& yIn, VectorType& out) const
         auto r = indexSet0.subIndex(intersection.inside(), j, dim);
         uh += nonmortarValues[j]*yIn[r];
       }
-      const double fVal = (v0-uh)*alpha;
+      const double fVal = (v0-uh)*alpha+sourceVal;
       // Loop over all shape functions of the test space
       for (size_t j=0; j<testFiniteElement.size(); j++)
       {
