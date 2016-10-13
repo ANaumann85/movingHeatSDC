@@ -67,20 +67,21 @@ void solve(Heat& heat, unsigned k_iter, unsigned nStep, unsigned M)
 
 int main(int argc, char* argv[])
 {
-  if(argc < 3) {
-    std::cerr << "usage: " << argv[0] << " <nStep> <M>\n";
+  if(argc < 4) {
+    std::cerr << "usage: " << argv[0] << " <nStep> <M> <kIter>\n";
     return 1;
   }
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
-  Heat heat(10);
+  Heat heat(10, 1.0e-3, 1.0e-3, 5.0, 0.0);
 
-  unsigned nStep(40);
+  unsigned nStep(40), kIter(2);
   {std::stringstream ss; ss << argv[1]; ss >> nStep; }
+  {std::stringstream ss; ss << argv[3]; ss >> kIter; }
   unsigned M;
   {std::stringstream ss; ss << argv[2]; ss >> M; }
 
-  solve(heat, 2, nStep, M);
+  solve(heat, kIter, nStep, M);
   return 0;
 }
 
