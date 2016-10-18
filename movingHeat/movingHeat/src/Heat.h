@@ -85,13 +85,14 @@ class Heat
 
   double nu, alpha, v0, sourceVal;
   unsigned nInter;
+  bool useLapl0;
     
   void fillMatrices();
   void fillMatricesZeroLapl();
   void buildMatrices();
 
   public:
-  Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100);
+  Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, bool useLapl0=false);
   //sets nu and alpha to the new values and updates matrices
   void setParam(double nu, double alpha);
 
@@ -122,8 +123,8 @@ class Heat
   void fastFull(double t, const VectorType& yIn, VectorType& out) const;
   void fastAdd(double t, const VectorType& yIn, VectorType& out) const
   //{ fastRect(t, yIn, out); }
-  //{ fastGrid(t, yIn, out); }
-  { fastGridZeroLapl(t, yIn, out); }
+  { fastGrid(t, yIn, out); }
+  //{ fastGridZeroLapl(t, yIn, out); }
   //{ fastFull(t, yIn, out); }
 
   template<typename F >
@@ -161,6 +162,7 @@ class Heat
     shared_ptr<VTKWriter<GridView_MV>> vtkWriter_mv(new VTKWriter<GridView_MV>(grid_mv->leafGridView()));
     pvdWriter_mv=std::shared_ptr<PvdWriter_MV>(new PvdWriter_MV(vtkWriter_mv, "grid_mv"));
   }
+
   void writeResult(double t) const
   { pvdWriter->write(t); pvdWriter_mv->write(t); }
 

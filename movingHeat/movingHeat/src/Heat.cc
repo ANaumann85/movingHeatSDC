@@ -63,13 +63,13 @@ namespace Helper
   };
 }
 
-Heat::Heat(int nInter, double nu, double alpha, double v0, double source):
+Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool useLapl0):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
   grid_mv(new GridType_MV(hgtmv, mf)),
   gridView(grid->leafGridView()), basis(gridView),
-  nu(nu), alpha(alpha), v0(v0), sourceVal(source), nInter(nInter)
+  nu(nu), alpha(alpha), v0(v0), sourceVal(source), nInter(nInter), useLapl0(useLapl0)
 { 
   buildMatrices(); 
 }
@@ -88,8 +88,10 @@ void Heat::buildMatrices()
   Helper::getOccupationPattern(basis, occupationPattern);
   occupationPattern.exportIdx(mass);
   occupationPattern.exportIdx(lapl);
-  //fillMatrices();
-  fillMatricesZeroLapl();
+  if(useLapl0) 
+    fillMatricesZeroLapl();
+  else
+    fillMatrices();
   /*storeMatrixMarket(lapl, "lapl-matrix.mm");
   storeMatrixMarket(mass, "mass-matrix.mm");*/
   mSolver.reset(new MSolver(mass));
@@ -217,10 +219,12 @@ void Heat::fillMatricesZeroLapl()
 
       for (size_t i=0; i<elemMass.N(); i++)
         for (size_t j=0; j<elemMass.M(); j++ ) {
-          if(geometry.center()[0] > (0.5/nInter-1.0e-6)) {
+#if 1
+          if(std::abs(geometry.center()[0]-0.5/nInter) >1e-6) {
             elemLapl[localView.tree().localIndex(i)][localView.tree().localIndex(j)]
               += ( gradients[i] * gradients[j] ) * qP.weight() * integrationElement;
           }
+#endif
           elemMass[localView.tree().localIndex(i)][localView.tree().localIndex(j)] +=
             basValues[i]*basValues[j]*qP.weight()*integrationElement;
         }
@@ -306,6 +310,11 @@ void Heat::fastBoundary(const VectorType& yIn, const F& flux, VectorType& out) c
 
 void Heat::fastGrid(double t, const VectorType& yIn, VectorType& out) const
 {
+  if(useLapl0) {
+    fastGridZeroLapl(t, yIn, out);
+    return; 
+  }
+
   //const double center = 2.25-0.1*t;
   const double dY = -0.1*t;
   //move grid_mv by dY (indirectly through geometrygrid)
@@ -486,7 +495,7 @@ void Heat::addLaplZero(const VectorType& yIn, VectorType& out) const
     using Element = typename Basis::LocalView::Element;
     const int dim = Element::dimension;
     auto geometry = element.geometry();
-    if(geometry.center()[0] < (0.5/nInter+1e-6)) {
+    if(std::abs(geometry.center()[0]- 0.5/nInter) < 1e-6) {
       const auto& localFiniteElement = localView.tree().finiteElement();
       elemLapl.resize(localFiniteElement.size());
       for(auto& d : elemLapl) d = 0;      // fills the entire vector with zeros
@@ -514,7 +523,7 @@ void Heat::addLaplZero(const VectorType& yIn, VectorType& out) const
         for (size_t i=0; i<elemLapl.size(); i++)
           for (size_t j=0; j<elemLapl.size(); j++ ) {
               elemLapl[localView.tree().localIndex(i)]
-                += yIn[localView.tree().localIndex(j)]*( gradients[i] * gradients[j] ) * qP.weight() * integrationElement;
+                += yIn[localIndexSet.index(localView.tree().localIndex(j))]*( gradients[i] * gradients[j] ) * qP.weight() * integrationElement;
           }
       }
 

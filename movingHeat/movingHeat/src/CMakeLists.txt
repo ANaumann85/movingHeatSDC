@@ -20,6 +20,8 @@ add_executable(stability_sdc_standard stability_sdc_standard.cc)
 target_link_libraries(stability_sdc_standard heat)
 add_executable(getJacobian getJacobian.cc)
 target_link_libraries(getJacobian heat)
+add_executable(test_lapl0 test_lapl0.cc)
+target_link_libraries(test_lapl0 heat)
 #add_executable(stability_model_sdc stability_model_sdc.cc)
 
 target_link_dune_default_libraries("heat_imexEuler")
