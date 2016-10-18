@@ -73,7 +73,7 @@ class Heat
   GridView gridView; 
   Basis basis;
 
-  MatrixType mass, lapl;
+  MatrixType mass, lapl, lapl0;
   MatrixType mMaJ;
   typedef UMFPack<MatrixType > MSolver;
   std::shared_ptr<MSolver> mSolver;
@@ -89,6 +89,7 @@ class Heat
     
   void fillMatrices();
   void fillMatricesZeroLapl();
+  void setLaplZero();
   void buildMatrices();
 
   public:
@@ -130,7 +131,6 @@ class Heat
   template<typename F >
   void fastBoundary(const VectorType& yIn, const F& flux, VectorType& out) const;
 
-  void addLaplZero(const VectorType& yIn, VectorType& out) const;
   void fastGridZeroLapl(double t, const VectorType& yIn, VectorType& out) const;
 
   //sets the fast term, i.e. out = B(t)*yIn+b(t)
