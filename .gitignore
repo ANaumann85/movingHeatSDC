@@ -10,3 +10,4 @@ startup.sh
 *.vtu
 *.pvd
 .*.swp
+CMakeFiles/
