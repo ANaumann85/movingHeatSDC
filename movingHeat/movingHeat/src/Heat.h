@@ -84,8 +84,10 @@ class Heat
   std::shared_ptr<PvdWriter_MV > pvdWriter_mv;
 
   double nu, alpha, v0;
+  unsigned nInter;
     
   void fillMatrices();
+  void fillMatricesZeroLapl();
   void buildMatrices();
 
   public:
@@ -120,11 +122,15 @@ class Heat
   void fastFull(double t, const VectorType& yIn, VectorType& out) const;
   void fastAdd(double t, const VectorType& yIn, VectorType& out) const
   //{ fastRect(t, yIn, out); }
-  { fastGrid(t, yIn, out); }
+  //{ fastGrid(t, yIn, out); }
+  { fastGridZeroLapl(t, yIn, out); }
   //{ fastFull(t, yIn, out); }
 
   template<typename F >
   void fastBoundary(const VectorType& yIn, const F& flux, VectorType& out) const;
+
+  void addLaplZero(const VectorType& yIn, VectorType& out) const;
+  void fastGridZeroLapl(double t, const VectorType& yIn, VectorType& out) const;
 
   //sets the fast term, i.e. out = B(t)*yIn+b(t)
   void fast(double t, const VectorType& yIn, VectorType& out) const
