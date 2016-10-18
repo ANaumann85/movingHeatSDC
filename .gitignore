@@ -9,3 +9,4 @@ startup.sh
 *.synctex.gz
 *.vtu
 *.pvd
+.*.swp

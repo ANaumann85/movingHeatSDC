@@ -26,12 +26,12 @@ int main(int argc, char* argv[])
     y0[i] = i;
     
   //y0=1.0;
-  for(unsigned i(0); i < 1; ++i) {
+  for(unsigned i(0); i < 20; ++i) {
     double t=i*0.1;
     heatOrig(t, y0, fo);
     heatLapl0(t, y0, fl);
     fo -= fl;
-    std::cout << "rdiff adiff:" << fo.two_norm()/fl.two_norm() << " " << fo.two_norm()  << endl;
+    std::cout << "rdiff adiff norm(fl):" << fo.two_norm()/fl.two_norm() << " " << fo.two_norm() << " " << fl.two_norm() << endl;
   }
 
   return 0;
