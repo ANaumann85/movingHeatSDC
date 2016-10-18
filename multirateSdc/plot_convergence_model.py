@@ -27,7 +27,7 @@ fs     = 8
 
 a     = 1.0
 nu    = 1.1
-alpha = 25.0
+alpha = 1.0e-2
 v0    = 0.25
 prob  = problem_model(a, nu, alpha, v0)
 
@@ -99,22 +99,23 @@ fig = plt.figure()
 plt.loglog(nsteps, err_ros2, 'kd', markersize=fs, label="Ros(2)")
 
 plt.loglog(nsteps, err[0,:], 'bo', markersize=fs, label=("K=%1i" % K_iter[0]))
-#plt.loglog(nsteps, err_std[0,:], 'b^', markersize=fs, label=("Std-K=%1i" % K_iter[0]))
+plt.loglog(nsteps, err_std[0,:], 'b^', markersize=fs, label=("Std-K=%1i" % K_iter[0]))
 plt.loglog(nsteps, order[0,:], '-', color='b')
 
 plt.loglog(nsteps, err[1,:], 'ro', markersize=fs, label=("K=%1i" % K_iter[1]))
-#plt.loglog(nsteps, err_std[1,:], 'r^', markersize=fs, label=("Std-K=%1i" % K_iter[1]))
+plt.loglog(nsteps, err_std[1,:], 'r^', markersize=fs, label=("Std-K=%1i" % K_iter[1]))
 plt.loglog(nsteps, order[1,:], '-', color='r')
 
 plt.loglog(nsteps, err[2,:], 'go', markersize=fs, label=("K=%1i" % K_iter[2]))
-#plt.loglog(nsteps, err_std[2,:], 'g^', markersize=fs, label=("Std-K=%1i" % K_iter[2]))
+plt.loglog(nsteps, err_std[2,:], 'g^', markersize=fs, label=("Std-K=%1i" % K_iter[2]))
 plt.loglog(nsteps, order[2,:], '-', color='g')
 plt.xlim([0.95*nsteps[0], 1.05*nsteps[-1]])
 plt.legend(loc='lower left', fontsize=fs, prop={'size':fs})
 
 #plt.gca().get_xaxis().get_major_formatter().labelOnlyBase = False
 #plt.gca().get_xaxis().set_major_formatter(ScalarFormatter())
-plt.show()
+plt.savefig('convergence_model_M_%d_P_%d.pdf' %(M,P))
+#plt.show()
 
 #
 # Error constants

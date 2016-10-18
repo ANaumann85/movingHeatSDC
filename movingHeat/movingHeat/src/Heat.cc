@@ -1,5 +1,6 @@
 #include "Heat.h"
 #include <dune/istl/matrixmarket.hh>
+//#include <dune/istl/vector.hh>
 
 #include <dune/grid-glue/extractors/extractorpredicate.hh>
 #include <dune/grid-glue/extractors/codim1extractor.hh>
@@ -68,7 +69,7 @@ Heat::Heat(int nInter, double nu, double alpha, double v0, double source):
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
   grid_mv(new GridType_MV(hgtmv, mf)),
   gridView(grid->leafGridView()), basis(gridView),
-  nu(nu), alpha(alpha), v0(v0), sourceVal(source)
+  nu(nu), alpha(alpha), v0(v0), sourceVal(source), nInter(nInter)
 { 
   buildMatrices(); 
 }
@@ -87,7 +88,8 @@ void Heat::buildMatrices()
   Helper::getOccupationPattern(basis, occupationPattern);
   occupationPattern.exportIdx(mass);
   occupationPattern.exportIdx(lapl);
-  fillMatrices();
+  //fillMatrices();
+  fillMatricesZeroLapl();
   /*storeMatrixMarket(lapl, "lapl-matrix.mm");
   storeMatrixMarket(mass, "mass-matrix.mm");*/
   mSolver.reset(new MSolver(mass));
@@ -144,6 +146,81 @@ void Heat::fillMatrices()
         for (size_t j=0; j<elemMass.M(); j++ ) {
           elemLapl[localView.tree().localIndex(i)][localView.tree().localIndex(j)]
             += ( gradients[i] * gradients[j] ) * qP.weight() * integrationElement;
+          elemMass[localView.tree().localIndex(i)][localView.tree().localIndex(j)] +=
+            basValues[i]*basValues[j]*qP.weight()*integrationElement;
+        }
+    }
+
+    //move insert entries to global sparse matrix
+    for(size_t i=0; i<elemMass.N(); i++)
+    {
+      // The global index of the i-th degree of freedom of the element
+      auto row = localIndexSet.index(i);
+
+      for (size_t j=0; j<elemMass.M(); j++ )
+      {
+        // The global index of the j-th degree of freedom of the element
+        auto col = localIndexSet.index(j);
+        mass[row][col] += elemMass[i][j];
+        lapl[row][col] += (-nu)*elemLapl[i][j];
+      }
+    }
+  }
+}
+
+void Heat::fillMatricesZeroLapl()
+{
+  lapl = 0.0, mass = 0.0;
+  auto localView = basis.localView();
+  auto localIndexSet = basis.localIndexSet();
+
+  for (const auto& element : elements(gridView))             /*@\label{li:poissonequation_elementloop}@*/
+  {
+    // { assembler_element_loop_end }
+
+    // Now let's get the element stiffness matrix
+    // A dense matrix is used for the element stiffness matrix
+    // { assembler_assemble_element_matrix_begin }
+    localView.bind(element);
+    localIndexSet.bind(localView);
+
+    Matrix<FieldMatrix<double,1,1> > elemMass, elemLapl;
+    //build local mass and laplacian
+    using Element = typename Basis::LocalView::Element;
+    const int dim = Element::dimension;
+    auto geometry = element.geometry();
+    const auto& localFiniteElement = localView.tree().finiteElement();
+    elemMass.setSize(localFiniteElement.size(),localFiniteElement.size());
+    elemMass= 0;      // fills the entire matrix with zeros
+    elemLapl.setSize(localFiniteElement.size(),localFiniteElement.size());
+    elemLapl= 0;      // fills the entire matrix with zeros
+    int order = 2*(dim*localFiniteElement.localBasis().order());       
+    const auto& quadRule = QuadratureRules<double, dim>::rule(element.type(), order); 
+    for(auto& qP : quadRule) {
+      const auto qPos = qP.position();
+      // The transposed inverse Jacobian of the map from the reference element to the element
+      const auto jacobian = geometry.jacobianInverseTransposed(qPos);
+
+      // The multiplicative factor in the integral transformation formula
+      const auto integrationElement = geometry.integrationElement(qPos);
+      std::vector<FieldMatrix<double,1,dim> > referenceGradients;
+      localFiniteElement.localBasis().evaluateJacobian(qPos, referenceGradients);
+
+      // Compute the shape function gradients on the real element
+      std::vector<FieldVector<double,dim> > gradients(referenceGradients.size());
+      for (size_t i=0; i<gradients.size(); i++)
+        jacobian.mv(referenceGradients[i][0], gradients[i]);
+
+      //compute the values of the basis functions
+      std::vector<FieldVector<double, 1>> basValues;
+      localFiniteElement.localBasis().evaluateFunction(qPos, basValues);
+
+      for (size_t i=0; i<elemMass.N(); i++)
+        for (size_t j=0; j<elemMass.M(); j++ ) {
+          if(geometry.center()[0] > (0.5/nInter-1.0e-6)) {
+            elemLapl[localView.tree().localIndex(i)][localView.tree().localIndex(j)]
+              += ( gradients[i] * gradients[j] ) * qP.weight() * integrationElement;
+          }
           elemMass[localView.tree().localIndex(i)][localView.tree().localIndex(j)] +=
             basValues[i]*basValues[j]*qP.weight()*integrationElement;
         }
@@ -304,6 +381,152 @@ void Heat::fastGrid(double t, const VectorType& yIn, VectorType& out) const
 
     }
 
+  }
+}
+
+void Heat::fastGridZeroLapl(double t, const VectorType& yIn, VectorType& out) const
+{
+  //const double center = 2.25-0.1*t;
+  const double dY = -0.1*t;
+  //move grid_mv by dY (indirectly through geometrygrid)
+  mf.dx[1] = dY;
+
+  typedef GridType_MV::LeafGridView GridView_MV;
+
+  Helper::VerticalFaceDescriptor<GridView> facePredicate0;
+  Helper::VerticalFaceDescriptor<GridView_MV> facePredicate1;
+
+  typedef GridGlue::Codim1Extractor<GridView> Extractor0;
+  typedef GridGlue::Codim1Extractor<GridView_MV> Extractor1;
+
+  GridGlue::Codim1Extractor<GridView> domEx(grid->leafGridView(), facePredicate0);
+  GridGlue::Codim1Extractor<GridView_MV> tarEx(grid_mv->leafGridView(), facePredicate1);
+
+  typedef GridGlue::GridGlue<Extractor0,Extractor1> GlueType;
+
+  // Backend for the computation of the remote intersections
+  GridGlue::ContactMerge<dim,double> merger;
+  GlueType glue(domEx, tarEx, &merger);
+
+  glue.build();
+
+  const GridView::IndexSet& indexSet0 = grid->leafGridView().indexSet();
+  const GridView_MV::IndexSet& indexSet1 = grid_mv->leafGridView().indexSet();
+
+  typedef PQkLocalFiniteElementCache<GridType::ctype, double, dim, 1> TestFECache;
+  typedef PQkLocalFiniteElementCache<GridType::ctype, double, dim, 1> FiniteElementCache0;
+  FiniteElementCache0 cache0, cache1;
+  TestFECache testCache;
+
+  for (const auto& intersection : intersections(glue))
+  {
+    const FiniteElementCache0::FiniteElementType& nonmortarFiniteElement = cache0.get(intersection.inside().type());
+    const FiniteElementCache0::FiniteElementType& mortarFiniteElement    = cache1.get(intersection.outside().type());
+    const TestFECache::FiniteElementType&         testFiniteElement      = testCache.get(intersection.inside().type());
+
+    // Select a quadrature rule:  Use order = 2 just for simplicity
+    int quadOrder = 2;
+    const auto& quad = QuadratureRules<double, dim-1>::rule(intersection.type(), quadOrder);
+
+    // Loop over all quadrature points
+    for (size_t l=0; l<quad.size(); l++)
+    {
+      // compute integration element of overlap
+      double integrationElement = intersection.geometry().integrationElement(quad[l].position());
+
+      // quadrature point positions on the reference element
+      FieldVector<double,dim> nonmortarQuadPos = intersection.geometryInInside().global(quad[l].position());
+      //FieldVector<double,dim> mortarQuadPos    = intersection.geometryInOutside().global(quad[l].position());
+
+      //evaluate all shapefunctions at the quadrature point
+      std::vector<FieldVector<double,1> > nonmortarValues,testValues; // mortarValues
+
+      nonmortarFiniteElement.localBasis().evaluateFunction(nonmortarQuadPos,nonmortarValues);
+      //mortarFiniteElement   .localBasis().evaluateFunction(mortarQuadPos,mortarValues);
+      testFiniteElement     .localBasis().evaluateFunction(nonmortarQuadPos,testValues);
+
+      double uh(0.0);
+      for (size_t j=0; j<nonmortarValues.size(); j++) { 
+        auto r = indexSet0.subIndex(intersection.inside(), j, dim);
+        uh += nonmortarValues[j]*yIn[r];
+      }
+      const double fVal = (v0-uh)*alpha;
+      // Loop over all shape functions of the test space
+      for (size_t j=0; j<testFiniteElement.size(); j++)
+      {
+        int testIdx = indexSet0.subIndex(intersection.inside(),j,dim);
+        out[testIdx] += integrationElement*quad[l].weight()*testValues[j]*fVal;
+
+      }
+
+    }
+
+  }
+
+  addLaplZero(yIn, out);
+}
+
+void Heat::addLaplZero(const VectorType& yIn, VectorType& out) const
+{
+  auto localView = basis.localView();
+  auto localIndexSet = basis.localIndexSet();
+
+  for (const auto& element : elements(gridView))             /*@\label{li:poissonequation_elementloop}@*/
+  {
+    // { assembler_element_loop_end }
+
+    // Now let's get the element stiffness matrix
+    // A dense matrix is used for the element stiffness matrix
+    // { assembler_assemble_element_matrix_begin }
+    localView.bind(element);
+    localIndexSet.bind(localView);
+
+    std::vector<double> elemLapl;
+    //build local laplacian
+    using Element = typename Basis::LocalView::Element;
+    const int dim = Element::dimension;
+    auto geometry = element.geometry();
+    if(geometry.center()[0] < (0.5/nInter+1e-6)) {
+      const auto& localFiniteElement = localView.tree().finiteElement();
+      elemLapl.resize(localFiniteElement.size());
+      for(auto& d : elemLapl) d = 0;      // fills the entire vector with zeros
+      int order = 2*(dim*localFiniteElement.localBasis().order());       
+      const auto& quadRule = QuadratureRules<double, dim>::rule(element.type(), order); 
+      for(auto& qP : quadRule) {
+        const auto qPos = qP.position();
+        // The transposed inverse Jacobian of the map from the reference element to the element
+        const auto jacobian = geometry.jacobianInverseTransposed(qPos);
+
+        // The multiplicative factor in the integral transformation formula
+        const auto integrationElement = geometry.integrationElement(qPos);
+        std::vector<FieldMatrix<double,1,dim> > referenceGradients;
+        localFiniteElement.localBasis().evaluateJacobian(qPos, referenceGradients);
+
+        // Compute the shape function gradients on the real element
+        std::vector<FieldVector<double,dim> > gradients(referenceGradients.size());
+        for (size_t i=0; i<gradients.size(); i++)
+          jacobian.mv(referenceGradients[i][0], gradients[i]);
+
+        //compute the values of the basis functions
+        //std::vector<FieldVector<double, 1>> basValues;
+        //localFiniteElement.localBasis().evaluateFunction(qPos, basValues);
+
+        for (size_t i=0; i<elemLapl.size(); i++)
+          for (size_t j=0; j<elemLapl.size(); j++ ) {
+              elemLapl[localView.tree().localIndex(i)]
+                += yIn[localView.tree().localIndex(j)]*( gradients[i] * gradients[j] ) * qP.weight() * integrationElement;
+          }
+      }
+
+      //move insert entries to global sparse matrix
+      for(size_t i=0; i<elemLapl.size(); i++)
+      {
+        // The global index of the i-th degree of freedom of the element
+        auto row = localIndexSet.index(i);
+        // The global index of the j-th degree of freedom of the element
+        out[row] += (-nu)*elemLapl[i];
+      }
+    }
   }
 }
 
