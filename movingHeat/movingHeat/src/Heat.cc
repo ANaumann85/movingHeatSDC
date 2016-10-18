@@ -219,12 +219,10 @@ void Heat::fillMatricesZeroLapl()
 
       for (size_t i=0; i<elemMass.N(); i++)
         for (size_t j=0; j<elemMass.M(); j++ ) {
-#if 1
           if(std::abs(geometry.center()[0]-0.5/nInter) >1e-6) {
             elemLapl[localView.tree().localIndex(i)][localView.tree().localIndex(j)]
               += ( gradients[i] * gradients[j] ) * qP.weight() * integrationElement;
           }
-#endif
           elemMass[localView.tree().localIndex(i)][localView.tree().localIndex(j)] +=
             basValues[i]*basValues[j]*qP.weight()*integrationElement;
         }
