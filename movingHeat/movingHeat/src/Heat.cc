@@ -63,22 +63,22 @@ namespace Helper
   };
 }
 
-Heat::Heat(int nInter, double nu, double alpha, double v0):
+Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool useLapl0):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
   grid_mv(new GridType_MV(hgtmv, mf)),
   gridView(grid->leafGridView()), basis(gridView),
-  nu(nu), alpha(alpha), v0(v0), nInter(nInter)
+  nu(nu), alpha(alpha), v0(v0), sourceVal(source), nInter(nInter), useLapl0(useLapl0)
 { 
   buildMatrices(); 
 }
 
 void Heat::setParam(double nu, double alpha)
 {
-	this->nu=nu;
-	this->alpha=alpha;
-	buildMatrices(); 
+  this->nu=nu;
+  this->alpha=alpha;
+  buildMatrices(); 
 }
 
 void Heat::buildMatrices()
@@ -88,8 +88,12 @@ void Heat::buildMatrices()
   Helper::getOccupationPattern(basis, occupationPattern);
   occupationPattern.exportIdx(mass);
   occupationPattern.exportIdx(lapl);
-  //fillMatrices();
-  fillMatricesZeroLapl();
+  if(useLapl0) {
+    occupationPattern.exportIdx(lapl0);
+    fillMatricesZeroLapl();
+  }
+  else
+    fillMatrices();
   /*storeMatrixMarket(lapl, "lapl-matrix.mm");
   storeMatrixMarket(mass, "mass-matrix.mm");*/
   mSolver.reset(new MSolver(mass));
@@ -217,27 +221,41 @@ void Heat::fillMatricesZeroLapl()
 
       for (size_t i=0; i<elemMass.N(); i++)
         for (size_t j=0; j<elemMass.M(); j++ ) {
-          if(geometry.center()[0] > (0.5/nInter-1.0e-6)) {
-            elemLapl[localView.tree().localIndex(i)][localView.tree().localIndex(j)]
-              += ( gradients[i] * gradients[j] ) * qP.weight() * integrationElement;
-          }
+          elemLapl[localView.tree().localIndex(i)][localView.tree().localIndex(j)]
+            += ( gradients[i] * gradients[j] ) * qP.weight() * integrationElement;
           elemMass[localView.tree().localIndex(i)][localView.tree().localIndex(j)] +=
             basValues[i]*basValues[j]*qP.weight()*integrationElement;
         }
     }
 
     //move insert entries to global sparse matrix
-    for(size_t i=0; i<elemMass.N(); i++)
-    {
-      // The global index of the i-th degree of freedom of the element
-      auto row = localIndexSet.index(i);
-
-      for (size_t j=0; j<elemMass.M(); j++ )
+    if(geometry.center()[0] > 0.5/nInter) {
+      for(size_t i=0; i<elemMass.N(); i++)
       {
-        // The global index of the j-th degree of freedom of the element
-        auto col = localIndexSet.index(j);
-        mass[row][col] += elemMass[i][j];
-        lapl[row][col] += (-nu)*elemLapl[i][j];
+        // The global index of the i-th degree of freedom of the element
+        auto row = localIndexSet.index(i);
+
+        for (size_t j=0; j<elemMass.M(); j++ )
+        {
+          // The global index of the j-th degree of freedom of the element
+          auto col = localIndexSet.index(j);
+          mass[row][col] += elemMass[i][j];
+          lapl[row][col] += (-nu)*elemLapl[i][j];
+        }
+      }
+    } else {
+      for(size_t i=0; i<elemMass.N(); i++)
+      {
+        // The global index of the i-th degree of freedom of the element
+        auto row = localIndexSet.index(i);
+
+        for (size_t j=0; j<elemMass.M(); j++ )
+        {
+          // The global index of the j-th degree of freedom of the element
+          auto col = localIndexSet.index(j);
+          mass[row][col] += elemMass[i][j];
+          lapl0[row][col] += (-nu)*elemLapl[i][j];
+        }
       }
     }
   }
@@ -306,6 +324,11 @@ void Heat::fastBoundary(const VectorType& yIn, const F& flux, VectorType& out) c
 
 void Heat::fastGrid(double t, const VectorType& yIn, VectorType& out) const
 {
+  if(useLapl0) {
+    fastGridZeroLapl(t, yIn, out);
+    return; 
+  }
+
   //const double center = 2.25-0.1*t;
   const double dY = -0.1*t;
   //move grid_mv by dY (indirectly through geometrygrid)
@@ -370,7 +393,7 @@ void Heat::fastGrid(double t, const VectorType& yIn, VectorType& out) const
         auto r = indexSet0.subIndex(intersection.inside(), j, dim);
         uh += nonmortarValues[j]*yIn[r];
       }
-      const double fVal = (v0-uh)*alpha;
+      const double fVal = (v0-uh)*alpha+sourceVal;
       // Loop over all shape functions of the test space
       for (size_t j=0; j<testFiniteElement.size(); j++)
       {
@@ -463,71 +486,7 @@ void Heat::fastGridZeroLapl(double t, const VectorType& yIn, VectorType& out) co
 
   }
 
-  addLaplZero(yIn, out);
-}
-
-void Heat::addLaplZero(const VectorType& yIn, VectorType& out) const
-{
-  auto localView = basis.localView();
-  auto localIndexSet = basis.localIndexSet();
-
-  for (const auto& element : elements(gridView))             /*@\label{li:poissonequation_elementloop}@*/
-  {
-    // { assembler_element_loop_end }
-
-    // Now let's get the element stiffness matrix
-    // A dense matrix is used for the element stiffness matrix
-    // { assembler_assemble_element_matrix_begin }
-    localView.bind(element);
-    localIndexSet.bind(localView);
-
-    std::vector<double> elemLapl;
-    //build local laplacian
-    using Element = typename Basis::LocalView::Element;
-    const int dim = Element::dimension;
-    auto geometry = element.geometry();
-    if(geometry.center()[0] < (0.5/nInter+1e-6)) {
-      const auto& localFiniteElement = localView.tree().finiteElement();
-      elemLapl.resize(localFiniteElement.size());
-      for(auto& d : elemLapl) d = 0;      // fills the entire vector with zeros
-      int order = 2*(dim*localFiniteElement.localBasis().order());       
-      const auto& quadRule = QuadratureRules<double, dim>::rule(element.type(), order); 
-      for(auto& qP : quadRule) {
-        const auto qPos = qP.position();
-        // The transposed inverse Jacobian of the map from the reference element to the element
-        const auto jacobian = geometry.jacobianInverseTransposed(qPos);
-
-        // The multiplicative factor in the integral transformation formula
-        const auto integrationElement = geometry.integrationElement(qPos);
-        std::vector<FieldMatrix<double,1,dim> > referenceGradients;
-        localFiniteElement.localBasis().evaluateJacobian(qPos, referenceGradients);
-
-        // Compute the shape function gradients on the real element
-        std::vector<FieldVector<double,dim> > gradients(referenceGradients.size());
-        for (size_t i=0; i<gradients.size(); i++)
-          jacobian.mv(referenceGradients[i][0], gradients[i]);
-
-        //compute the values of the basis functions
-        //std::vector<FieldVector<double, 1>> basValues;
-        //localFiniteElement.localBasis().evaluateFunction(qPos, basValues);
-
-        for (size_t i=0; i<elemLapl.size(); i++)
-          for (size_t j=0; j<elemLapl.size(); j++ ) {
-              elemLapl[localView.tree().localIndex(i)]
-                += yIn[localView.tree().localIndex(j)]*( gradients[i] * gradients[j] ) * qP.weight() * integrationElement;
-          }
-      }
-
-      //move insert entries to global sparse matrix
-      for(size_t i=0; i<elemLapl.size(); i++)
-      {
-        // The global index of the i-th degree of freedom of the element
-        auto row = localIndexSet.index(i);
-        // The global index of the j-th degree of freedom of the element
-        out[row] += (-nu)*elemLapl[i];
-      }
-    }
-  }
+  lapl0.umv(yIn, out);
 }
 
 void Heat::addFastMatrix(double t, MatrixType& dest) const

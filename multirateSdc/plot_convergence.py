@@ -14,7 +14,7 @@ P = 3
 tstart = 0.0
 tend   = 2.25
 nsteps = [4, 6, 8, 10, 12, 14, 16, 18, 20]
-K_iter = [2, 3, 4]
+K_iter = [1, 2, 3]
 err    = np.zeros((np.size(K_iter),np.size(nsteps)))
 order  = np.zeros((np.size(K_iter),np.size(nsteps)))
 err_ros = np.zeros(np.size(nsteps))
@@ -46,16 +46,14 @@ for kk in range(np.size(K_iter)):
         u0_ros = ros.step(u0_ros)
     
       # reset buffers to zero
-      u     = np.zeros((M,1,1))
-      usub  = np.zeros((M,P,1))
-      u_    = np.zeros((M,1,1))
-      usub_ = np.zeros((M,P,1))
+      u      = np.zeros((M,1,1))
+      usub   = np.zeros((M,P,1))
+      fu     = np.zeros((M,1,1))
+      fu_sub = np.zeros((M,P,1))
 
-      sdc.predict(u0, u_, usub_)
+      sdc.predict(u0, u, usub, fu, fu_sub)
       for k in range(K_iter[kk]):
-        sdc.sweep(u0, u, usub, u_, usub_)
-        u_    = copy.deepcopy(u)
-        usub_ = copy.deepcopy(usub)
+        sdc.sweep(u0, u, usub, fu, fu_sub)
 
       u0 = u[M-1]
 
@@ -81,6 +79,11 @@ plt.ylabel('Error')
 plt.xlabel('Number of time steps')
 #plt.gca().get_xaxis().get_major_formatter().labelOnlyBase = False
 #plt.gca().get_xaxis().set_major_formatter(ScalarFormatter())
+
+filename = 'convergence.pdf'
+fig.savefig(filename, bbox_inches='tight')
+call(["pdfcrop", filename, filename])
+
 
 fig = plt.figure()
 plt.loglog(np.multiply(nsteps, M*K_iter[0]), err[0,:], 'bo', markersize=fs)

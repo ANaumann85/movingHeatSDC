@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
   double al = 1e-5, nu=1e-3;
-  Heat heat(10, nu, al, 0.0);
+  Heat heat(10, nu, al, 0.0, 0.0);
   Ros2<Heat::VectorType > ros2([&heat](auto& in) { heat.init(in); in=0.0; });
   Heat::VectorType y0;
   heat.init(y0); y0 = 0.0;

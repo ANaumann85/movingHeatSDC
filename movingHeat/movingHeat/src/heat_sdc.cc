@@ -19,7 +19,7 @@ void solve(Heat& heat, unsigned k_iter, unsigned nStep)
 {
   typedef MRSdc<Heat::VectorType, M,P> Method;
   typename Method::Init init([&heat](Heat::VectorType& d) { heat.init(d); });
-  Method sdc(init, k_iter, "radau_right", "equi_noleft");
+  Method sdc(init, k_iter, "radau_right", "radau_right");
   Heat::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
   heat.init(y0); y0 = 0.0;
@@ -101,21 +101,22 @@ void solve(Heat& heat, unsigned k_iter, unsigned nStep, unsigned M, unsigned P)
 
 int main(int argc, char* argv[])
 {
-  if(argc < 4) {
-    std::cerr << "usage: " << argv[0] << " <nStep> <M> <P>\n";
+  if(argc < 5) {
+    std::cerr << "usage: " << argv[0] << " <nStep> <M> <P> <kIter>\n";
     return 1;
   }
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
-  Heat heat(10);
+  Heat heat(10, 1.0e-3, 1.0e-3, 5.0, 0.0, true);
 
-  unsigned nStep(40);
+  unsigned nStep(40), kIter(2);
   {std::stringstream ss; ss << argv[1]; ss >> nStep; }
+  {std::stringstream ss; ss << argv[4]; ss >> kIter; }
   unsigned M, P;
   {std::stringstream ss; ss << argv[2]; ss >> M; }
   {std::stringstream ss; ss << argv[3]; ss >> P; }
 
-  solve(heat, 1, nStep, M,P);
+  solve(heat, kIter, nStep, M,P);
   return 0;
 }
 

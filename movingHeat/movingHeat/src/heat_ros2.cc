@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
   }
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
-  Heat heat(10);
+  Heat heat(10, 1.0e-3, 1.0e-3, 5.0, 0.0, true);
   Ros2<Heat::VectorType > ros2([&heat](auto& in) { heat.init(in); });
   Heat::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
