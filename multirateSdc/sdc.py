@@ -179,6 +179,7 @@ class sdc_step():
           # --------
         else:
           t            = self.coll.coll_sub[m].nodes[p-1]
+          ### NOTE: the non-copy version corresponds to setting this term to zero
           f2_term      = fu_sub[m,p-1,:] - fu_pm1_old
           usub_mm1     = usub[m,p-1,:]
         
@@ -186,7 +187,7 @@ class sdc_step():
         
         # save value in fu_sub[m,p,:] for next iteration before overwriting it
         fu_pm1_old    = np.copy(fu_sub[m,p,:])
-        #fu_pm1_old    = fu_sub[m,p,:]
+        #fu_pm1_old    = fu_sub[m,p,:] #...improves stability, increases error but retains convergence order
         fu_sub[m,p,:] = self.prob.f2(usub[m,p,:], self.coll.coll_sub[m].nodes[p])
       # --- end of embedded steps ---
       
