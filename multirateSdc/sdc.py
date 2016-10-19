@@ -7,12 +7,13 @@ class sdc_step():
 
   '''
   '''
-  def __init__(self, M, P, tstart, tend, problem):
+  def __init__(self, M, P, tstart, tend, problem, theta=1.0):
     self.coll    = multirateCollocation(M, P, tstart, tend, problem.dim)
     self.I_m_mp1 = np.zeros((M,problem.dim))
     self.I_p_pp1 = np.zeros((M,P,problem.dim))
     self.prob    = problem
     self.dt      = tend-tstart
+    self.theta   = theta
 
   '''
   '''
@@ -180,7 +181,7 @@ class sdc_step():
         else:
           t            = self.coll.coll_sub[m].nodes[p-1]
           ### NOTE: the non-copy version corresponds to setting this term to zero
-          f2_term      = fu_sub[m,p-1,:] - fu_pm1_old
+          f2_term      = self.theta*(fu_sub[m,p-1,:] - fu_pm1_old)
           usub_mm1     = usub[m,p-1,:]
         
         usub[m,p,:]  = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu[m,:] + f2_term) + self.I_p_pp1[m,p,:]
