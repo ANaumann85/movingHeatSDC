@@ -80,5 +80,5 @@ int main(int argc, char* argv[])
   double madiff=ref.infinity_norm();
   cout.precision(18);
   cout << "max diff: " << madiff << std::endl;
-  return madiff==0.0 ? 0 :1;
+  return abs(madiff) < 6.67e-16 ? 0 :1;
 }
