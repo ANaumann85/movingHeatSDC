@@ -132,6 +132,7 @@ struct MRSdc
 		Vec u0_step; u0_step=u0;
 
 		//Vec swap; swap = u0;
+		f.fast(coll.coll_sub[0].tleft, u0_step, fVal);
 		for(unsigned m(0); m < M; ++m)
 		{
 			f.Mv(u0_step, rhs);//rhs=Mu^0_{m}
@@ -141,10 +142,10 @@ struct MRSdc
 			//compute Mu^0_{m,p-1}+dt_{m+1,p} f(u^*_{m+1})+dt_{m+1,p}g(u^0_{m,p-1})
 			f.Mv(u0_step, rhs);//rhs=Mu^0_{m,0} 
 
+			//f.fast(coll.coll_sub[m].tleft, u0_step, fVal);//fVal=g(t_m, u^0_m)
+			axpy(coll.coll_sub[m].delta_m[0], fVal, rhs);//rhs=Mu^0_{m,0}+dt_{m,0}f(t_m,u^*_m)+dt_{m,0}*g(t_m,u^0_m)
 			f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^*_m)
 			axpy(coll.coll_sub[m].delta_m[0], fVal, rhs);//rhs=Mu^0_{m,0}+dt_{m,0}f(t_m,u^*_m)
-			f.fast(coll.coll_sub[m].tleft, u0_step, fVal);//fVal=g(t_m, u^0_m)
-			axpy(coll.coll_sub[m].delta_m[0], fVal, rhs);//rhs=Mu^0_{m,0}+dt_{m,0}f(t_m,u^*_m)+dt_{m,0}*g(t_m,u^0_m)
 			f.MinvV(rhs, ue[m][0]); //ue[m][0]=u^0_{m,0}+M^{-1}(dt_{m,0}f(t_m,u^*_m)+dt_{m,0}*g(t_m,u^0_m))
 			f.fast(coll.coll_sub[m].nodes[0], ue[m][0], fue[m][0]);//store fue[m][0]=g(u^1_{m,0})
 
@@ -162,6 +163,7 @@ struct MRSdc
 			}
 			u0_step = ue[m][P-1];
 			us[m]  = ue[m][P-1]; //update u^1_{m}=u^1_{m,P}
+			fVal = fue[m][P-1];
 			f.slow(coll.coll.nodes[m], us[m], fus[m]); //store fus[m]=f(u^1_{m})
 		}
 	}
