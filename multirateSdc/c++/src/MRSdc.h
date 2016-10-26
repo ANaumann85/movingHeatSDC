@@ -142,10 +142,10 @@ struct MRSdc
 			//compute Mu^0_{m,p-1}+dt_{m+1,p} f(u^*_{m+1})+dt_{m+1,p}g(u^0_{m,p-1})
 			f.Mv(u0_step, rhs);//rhs=Mu^0_{m,0} 
 
-			//f.fast(coll.coll_sub[m].tleft, u0_step, fVal);//fVal=g(t_m, u^0_m)
-			axpy(coll.coll_sub[m].delta_m[0], fVal, rhs);//rhs=Mu^0_{m,0}+dt_{m,0}f(t_m,u^*_m)+dt_{m,0}*g(t_m,u^0_m)
+			//f.fast(coll.coll_sub[m].tleft, u0_step, fVal);//fVal=g(t_m, u^0_m) //use fast val from line 135 and line 166
+			axpy(coll.coll_sub[m].delta_m[0], fVal, rhs);//rhs=Mu^0_{m,0}+dt_{m,0}*g(t_m,u^0_m)
 			f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^*_m)
-			axpy(coll.coll_sub[m].delta_m[0], fVal, rhs);//rhs=Mu^0_{m,0}+dt_{m,0}f(t_m,u^*_m)
+			axpy(coll.coll_sub[m].delta_m[0], fVal, rhs);//rhs=Mu^0_{m,0}+dt_{m,0}*g(t_m,u^0_m)+dt_{m,0}f(t_m,u^*_m)
 			f.MinvV(rhs, ue[m][0]); //ue[m][0]=u^0_{m,0}+M^{-1}(dt_{m,0}f(t_m,u^*_m)+dt_{m,0}*g(t_m,u^0_m))
 			f.fast(coll.coll_sub[m].nodes[0], ue[m][0], fue[m][0]);//store fue[m][0]=g(u^1_{m,0})
 
