@@ -14,13 +14,13 @@ from subprocess import call
 plt.matplotlib.rc('text', usetex=True)
 
 M = 3
-P = 12
+P = 4
 tstart = 0.0
 tend   = 1.0
 nue=50
 a = 1.0
-alpha_vec = np.linspace(0.0, 35.0, 20)
-nu_vec    = np.linspace(0.0, nue, 20)
+alpha_vec = np.linspace(0.0, 35.0, 10)
+nu_vec    = np.linspace(0.0, nue, 10)
 
 stab     = np.zeros((np.size(alpha_vec), np.size(nu_vec)))
 stab_ros = np.zeros((np.size(alpha_vec), np.size(nu_vec)))
@@ -38,7 +38,7 @@ for kk in range(np.size(alpha_vec)):
     eigv, eigvec = np.linalg.eig(prob.S + prob.get_mat1(0.1))
     stab_c[kk,ll] = np.max(eigv)
     
-    sdc     = sdc_step(M, P, 0.0, 1.0, prob)    
+    sdc     = sdc_step(M, P, 0.0, 1.0, prob, 0.0)    
     sdc_std = sdc_standard_step(M, 0.0, 1.0, prob)
     ros     = ros2_step(0.0, 1.0, prob)
     
@@ -94,7 +94,7 @@ fig  = plt.figure()
 levels = np.array([0.25, 0.5, 0.75, 0.9, 1.1])
 
 #CS1 = plt.contour(nu_vec, alpha_vec, np.absolute(stab), levels, colors='k', linestyles='dashed')
-CS2 = plt.contour(nu_vec, alpha_vec, np.absolute(stab), [1.0],  colors='k')
+CS2 = plt.contour(nu_vec, alpha_vec, np.absolute(stab),     [1.0],  colors='k')
 CS3 = plt.contour(nu_vec, alpha_vec, np.absolute(stab_std), [1.0],  colors='k', linestyles='dashed')
 CS3 = plt.contour(nu_vec, alpha_vec, np.absolute(stab_ros), [1.0],  colors='k', linestyles='dotted')
 
