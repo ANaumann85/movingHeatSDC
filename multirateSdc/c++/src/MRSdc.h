@@ -136,6 +136,8 @@ struct MRSdc
 		for(unsigned m(0); m < M; ++m)
 		{
 			f.Mv(u0_step, rhs);//rhs=Mu^0_{m}
+      f.slowSrc(coll.coll.nodes[m], fVal);
+      axpy(coll.coll.delta_m[m], fVal, rhs);
 			//compute u^*_{m+1}, w.r. (M-dtm*J(t_{m+1}))u^*_{m+1}=Mu^0_{m}
 			f.updateMatrix(coll.coll.nodes[m], coll.coll.delta_m[m]);
 			f.solveMaJ(rhs, us[m]);//us[m]=u^*_{m+1}
@@ -187,6 +189,8 @@ struct MRSdc
 		for(unsigned m(0); m < M; ++m) {
 			//standard step for u*
 			f.Mv(u0_step, rhs); //rhs=Mu^{k+1}_{m}
+      f.slowSrc(coll.coll.nodes[m], fVal);
+      axpy(coll.coll.delta_m[m], fVal, rhs);
 #if 0
 			f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^k_m)
 			axpy(- coll.coll.delta_m[m], fVal, rhs); //rhs=Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)

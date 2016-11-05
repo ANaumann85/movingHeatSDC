@@ -33,6 +33,7 @@ using namespace Dune;
  * We discretize it with (linear) finite elements and obtain the ODE
  *  M \dot{U} = Lu + B(t)*u+b(t)
  */
+#define WITH_SLOW_SRC
 class Heat
 {
   static const int dim = 2;
@@ -73,8 +74,10 @@ class Heat
   GridView gridView; 
   Basis basis;
 
-  MatrixType mass, lapl, lapl0;
+  MatrixType mass, lapl, lapl0, constRobM;
   MatrixType mMaJ;
+  VectorType constRobB;
+
   typedef UMFPack<MatrixType > MSolver;
   std::shared_ptr<MSolver> mSolver;
 
@@ -84,22 +87,31 @@ class Heat
   std::shared_ptr<PvdWriter_MV > pvdWriter_mv;
 
   double nu, alpha, v0, sourceVal;
+  double bAlph, bVal;
   unsigned nInter;
-  bool useLapl0;
+  bool useLapl0, addConstRobin;
     
   void fillMatrices();
   void fillMatricesZeroLapl();
   void setLaplZero();
   void buildMatrices();
+  void setConstRobin();
 
   public:
-  Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, bool useLapl0=false);
+  Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, 
+      bool useLapl0=false, bool addConstRobin=false);
+
   //sets nu and alpha to the new values and updates matrices
   void setParam(double nu, double alpha);
 
+  void setbAlph(double balph)
+  { bAlph = balph; if(addConstRobin) setConstRobin(); }
+  double getBVal() const 
+  { return bVal; }
+
   //updates M-a*J(t) with given a
   void updateMatrix(double t, double a)
-  { mMaJ = mass ; mMaJ.axpy( -a, lapl); }
+  { mMaJ = mass ; mMaJ.axpy( -a, lapl); if(addConstRobin) mMaJ.axpy(-a, constRobM); }
 
   //solves x, such that (M-aJ)x=rhs
   //TODO: move construction to updateMatrix and reuse
@@ -116,6 +128,10 @@ class Heat
   {
     lapl.mv(yIn, out);
     fastAdd(t, yIn, out);
+    if(addConstRobin) {
+      out += constRobB;
+      constRobM.umv(yIn, out);
+    }
   }
 
   //adds the fast term, i.e. out += B(t)*yIn+b(t)
@@ -135,11 +151,37 @@ class Heat
 
   //sets the fast term, i.e. out = B(t)*yIn+b(t)
   void fast(double t, const VectorType& yIn, VectorType& out) const
-  { out = 0.0; fastAdd(t, yIn, out); }
+  { 
+    out = 0.0; fastAdd(t, yIn, out); 
+#ifndef WITH_SLOW_SRC
+    if(addConstRobin) {
+      out += constRobB; 
+      //constRobM.umv(yIn, out);
+    }
+#endif
+  }
 
   //compute the slow term, i.e. out = L*yIn
   void slow(double t, const VectorType& yIn, VectorType& out) const
-  { lapl.mv(yIn, out); }
+  { 
+    lapl.mv(yIn, out); 
+    if(addConstRobin) { 
+      constRobM.umv(yIn, out); 
+#ifdef WITH_SLOW_SRC
+      out += constRobB; 
+#endif
+    } 
+  }
+
+  void slowSrc(double , VectorType& out) const
+  { 
+#ifdef WITH_SLOW_SRC
+    if(addConstRobin)  
+      out = constRobB; 
+#else
+    out = 0.0;
+#endif
+  }
 
   //computes out = M*in
   void Mv(const VectorType& in, VectorType& out) const

@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
   static const unsigned kIter=2;
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
-  Heat heat(40, 1.0e-3, 1.0e-3, 5.0, 0.0, true);
+  Heat heat(10, 1.0e-3, 1.0e-3, 5.0, 0.0, false, true);
 
   unsigned nStep(40);
   {std::stringstream ss; ss << argv[1]; ss >> nStep; }

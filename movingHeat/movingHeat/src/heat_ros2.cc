@@ -18,11 +18,12 @@ int main(int argc, char* argv[])
   }
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
-  Heat heat(10, 1.0e-3, 1.0e-3, 5.0, 0.0, true);
+  Heat heat(10, 1.0e-3, 1.0e-3, 5.0, 0.0, false, true);
+  heat.setbAlph(1e-2);
   Ros2<Heat::VectorType > ros2([&heat](auto& in) { heat.init(in); });
   Heat::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
-  heat.init(y0); y0 = 0.0;
+  heat.init(y0); y0 = heat.getBVal(); //0.0;
 
   double t0(0.0), tend(20.0);
   unsigned nStep(40);
@@ -37,4 +38,3 @@ int main(int argc, char* argv[])
   heat.writeResult(tend);
   return 0;
 }
-
