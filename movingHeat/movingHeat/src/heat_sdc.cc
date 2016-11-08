@@ -22,7 +22,7 @@ void solve(Heat& heat, unsigned k_iter, unsigned nStep)
   Method sdc(init, k_iter, "radau_right", "radau_right");
   Heat::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
-  heat.init(y0); y0 = 0.0;
+  heat.init(y0); y0 = heat.getBVal();
 
   double t0(0.0), tend(20.0);
 
@@ -107,7 +107,8 @@ int main(int argc, char* argv[])
   }
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
-  Heat heat(10, 1.0e-3, 1.0e-3, 5.0, 0.0, true);
+  Heat heat(10, 1.0e-3, 1.0e-3, 5.0, 0.0, false, true);
+  heat.setbAlph(1e-2);
 
   unsigned nStep(40), kIter(2);
   {std::stringstream ss; ss << argv[1]; ss >> nStep; }

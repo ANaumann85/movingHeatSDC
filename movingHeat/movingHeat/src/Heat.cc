@@ -63,13 +63,15 @@ namespace Helper
   };
 }
 
-Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool useLapl0):
+Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
   grid_mv(new GridType_MV(hgtmv, mf)),
   gridView(grid->leafGridView()), basis(gridView),
-  nu(nu), alpha(alpha), v0(v0), sourceVal(source), nInter(nInter), useLapl0(useLapl0)
+  nu(nu), alpha(alpha), v0(v0), sourceVal(source), 
+  bAlph(10.0), bVal(1.0), nInter(nInter), 
+  useLapl0(useLapl0), addConstRobin(addConstRobin)
 { 
   buildMatrices(); 
 }
@@ -97,7 +99,56 @@ void Heat::buildMatrices()
   /*storeMatrixMarket(lapl, "lapl-matrix.mm");
   storeMatrixMarket(mass, "mass-matrix.mm");*/
   mSolver.reset(new MSolver(mass));
+  if(addConstRobin)
+    setConstRobin();
 }
+
+void Heat::setConstRobin()
+{
+  constRobM = mass; constRobM = 0.0;
+  constRobB.resize(constRobM.N()); constRobB=0.0;
+
+  auto localView = basis.localView();
+  auto localIndexSet = basis.localIndexSet();
+  const double bAlph = this->bAlph;
+  const double bVal = this->bVal; 
+  for (const auto& bdEl : elements(gridView))
+  {
+    localView.bind(bdEl);
+    localIndexSet.bind(localView);
+    for(const auto& inter : intersections(gridView, bdEl))
+    {
+      //std::cout << "bd center:" << bdEl.geometry().center() << " " << inter.geometry().center() << " " << inter.boundary() << " " << inter.type() <<  std::endl;
+      if(inter.boundary() && (std::abs(inter.geometry().center()[0]-1.0) < 1.0e-8)) {
+        //std::cout << "bd center:" << bdEl.geometry().center() << " " << inter.geometry().center() << " " << inter.boundary() << " " << inter.type() <<  std::endl;
+        const int qOrder = 3;
+        auto quadRule = QuadratureRules<double, dim-1>::rule(inter.type(), qOrder);
+        const auto& localFiniteElement = localView.tree().finiteElement();
+        for(const auto& qPos : quadRule) {
+          //std::cout << "qPos:" << qPos.position(); // <<std::endl;
+          const double det = inter.geometry().integrationElement(qPos.position());
+          std::vector<FieldVector<double,1> > shapeFunctionValues;
+          localFiniteElement.localBasis().evaluateFunction(inter.geometryInInside().global(qPos.position()), shapeFunctionValues);
+          //std::cout << "\ninInside.type():" <<inter.geometryInInside().type() ;
+          //std::cout << "\nqGlobal:" << inter.geometryInInside().global(qPos.position()) ;
+          //std::cout << "shapeVals:[";
+          for(unsigned i(0); i < localFiniteElement.size(); ++i) {
+            //std::cout << shapeFunctionValues[i] << " ";
+            const auto row = localIndexSet.index(i);
+            constRobB[row] += qPos.weight()*bAlph*bVal*shapeFunctionValues[i]*det;
+            for(unsigned j(0); j < localFiniteElement.size(); ++j) {
+              const auto col = localIndexSet.index(j);
+              constRobM[row][col] += -qPos.weight()*bAlph*shapeFunctionValues[j]*shapeFunctionValues[i]*det;
+            }
+          }
+          //std::cout << std::endl;
+        }
+
+      }
+    }
+  }
+}
+
 
 void Heat::fillMatrices()
 {
