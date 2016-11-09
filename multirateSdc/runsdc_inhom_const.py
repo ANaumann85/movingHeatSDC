@@ -5,16 +5,15 @@ import numpy as np
 import unittest
 import copy
 
-nu = -1.0
+nu = -4.0
 b=2.0
-prob = problem_inh(nu, b, True)
-probConstFast = problem_inh(nu, b, True)
+prob = problem_inh(nu, b)
 M = 3
 P = 8
 tstart = 0.0
 tend   = 1.0
-nIter=2
-nKVec=range(1,5)
+nIter=1
+nKVec=range(0,5)
 u0 = -b/nu
 
 dt=(tend-tstart)/nIter
@@ -26,7 +25,7 @@ for nK in nKVec:
       ts=tstart+n*dt
       te=ts+dt
       sdc = sdc_step(M, P, ts, te, prob)
-      sdc_stan=sdc_standard_step(M, ts, te, probConstFast)
+      sdc_stan=sdc_standard_step(M, ts, te, prob)
       u = np.zeros((M,prob.dim))
       usub = np.zeros((M,P,prob.dim))
       fu = np.zeros((M,prob.dim))
@@ -44,7 +43,7 @@ for nK in nKVec:
         u_old = copy.deepcopy(u)
         usub_old = copy.deepcopy(usub)
         sdc.sweep(u0_, u, usub, fu, fu_sub)
-        print sdc.residual(u0_, u)
+        #print sdc.residual(u0_, u)
       u0_ = u[-1]
 
       sdc_stan.predict(us0_, us_)

@@ -117,10 +117,17 @@ class sdc_step():
 
     u0_step = u0
 
+    constSrc=getattr(self.prob,'constSrc',None)
+    useConstSrc=False
+    if(callable(constSrc)):
+        useConstSrc=True
     for m in range(self.coll.M):
       
         # standard step
-        u[m,:] = self.prob.solve_f1(self.coll.coll.delta_m[m], u0_step)
+        if(useConstSrc):
+            u[m,:] = self.prob.solve_f1(self.coll.coll.delta_m[m], u0_step+self.coll.coll.delta_m[m]*self.prob.constSrc())
+        else:
+            u[m,:] = self.prob.solve_f1(self.coll.coll.delta_m[m], u0_step)
         
         # embedded steps
         t = self.coll.coll_sub[m].tleft

@@ -153,12 +153,10 @@ class Heat
   void fast(double t, const VectorType& yIn, VectorType& out) const
   { 
     out = 0.0; fastAdd(t, yIn, out); 
-#ifndef WITH_SLOW_SRC
     if(addConstRobin) {
       out += constRobB; 
       //constRobM.umv(yIn, out);
     }
-#endif
   }
 
   //compute the slow term, i.e. out = L*yIn
@@ -167,9 +165,6 @@ class Heat
     lapl.mv(yIn, out); 
     if(addConstRobin) { 
       constRobM.umv(yIn, out); 
-#ifdef WITH_SLOW_SRC
-      out += constRobB; 
-#endif
     } 
   }
 
@@ -178,6 +173,8 @@ class Heat
 #ifdef WITH_SLOW_SRC
     if(addConstRobin)  
       out = constRobB; 
+    else
+      out = 0.0;
 #else
     out = 0.0;
 #endif
