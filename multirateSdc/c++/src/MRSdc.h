@@ -132,20 +132,21 @@ struct MRSdc
 		Vec u0_step; u0_step=u0;
 
 		//Vec swap; swap = u0;
-		f.fast(coll.coll_sub[0].tleft, u0_step, fVal);
+		Vec fastFVal; fastFVal = u0;
+		f.fast(coll.coll_sub[0].tleft, u0_step, fastFVal);
 		for(unsigned m(0); m < M; ++m)
 		{
 			f.Mv(u0_step, rhs);//rhs=Mu^0_{m}
-      f.slowSrc(coll.coll.nodes[m], fVal);
-      axpy(coll.coll.delta_m[m], fVal, rhs);
+			f.slowSrc(coll.coll.nodes[m], fVal);
+			axpy(coll.coll.delta_m[m], fVal, rhs);
 			//compute u^*_{m+1}, w.r. (M-dtm*J(t_{m+1}))u^*_{m+1}=Mu^0_{m}
 			f.updateMatrix(coll.coll.nodes[m], coll.coll.delta_m[m]);
 			f.solveMaJ(rhs, us[m]);//us[m]=u^*_{m+1}
 			//compute Mu^0_{m,p-1}+dt_{m+1,p} f(u^*_{m+1})+dt_{m+1,p}g(u^0_{m,p-1})
 			f.Mv(u0_step, rhs);//rhs=Mu^0_{m,0} 
 
-			//f.fast(coll.coll_sub[m].tleft, u0_step, fVal);//fVal=g(t_m, u^0_m) //use fast val from line 135 and line 166
-			axpy(coll.coll_sub[m].delta_m[0], fVal, rhs);//rhs=Mu^0_{m,0}+dt_{m,0}*g(t_m,u^0_m)
+			//f.fast(coll.coll_sub[m].tleft, u0_step, fVal);//fVal=g(t_m, u^0_m) //use fast val from line 136 and line 169
+			axpy(coll.coll_sub[m].delta_m[0], fastFVal, rhs);//rhs=Mu^0_{m,0}+dt_{m,0}*g(t_m,u^0_m)
 			f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^*_m)
 			axpy(coll.coll_sub[m].delta_m[0], fVal, rhs);//rhs=Mu^0_{m,0}+dt_{m,0}*g(t_m,u^0_m)+dt_{m,0}f(t_m,u^*_m)
 			f.MinvV(rhs, ue[m][0]); //ue[m][0]=u^0_{m,0}+M^{-1}(dt_{m,0}f(t_m,u^*_m)+dt_{m,0}*g(t_m,u^0_m))
@@ -165,7 +166,7 @@ struct MRSdc
 			}
 			u0_step = ue[m][P-1];
 			us[m]  = ue[m][P-1]; //update u^1_{m}=u^1_{m,P}
-			fVal = fue[m][P-1];
+			fastFVal = fue[m][P-1];
 			f.slow(coll.coll.nodes[m], us[m], fus[m]); //store fus[m]=f(u^1_{m})
 		}
 	}
@@ -189,8 +190,6 @@ struct MRSdc
 		for(unsigned m(0); m < M; ++m) {
 			//standard step for u*
 			f.Mv(u0_step, rhs); //rhs=Mu^{k+1}_{m}
-      f.slowSrc(coll.coll.nodes[m], fVal);
-      axpy(coll.coll.delta_m[m], fVal, rhs);
 #if 0
 			f.slow(coll.coll.nodes[m], us[m], fVal); //fVal=f(t_m, u^k_m)
 			axpy(- coll.coll.delta_m[m], fVal, rhs); //rhs=Mu^{k+1}_{m}-dt_{m}f(t_m,u^k_m)
