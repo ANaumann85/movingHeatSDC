@@ -140,8 +140,8 @@ class HeatCoupled
   {
     for(unsigned i(0); i < 2; ++i) {
       lapl[i].mv(yIn[i], out[i]);
-      fastAdd(t, yIn, out);
     }
+    fastAdd(t, yIn, out);
     if(addConstRobin) {
       out[0] += constRobB[0];
       constRobM.umv(yIn[0], out[0]);
