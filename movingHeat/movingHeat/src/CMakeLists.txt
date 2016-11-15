@@ -36,5 +36,7 @@ target_link_libraries(heatCoupled_sdc heat)
 add_executable(heatCoupled_sdc_standard heatCoupled_sdc_standard.cc)
 target_link_libraries(heatCoupled_sdc_standard heat)
 
+add_executable(heatCoupled_sdc_sdc_standard heatCoupled_sdc_sdc_standard.cc)
+target_link_libraries(heatCoupled_sdc_sdc_standard heat)
 target_link_dune_default_libraries("heat_imexEuler")
 target_link_dune_default_libraries("heat_ros2")

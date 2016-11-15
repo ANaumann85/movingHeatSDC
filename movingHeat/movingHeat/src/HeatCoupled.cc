@@ -95,9 +95,9 @@ void HeatCoupled::buildMatrices()
   occupationPattern_mv.exportIdx(mass[1]);
   occupationPattern_mv.exportIdx(lapl[1]);
   if(useLapl0) {
-    throw std::runtime_error("not yet supported");
-    //occupationPattern.exportIdx(lapl0);
-    //fillMatricesZeroLapl();
+    //throw std::runtime_error("not yet supported");
+    occupationPattern.exportIdx(lapl0[0]);
+    fillMatricesZeroLapl();
   }
   else
     fillMatrices();
@@ -244,8 +244,14 @@ void HeatCoupled::fillMatrices()
 
 void HeatCoupled::fillMatricesZeroLapl()
 {
-#if 0
-  lapl = 0.0, mass = 0.0;
+  using Helper::fillMatrices;
+#if 1
+  lapl[0] = 0.0, mass[0] = 0.0;
+  lapl[1] = 0.0, mass[1] = 0.0;
+  //classical filling of moving part
+  fillMatrices(mass[1], lapl[1], basis_mv, gridView_mv);
+
+  //zero-lapl-filling of non-moving part
   auto localView = basis.localView();
   auto localIndexSet = basis.localIndexSet();
 
@@ -310,8 +316,8 @@ void HeatCoupled::fillMatricesZeroLapl()
         {
           // The global index of the j-th degree of freedom of the element
           auto col = localIndexSet.index(j);
-          mass[row][col] += elemMass[i][j];
-          lapl[row][col] += (-nu)*elemLapl[i][j];
+          mass[0][row][col] += elemMass[i][j];
+          lapl[0][row][col] += (-nu)*elemLapl[i][j];
         }
       }
     } else {
@@ -324,8 +330,8 @@ void HeatCoupled::fillMatricesZeroLapl()
         {
           // The global index of the j-th degree of freedom of the element
           auto col = localIndexSet.index(j);
-          mass[row][col] += elemMass[i][j];
-          lapl0[row][col] += (-nu)*elemLapl[i][j];
+          mass[0][row][col] += elemMass[i][j];
+          lapl0[0][row][col] += (-nu)*elemLapl[i][j];
         }
       }
     }
@@ -400,12 +406,6 @@ void HeatCoupled::fastBoundary(const VectorType& yIn, const F& flux, VectorType&
 
 void HeatCoupled::fastGrid(double t, const VectorType& yIn, VectorType& out) const
 {
-  if(useLapl0) {
-    throw std::runtime_error("not yet supported");
-    //fastGridZeroLapl(t, yIn, out);
-    return; 
-  }
-
   //const double center = 2.25-0.1*t;
   //const double dY = -0.1*t;
   const double dY = -sin(M_PI/10.0*t)*1.75;
@@ -492,6 +492,11 @@ void HeatCoupled::fastGrid(double t, const VectorType& yIn, VectorType& out) con
 
     }
 
+  }
+  if(useLapl0) {
+    lapl0[0].umv(yIn[0], out[0]);
+    //throw std::runtime_error("not yet supported");
+    //fastGridZeroLapl(t, yIn, out);
   }
 }
 

@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
   }
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
-  HeatCoupled heat(80, 1.0e-3, 1.0e-3, 5.0, 0.0, false, false);
+  HeatCoupled heat(20, 1.0e-3, 1.0e-3, 5.0, 0.0, false, false);
   heat.setbAlph(1e-2);
 
   unsigned nStep(40), kIter(2);
