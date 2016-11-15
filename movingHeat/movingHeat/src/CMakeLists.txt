@@ -1,4 +1,4 @@
-add_library(heat Heat.cc)
+add_library(heat Heat.cc HeatCoupled.cc)
 
 add_executable(heat_imexEuler heat_imexEuler.cc)
 target_link_libraries(heat_imexEuler heat)
@@ -27,6 +27,16 @@ target_link_libraries(test_lapl0 heat)
 add_executable(test_mrsdc_lapl0 test_mrsdc_lapl0.cc)
 target_link_libraries(test_mrsdc_lapl0 heat)
 #add_executable(stability_model_sdc stability_model_sdc.cc)
+add_executable(heatCoupled_ros2 heatCoupled_ros2.cc)
+target_link_libraries(heatCoupled_ros2 heat)
 
+add_executable(heatCoupled_sdc heatCoupled_sdc.cc)
+target_link_libraries(heatCoupled_sdc heat)
+
+add_executable(heatCoupled_sdc_standard heatCoupled_sdc_standard.cc)
+target_link_libraries(heatCoupled_sdc_standard heat)
+
+add_executable(heatCoupled_sdc_sdc_standard heatCoupled_sdc_sdc_standard.cc)
+target_link_libraries(heatCoupled_sdc_sdc_standard heat)
 target_link_dune_default_libraries("heat_imexEuler")
 target_link_dune_default_libraries("heat_ros2")

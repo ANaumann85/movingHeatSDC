@@ -12,11 +12,12 @@ tstart = 0.0
 tend   = 1.0
 nue=500
 a = 1.0
-alpha_vec = np.linspace(0.0, 35.0, 20)
-nu_vec    = np.linspace(0.0, nue, 40)
-P_vec = range(M,M+11)
+alpha_vec = np.linspace(0.0, 60.0, 120)
+nu_vec    = np.linspace(0.0, nue, 50)
+P_vec = [8] #range(M,M+11)
 
 stab     = np.zeros((np.size(alpha_vec), np.size(nu_vec)))
+theta=0.25
 
 K_iter = 2
 
@@ -25,7 +26,7 @@ for P in P_vec:
     for ll in range(np.size(nu_vec)):
       prob = problem_model(a=a, nu=nu_vec[ll], alpha=alpha_vec[kk], v0=0.0)
       
-      sdc     = sdc_step(M, P, 0.0, 1.0, prob)    
+      sdc     = sdc_step(M, P, 0.0, 1.0, prob, theta)    
     
       R     = np.zeros((prob.dim,prob.dim))
       u0    = np.eye(prob.dim)
@@ -50,7 +51,7 @@ for P in P_vec:
   
       eval, evec  = np.linalg.eig(R)
       stab[kk,ll] = np.linalg.norm(eval, np.inf)
-  fname='stability-K-%d-M-%d-P-%d-nue_%d.txt' %(K_iter, M, P, nue)
+  fname='stability-K-%d-M-%d-P-%d-nue_%d_theta-%g.txt' %(K_iter, M, P, nue, theta)
   print "save:",fname
   np.savetxt(fname, stab)
     
