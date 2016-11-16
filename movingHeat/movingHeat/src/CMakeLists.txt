@@ -28,6 +28,8 @@ add_executable(test_mrsdc_lapl0 test_mrsdc_lapl0.cc)
 target_link_libraries(test_mrsdc_lapl0 heat)
 
 add_executable(test_grid_level test_grid_level.cc)
+add_executable(test_levels test_levels.cc)
+target_link_libraries(test_levels heat)
 target_link_dune_default_libraries("test_grid_level")
 
 #add_executable(stability_model_sdc stability_model_sdc.cc)

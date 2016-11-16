@@ -101,6 +101,9 @@ class Heat
   Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, 
       bool useLapl0=false, bool addConstRobin=false);
 
+  Heat(int nInter, unsigned nRef, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, 
+      bool useLapl0=false, bool addConstRobin=false);
+
   //sets nu and alpha to the new values and updates matrices
   void setParam(double nu, double alpha);
 
