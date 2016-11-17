@@ -23,6 +23,7 @@ typedef BCRSMatrix<FieldMatrix<double,1,1> > MatrixType;
 // CF: from coarse mesh to this (interpolation)
 struct FCCF
 {
+
   //takes the coarse-to-fine interpolation from fufem
   FCCF(std::shared_ptr<MatrixType > CF = nullptr):
     CF(CF)

@@ -25,6 +25,7 @@
 #include <dune/grid/io/file/vtk/vtksequencewriter.hh>
 #include <dune/grid/io/file/vtk/vtkwriter.hh>
 
+#include "CoarseLapl.h"
 using namespace Dune;
 /** This class represents the heat equation 
  *    \dot{u} = nu\Delta u 
@@ -85,6 +86,7 @@ class Heat
   typedef VTKSequenceWriter< GridView_MV > PvdWriter_MV;
   std::shared_ptr<PvdWriter > pvdWriter;
   std::shared_ptr<PvdWriter_MV > pvdWriter_mv;
+  std::shared_ptr<CoarseLapl > coarseLapl;
 
   double nu, alpha, v0, sourceVal;
   double bAlph, bVal;

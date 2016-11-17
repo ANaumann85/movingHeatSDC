@@ -7,6 +7,7 @@
 
 #include <dune/grid-glue/merging/contactmerge.hh>
 #include <dune/grid-glue/gridglue.hh>
+#include "CoarseLapl.hh"
 
 namespace Helper 
 {
@@ -86,7 +87,10 @@ Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double
   bAlph(10.0), bVal(1.0), nInter(nInter), 
   useLapl0(useLapl0), addConstRobin(addConstRobin)
 { 
-  grid->globalRefine(nRef);
+  if(nRef > 0) {
+    grid->globalRefine(nRef);
+    coarseLapl = make_shared<CoarseLapl>(*grid, nu);
+  }
   buildMatrices(); 
 }
 
