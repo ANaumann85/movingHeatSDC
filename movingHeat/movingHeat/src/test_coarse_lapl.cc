@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
   MPIHelper::instance(argc, argv);
 
   double nu(1.0);
-  int nInter(5);
+  int nInter(10);
   unsigned  globRefine(1);
   static const int dim = 2;
   typedef YaspGrid<dim > GridType;
@@ -42,18 +42,21 @@ int main(int argc, char* argv[])
 
   fineOut = 0.0;
   coarseLapl.apply(fineIn, swap);
+  heat.MinvV(swap, fineOut);
 
   auto fineLaplMat(coarseLapl.getLapl(grid, nu, grid.maxLevel()));
   fineLaplMat.mv(fineIn, swap);
   heat.MinvV(swap, fineLapl);
   VTKWriter<LeafView> vtkWriter(leafView);
-  //vtkWriter.addVertexData(fineOut, "T");
+  vtkWriter.addVertexData(fineOut, "T");
   vtkWriter.addVertexData(fineLapl, "fineLapl");
   vtkWriter.addVertexData(fineIn, "fineIn");
   vtkWriter.write("test_coarse_lapl");
 
-  eLapl -= fineLapl;
-  std::cout << "max-norm-diff: " << eLapl.infinity_norm() << std::endl;
+  fineLapl -= eLapl;
+  std::cout << "max-norm-diff: " << fineLapl.infinity_norm() << std::endl;
+  fineOut -= eLapl;
+  std::cout << "max-norm-diff: " << fineOut.infinity_norm() << std::endl;
 
   /*auto heatLapl(heat.getLaplacian());
   Heat::VectorType heatVec, heatIn2;
