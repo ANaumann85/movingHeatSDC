@@ -78,6 +78,7 @@ class HeatCoupled
   Basis_MV basis_mv;
 
   std::array<MatrixType, 2> mass, lapl, lapl0;
+  MatrixType laplTilde;
   MatrixType constRobM;
   std::array<MatrixType, 2> mMaJ;
   VectorType constRobB;
@@ -93,17 +94,17 @@ class HeatCoupled
   double nu, alpha, v0, sourceVal;
   double bAlph, bVal;
   unsigned nInter;
-  bool useLapl0, addConstRobin;
+  bool useLapl0, addConstRobin, useLaplTilde;
     
   void fillMatrices();
   void fillMatricesZeroLapl();
   void setLaplZero();
-  void buildMatrices();
+  void buildMatrices(double h);
   void setConstRobin();
 
   public:
   HeatCoupled(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, 
-      bool useLapl0=false, bool addConstRobin=false);
+      bool useLapl0=false, bool addConstRobin=false, int useLaplTilde=0);
 
   //sets nu and alpha to the new values and updates matrices
   void setParam(double nu, double alpha);
@@ -121,6 +122,8 @@ class HeatCoupled
     }
     if(addConstRobin) 
       mMaJ[0].axpy(-a, constRobM); 
+    if(useLaplTilde)
+      mMaJ[0].axpy(-a, laplTilde);
   }
 
   //solves x, such that (M-aJ)x=rhs
@@ -173,6 +176,9 @@ class HeatCoupled
       out[0] += constRobB[0]; 
       //constRobM.umv(yIn, out);
     }
+    if(useLaplTilde) {
+      laplTilde.mmv(yIn[0], out[0]);
+    }
   }
 
   //compute the slow term, i.e. out = L*yIn
@@ -183,6 +189,8 @@ class HeatCoupled
     if(addConstRobin) { 
       constRobM.umv(yIn[0], out[0]); 
     } 
+    if(useLaplTilde)
+      laplTilde.umv(yIn[0], out[0]);
   }
 
   void slowSrc(double , VectorType& out) const

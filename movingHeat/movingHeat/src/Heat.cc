@@ -152,7 +152,7 @@ void Heat::buildMatrices(double h)
     setConstRobin();
   if(useLaplTilde) {
     laplTilde = lapl;
-    laplTilde *= (h*h);
+    laplTilde *= h;
   }
 }
 

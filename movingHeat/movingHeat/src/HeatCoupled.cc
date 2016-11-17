@@ -63,7 +63,7 @@ namespace Helper
   };
 }
 
-HeatCoupled::HeatCoupled(int nInter, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin):
+HeatCoupled::HeatCoupled(int nInter, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin, int useLaplTilde):
   L({1.0, 4.0}), lower_mv({-0.5, 1.75}), upper_mv({0.0, 2.25}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
@@ -74,17 +74,33 @@ HeatCoupled::HeatCoupled(int nInter, double nu, double alpha, double v0, double 
   bAlph(10.0), bVal(1.0), nInter(nInter), 
   useLapl0(useLapl0), addConstRobin(addConstRobin)
 { 
-  buildMatrices(); 
+  double h(1.0/nInter);
+  switch(useLaplTilde) {
+    case 0:
+      h=0.0;
+      break;
+    case 1:
+      break;
+    case 2:
+      h*=h;
+      break;
+    default:
+      throw std::runtime_error("only 0(off), 1(h), 2(h^2) allowed");
+  }
+  this->useLaplTilde = useLaplTilde > 0;
+  buildMatrices(h); 
 }
 
 void HeatCoupled::setParam(double nu, double alpha)
 {
   this->nu=nu;
   this->alpha=alpha;
-  buildMatrices(); 
+  if(useLaplTilde)
+    throw std::runtime_error(" missing stepsize at this point ");
+  buildMatrices(0.0); 
 }
 
-void HeatCoupled::buildMatrices()
+void HeatCoupled::buildMatrices(double h)
 {
   //set nnz structure
   MatrixIndexSet occupationPattern, occupationPattern_mv;
@@ -107,6 +123,10 @@ void HeatCoupled::buildMatrices()
     mSolver[i].reset(new MSolver(mass[i]));
   if(addConstRobin)
     setConstRobin();
+  if(useLaplTilde) {
+    laplTilde = lapl[0];
+    laplTilde *= h;
+  }
 }
 
 void HeatCoupled::setConstRobin()
