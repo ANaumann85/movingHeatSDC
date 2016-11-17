@@ -12,9 +12,9 @@ M = 3
 P = 8
 tstart = 0.0
 tend   = 1.0
-nIter=1
+nIter=4
 nKVec=range(0,5)
-u0 = -b/nu
+u0 = 1.5 #-b/nu
 
 dt=(tend-tstart)/nIter
 for nK in nKVec:
@@ -50,6 +50,7 @@ for nK in nKVec:
       for k in range(nK):
         sdc_stan.sweep(us0_, us, us_)
         us_    = copy.deepcopy(us)
+      us0_=us[-1]
 
     uex = u0*np.exp(nu*tend) + b/nu*(np.exp(nu*tend)-1)
     err =  abs(uex - u[-1])
