@@ -29,6 +29,7 @@ target_link_libraries(test_mrsdc_lapl0 heat)
 
 add_executable(test_grid_level test_grid_level.cc)
 add_executable(test_coarse_lapl test_coarse_lapl.cc CoarseLapl.cc)
+target_link_libraries(test_coarse_lapl heat)
 add_executable(test_levels test_levels.cc)
 target_link_libraries(test_levels heat)
 target_link_dune_default_libraries("test_grid_level")

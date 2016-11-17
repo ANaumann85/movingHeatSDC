@@ -10,10 +10,12 @@ CoarseLapl::CoarseLapl(Grid& grid, double nu)
 {
   typedef typename Grid::LevelGridView LevelView;
   typedef typename Functions::PQkNodalBasis<LevelView,1> LevelBasis;
-  transfers = getTransferPairs(grid);
-  LevelView view(grid.levelGridView(0));
-  LevelBasis basis(view);
-  fillLapl(basis, view, nu);
+  if(grid.maxLevel()) {
+    transfers = getTransferPairs(grid);
+    LevelView view(grid.levelGridView(0));
+    LevelBasis basis(view);
+    fillLapl(basis, view, nu);
+  }
 }
 
 template<typename Grid >
@@ -34,8 +36,20 @@ std::vector<CoarseLapl::FCCF > CoarseLapl::getTransferPairs(Grid& grid)
   return ret;
 }
 
+template<typename Grid>
+CoarseLapl::MatrixType CoarseLapl::getLapl(Grid& grid, double nu, unsigned level)
+{
+  typedef typename Grid::LevelGridView LevelView;
+  typedef typename Functions::PQkNodalBasis<LevelView,1> LevelBasis;
+  MatrixType ret;
+  LevelView view(grid.levelGridView(level));
+  LevelBasis basis(view);
+  fillLapl(basis, view, nu, ret);
+  return ret;
+}
+
 template<typename Basis, typename View>
-void CoarseLapl::fillLapl(Basis& basis, View& gridView, double nu)
+void CoarseLapl::fillLapl(Basis& basis, View& gridView, double nu, MatrixType& lapl)
 {
   {
   MatrixIndexSet occupationPattern;

@@ -10,15 +10,19 @@
 struct CoarseLapl
 {
   typedef Dune::BlockVector<Dune::FieldVector<double,1> > VectorType;
+  typedef Dune::BCRSMatrix<Dune::FieldMatrix<double,1,1> > MatrixType;
   //constructs the coarse laplacian for the level-0-grid
   template<typename Grid >
   CoarseLapl(Grid& grid, double nu);
 
   //applys the coarse lapl on the fine data
   void apply(const VectorType& in, VectorType& out) const;
+  MatrixType getLapl() const
+  { return lapl; }
+  template<typename Grid>
+  MatrixType getLapl(Grid& grid, double nu, unsigned level);
 
   private:
-    typedef Dune::BCRSMatrix<Dune::FieldMatrix<double,1,1> > MatrixType;
     //Fine-Coarse (FC) and Coarse-Fine (CF) operator, such that:
     // FC: from fine mesh to this (selection)
     // CF: from coarse mesh to this (interpolation, from fufem)
@@ -86,7 +90,10 @@ struct CoarseLapl
     template <class Basis>
     void getOccupationPattern(const Basis& basis, Dune::MatrixIndexSet& nb);
     template<typename Basis, typename View>
-    void fillLapl(Basis& basis, View& gridView, double nu);
+    void fillLapl(Basis& basis, View& gridView, double nu)
+    { fillLapl(basis, gridView, nu, this->lapl); }
+    template<typename Basis, typename View>
+    void fillLapl(Basis& basis, View& gridView, double nu, MatrixType& lapl);
 
     MatrixType lapl;
     std::vector<FCCF > transfers;
