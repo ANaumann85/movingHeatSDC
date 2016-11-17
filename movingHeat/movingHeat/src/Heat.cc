@@ -64,7 +64,7 @@ namespace Helper
   };
 }
 
-Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin):
+Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin, int useLaplTilde):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
@@ -72,12 +72,26 @@ Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool u
   gridView(grid->leafGridView()), basis(gridView),
   nu(nu), alpha(alpha), v0(v0), sourceVal(source), 
   bAlph(10.0), bVal(1.0), nInter(nInter), 
-  useLapl0(useLapl0), addConstRobin(addConstRobin)
+  useLapl0(useLapl0), addConstRobin(addConstRobin), useLaplTilde(useLaplTilde)
 { 
-  buildMatrices(); 
+  double h(1.0/nInter);
+  switch(useLaplTilde) {
+    case 0:
+      h=0.0;
+      break;
+    case 1:
+      break;
+    case 2:
+      h*=h;
+      break;
+    default:
+      throw std::runtime_error("only 0(off), 1(h), 2(h^2) allowed");
+  }
+  this->useLaplTilde = useLaplTilde > 0;
+  buildMatrices(h); 
 }
 
-Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin):
+Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin, int useLaplTilde):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
@@ -87,21 +101,38 @@ Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double
   bAlph(10.0), bVal(1.0), nInter(nInter), 
   useLapl0(useLapl0), addConstRobin(addConstRobin)
 { 
+  double h(1.0/nInter);
   if(nRef > 0) {
     grid->globalRefine(nRef);
     coarseLapl = make_shared<CoarseLapl>(*grid, nu);
+    h *= std::pow(0.5, nRef);
   }
-  buildMatrices(); 
+  switch(useLaplTilde) {
+    case 0:
+      h=0.0;
+      break;
+    case 1:
+      break;
+    case 2:
+      h*=h;
+      break;
+    default:
+      throw std::runtime_error("only 0(off), 1(h), 2(h^2) allowed");
+  }
+  this->useLaplTilde = useLaplTilde > 0;
+  buildMatrices(h); 
 }
 
 void Heat::setParam(double nu, double alpha)
 {
   this->nu=nu;
   this->alpha=alpha;
-  buildMatrices(); 
+  if(useLaplTilde)
+    throw std::runtime_error(" missing stepsize at this point ");
+  buildMatrices(0.0); 
 }
 
-void Heat::buildMatrices()
+void Heat::buildMatrices(double h)
 {
   //set nnz structure
   MatrixIndexSet occupationPattern;
@@ -119,6 +150,10 @@ void Heat::buildMatrices()
   mSolver.reset(new MSolver(mass));
   if(addConstRobin)
     setConstRobin();
+  if(useLaplTilde) {
+    laplTilde = lapl;
+    laplTilde *= (h*h);
+  }
 }
 
 void Heat::setConstRobin()

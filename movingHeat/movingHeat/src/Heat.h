@@ -77,6 +77,7 @@ class Heat
 
   MatrixType mass, lapl, lapl0, constRobM;
   MatrixType mMaJ;
+  MatrixType laplTilde;
   VectorType constRobB;
 
   typedef UMFPack<MatrixType > MSolver;
@@ -91,20 +92,20 @@ class Heat
   double nu, alpha, v0, sourceVal;
   double bAlph, bVal;
   unsigned nInter;
-  bool useLapl0, addConstRobin;
+  bool useLapl0, addConstRobin, useLaplTilde;
     
   void fillMatrices();
   void fillMatricesZeroLapl();
   void setLaplZero();
-  void buildMatrices();
+  void buildMatrices(double h);
   void setConstRobin();
 
   public:
   Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, 
-      bool useLapl0=false, bool addConstRobin=false);
+      bool useLapl0=false, bool addConstRobin=false, int useLaplTilde=0);
 
   Heat(int nInter, unsigned nRef, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, 
-      bool useLapl0=false, bool addConstRobin=false);
+      bool useLapl0=false, bool addConstRobin=false, int useLaplTilde=0);
 
   //sets nu and alpha to the new values and updates matrices
   void setParam(double nu, double alpha);
@@ -116,7 +117,14 @@ class Heat
 
   //updates M-a*J(t) with given a
   void updateMatrix(double t, double a)
-  { mMaJ = mass ; mMaJ.axpy( -a, lapl); if(addConstRobin) mMaJ.axpy(-a, constRobM); }
+  { 
+    mMaJ = mass ; 
+    mMaJ.axpy( -a, lapl); 
+    if(addConstRobin) 
+      mMaJ.axpy(-a, constRobM); 
+    if(useLaplTilde)
+      mMaJ.axpy(-a, laplTilde);
+  }
 
   //solves x, such that (M-aJ)x=rhs
   //TODO: move construction to updateMatrix and reuse
@@ -145,7 +153,12 @@ class Heat
   void fastFull(double t, const VectorType& yIn, VectorType& out) const;
   void fastAdd(double t, const VectorType& yIn, VectorType& out) const
   //{ fastRect(t, yIn, out); }
-  { fastGrid(t, yIn, out); }
+  { 
+    fastGrid(t, yIn, out); 
+    if(useLaplTilde)
+      laplTilde.mmv(yIn, out);
+
+  }
   //{ fastGridZeroLapl(t, yIn, out); }
   //{ fastFull(t, yIn, out); }
 
@@ -171,6 +184,8 @@ class Heat
     if(addConstRobin) { 
       constRobM.umv(yIn, out); 
     } 
+    if(useLaplTilde)
+      laplTilde.umv(yIn, out);
   }
 
   void slowSrc(double , VectorType& out) const

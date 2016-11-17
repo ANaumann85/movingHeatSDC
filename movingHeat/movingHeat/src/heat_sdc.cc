@@ -22,7 +22,8 @@ void solve(Heat& heat, unsigned k_iter, unsigned nStep)
   Method sdc(init, k_iter, "radau_right", "radau_right");
   Heat::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
-  heat.init(y0); y0 = heat.getBVal();
+  //heat.init(y0); y0 = heat.getBVal();
+  heat.init(y0); y0 = 0.0; //heat.getBVal();
 
   double t0(0.0), tend(20.0);
 
@@ -101,13 +102,17 @@ void solve(Heat& heat, unsigned k_iter, unsigned nStep, unsigned M, unsigned P)
 
 int main(int argc, char* argv[])
 {
-  if(argc < 5) {
-    std::cerr << "usage: " << argv[0] << " <nStep> <M> <P> <kIter>\n";
+  if(argc < 6) {
+    std::cerr << "usage: " << argv[0] << " <nStep> <M> <P> <kIter> <laplTilde>\n";
     return 1;
   }
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
-  Heat heat(10, 1.0e-3, 1.0e-3, 5.0, 0.0, false, true);
+  double nu(1.0e-3), alpha(1.0e-3), v0(5.0), src(0.0);
+  bool useLapl0(false), addConstRobin(false);
+  int laplTilde(0);
+  {std::stringstream ss ; ss << argv[5] ; ss >> laplTilde; }
+  Heat heat(10, nu, alpha, v0, src, useLapl0, addConstRobin, laplTilde);
   heat.setbAlph(1e-2);
 
   unsigned nStep(40), kIter(2);
