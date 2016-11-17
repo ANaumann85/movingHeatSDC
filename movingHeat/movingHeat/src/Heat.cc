@@ -638,6 +638,10 @@ void Heat::addFastMatrix(double t, MatrixType& dest) const
     }
 
   }
+  if(useLapl0) {
+    dest += lapl0;
+
+  }
 }
 
 void Heat::writeResult(std::string fname, const VectorType& res)
