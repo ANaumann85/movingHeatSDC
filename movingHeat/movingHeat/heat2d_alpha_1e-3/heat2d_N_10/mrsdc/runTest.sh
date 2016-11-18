@@ -2,8 +2,7 @@
 
 Mv="2 3"
 Pv="2 3 6 8"
-kv="1 2"
-kv="3 4"
+kv="1 2 3 4"
 for k in $kv; do
 #rm -rf kiter_${k}
 #mkdir kiter_${k}
