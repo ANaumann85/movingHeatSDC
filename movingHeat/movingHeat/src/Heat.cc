@@ -64,7 +64,7 @@ namespace Helper
   };
 }
 
-Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin, int useLaplTilde):
+Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin, LaplTilde useLaplTilde, double laplExplFac):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
@@ -72,10 +72,12 @@ Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool u
   gridView(grid->leafGridView()), basis(gridView),
   nu(nu), alpha(alpha), v0(v0), sourceVal(source), 
   bAlph(10.0), bVal(1.0), nInter(nInter), 
-  useLapl0(useLapl0), addConstRobin(addConstRobin), useLaplTilde(useLaplTilde)
+  useLapl0(useLapl0), addConstRobin(addConstRobin)
 { 
   double h(1.0/nInter);
-  switch(useLaplTilde) {
+  std::cout << "laplTilde-mode: " << useLaplTilde.mode << std::endl;
+  this->useLaplTilde = useLaplTilde.mode > 0;
+  switch(useLaplTilde.mode) {
     case 0:
       h=0.0;
       break;
@@ -87,11 +89,17 @@ Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool u
     default:
       throw std::runtime_error("only 0(off), 1(h), 2(h^2) allowed");
   }
-  this->useLaplTilde = useLaplTilde > 0;
-  buildMatrices(h); 
+  buildMatrices(h*useLaplTilde.fac); 
+  if(laplExplFac > 0) {
+    std::cout << "use lapl - expl:" << laplExplFac << std::endl;
+    laplExpl = lapl;
+    laplExpl *= laplExplFac;
+    lapl *= (1.0-laplExplFac);
+    useLaplExpl = true;
+  }
 }
 
-Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin, int useLaplTilde):
+Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin, LaplTilde useLaplTilde, double laplExplFac):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
@@ -107,7 +115,8 @@ Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double
     coarseLapl = make_shared<CoarseLapl>(*grid, nu);
     h *= std::pow(0.5, nRef);
   }
-  switch(useLaplTilde) {
+  this->useLaplTilde = useLaplTilde.mode > 0;
+  switch(useLaplTilde.mode) {
     case 0:
       h=0.0;
       break;
@@ -119,8 +128,13 @@ Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double
     default:
       throw std::runtime_error("only 0(off), 1(h), 2(h^2) allowed");
   }
-  this->useLaplTilde = useLaplTilde > 0;
-  buildMatrices(h); 
+  buildMatrices(h*useLaplTilde.fac); 
+  if(laplExplFac > 0) {
+    laplExpl = lapl;
+    laplExpl *= laplExplFac;
+    lapl *= (1.0-laplExplFac);
+    useLaplExpl = true;
+  }
 }
 
 void Heat::setParam(double nu, double alpha)

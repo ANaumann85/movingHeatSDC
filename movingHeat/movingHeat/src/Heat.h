@@ -77,7 +77,7 @@ class Heat
 
   MatrixType mass, lapl, lapl0, constRobM;
   MatrixType mMaJ;
-  MatrixType laplTilde;
+  MatrixType laplTilde, laplExpl;
   VectorType constRobB;
 
   typedef UMFPack<MatrixType > MSolver;
@@ -93,6 +93,7 @@ class Heat
   double bAlph, bVal;
   unsigned nInter;
   bool useLapl0, addConstRobin, useLaplTilde;
+  bool useLaplExpl;
     
   void fillMatrices();
   void fillMatricesZeroLapl();
@@ -101,11 +102,21 @@ class Heat
   void setConstRobin();
 
   public:
+  struct LaplTilde
+  {
+    int mode;
+    double fac;
+
+    LaplTilde():
+      mode(0), fac(0.0)
+    {}
+  };
+
   Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, 
-      bool useLapl0=false, bool addConstRobin=false, int useLaplTilde=0);
+      bool useLapl0=false, bool addConstRobin=false, LaplTilde useLaplTilde=LaplTilde(), double laplExpl=0.0);
 
   Heat(int nInter, unsigned nRef, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, 
-      bool useLapl0=false, bool addConstRobin=false, int useLaplTilde=0);
+      bool useLapl0=false, bool addConstRobin=false, LaplTilde useLaplTilde=LaplTilde(), double laplExpl=0.0);
 
   //sets nu and alpha to the new values and updates matrices
   void setParam(double nu, double alpha);
@@ -123,7 +134,7 @@ class Heat
     if(addConstRobin) 
       mMaJ.axpy(-a, constRobM); 
     if(useLaplTilde)
-      mMaJ.axpy(-a, laplTilde);
+      mMaJ.axpy(a, laplTilde);
   }
 
   //solves x, such that (M-aJ)x=rhs
@@ -145,6 +156,8 @@ class Heat
       out += constRobB;
       constRobM.umv(yIn, out);
     }
+    if(useLaplExpl)
+      laplExpl.umv(yIn, out);
   }
 
   //adds the fast term, i.e. out += B(t)*yIn+b(t)
@@ -156,7 +169,9 @@ class Heat
   { 
     fastGrid(t, yIn, out); 
     if(useLaplTilde)
-      laplTilde.mmv(yIn, out);
+      laplTilde.umv(yIn, out);
+    if(useLaplExpl)
+      laplExpl.umv(yIn, out);
 
   }
   //{ fastGridZeroLapl(t, yIn, out); }
@@ -184,8 +199,9 @@ class Heat
     if(addConstRobin) { 
       constRobM.umv(yIn, out); 
     } 
-    if(useLaplTilde)
-      laplTilde.umv(yIn, out);
+    if(useLaplTilde) {
+      laplTilde.mmv(yIn, out);
+    }
   }
 
   void slowSrc(double , VectorType& out) const
