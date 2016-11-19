@@ -92,7 +92,7 @@ class Heat
   double nu, alpha, v0, sourceVal;
   double bAlph, bVal;
   unsigned nInter;
-  bool useLapl0, addConstRobin, useLaplTilde;
+  bool useLapl0, addConstRobin; /*, useLaplTilde;*/
   bool useLaplExpl;
     
   void fillMatrices();
@@ -102,6 +102,7 @@ class Heat
   void setConstRobin();
 
   public:
+#if 0
   struct LaplTilde
   {
     int mode;
@@ -111,12 +112,13 @@ class Heat
       mode(0), fac(0.0)
     {}
   };
+#endif
 
   Heat(int nInter, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, 
-      bool useLapl0=false, bool addConstRobin=false, LaplTilde useLaplTilde=LaplTilde(), double laplExpl=0.0);
+      bool useLapl0=false, bool addConstRobin=false, double laplExpl=0.0);
 
   Heat(int nInter, unsigned nRef, double nu=1.0e-3, double alpha=1.0e-4, double v0=5.0, double source=100, 
-      bool useLapl0=false, bool addConstRobin=false, LaplTilde useLaplTilde=LaplTilde(), double laplExpl=0.0);
+      bool useLapl0=false, bool addConstRobin=false, double laplExpl=0.0);
 
   //sets nu and alpha to the new values and updates matrices
   void setParam(double nu, double alpha);
@@ -133,8 +135,8 @@ class Heat
     mMaJ.axpy( -a, lapl); 
     if(addConstRobin) 
       mMaJ.axpy(-a, constRobM); 
-    if(useLaplTilde)
-      mMaJ.axpy(a, laplTilde);
+    /*if(useLaplTilde)
+      mMaJ.axpy(a, laplTilde);*/
   }
 
   //solves x, such that (M-aJ)x=rhs
@@ -168,8 +170,8 @@ class Heat
   //{ fastRect(t, yIn, out); }
   { 
     fastGrid(t, yIn, out); 
-    if(useLaplTilde)
-      laplTilde.umv(yIn, out);
+    /*if(useLaplTilde)
+      laplTilde.umv(yIn, out);*/
     if(useLaplExpl)
       laplExpl.umv(yIn, out);
 
@@ -199,9 +201,9 @@ class Heat
     if(addConstRobin) { 
       constRobM.umv(yIn, out); 
     } 
-    if(useLaplTilde) {
+    /*if(useLaplTilde) {
       laplTilde.mmv(yIn, out);
-    }
+    }*/
   }
 
   void slowSrc(double , VectorType& out) const

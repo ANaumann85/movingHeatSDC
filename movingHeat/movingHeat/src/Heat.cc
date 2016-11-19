@@ -64,7 +64,7 @@ namespace Helper
   };
 }
 
-Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin, LaplTilde useLaplTilde, double laplExplFac):
+Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin, double laplExplFac):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
@@ -74,6 +74,7 @@ Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool u
   bAlph(10.0), bVal(1.0), nInter(nInter), 
   useLapl0(useLapl0), addConstRobin(addConstRobin)
 { 
+#if 0
   double h(1.0/nInter);
   std::cout << "laplTilde-mode: " << useLaplTilde.mode << std::endl;
   this->useLaplTilde = useLaplTilde.mode > 0;
@@ -90,6 +91,9 @@ Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool u
       throw std::runtime_error("only 0(off), 1(h), 2(h^2) allowed");
   }
   buildMatrices(h*useLaplTilde.fac); 
+#else
+  buildMatrices(0.0); 
+#endif
   if(laplExplFac > 0) {
     std::cout << "use lapl - expl:" << laplExplFac << std::endl;
     laplExpl = lapl;
@@ -99,7 +103,7 @@ Heat::Heat(int nInter, double nu, double alpha, double v0, double source, bool u
   }
 }
 
-Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin, LaplTilde useLaplTilde, double laplExplFac):
+Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double source, bool useLapl0, bool addConstRobin, double laplExplFac):
   L({1.0, 4.0}), lower_mv({-0.5, 2.0}), upper_mv({0.0, 2.5}),
   grid(new GridType(L, std::array<int, dim>({nInter,4*nInter}))),
   hgtmv(lower_mv, upper_mv, std::array<int, 2>({nInter, nInter})),
@@ -109,12 +113,13 @@ Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double
   bAlph(10.0), bVal(1.0), nInter(nInter), 
   useLapl0(useLapl0), addConstRobin(addConstRobin)
 { 
-  double h(1.0/nInter);
+  double h(0.0/nInter);
   if(nRef > 0) {
     grid->globalRefine(nRef);
     coarseLapl = make_shared<CoarseLapl>(*grid, nu);
     h *= std::pow(0.5, nRef);
   }
+#if 0
   this->useLaplTilde = useLaplTilde.mode > 0;
   switch(useLaplTilde.mode) {
     case 0:
@@ -129,6 +134,9 @@ Heat::Heat(int nInter, unsigned nRef, double nu, double alpha, double v0, double
       throw std::runtime_error("only 0(off), 1(h), 2(h^2) allowed");
   }
   buildMatrices(h*useLaplTilde.fac); 
+#else
+  buildMatrices(0); 
+#endif
   if(laplExplFac > 0) {
     laplExpl = lapl;
     laplExpl *= laplExplFac;
@@ -141,8 +149,10 @@ void Heat::setParam(double nu, double alpha)
 {
   this->nu=nu;
   this->alpha=alpha;
+#if 0
   if(useLaplTilde)
     throw std::runtime_error(" missing stepsize at this point ");
+#endif
   buildMatrices(0.0); 
 }
 
@@ -164,10 +174,12 @@ void Heat::buildMatrices(double h)
   mSolver.reset(new MSolver(mass));
   if(addConstRobin)
     setConstRobin();
+#if 0
   if(useLaplTilde) {
     laplTilde = lapl;
     laplTilde *= h;
   }
+#endif
 }
 
 void Heat::setConstRobin()

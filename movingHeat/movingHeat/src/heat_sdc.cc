@@ -101,7 +101,7 @@ void solve(Heat& heat, Heat::VectorType& y0, unsigned k_iter, unsigned nStep, un
 int main(int argc, char* argv[])
 {
   if(argc < 6) {
-    std::cerr << "usage: " << argv[0] << " <nStep> <M> <P> <kIter> <laplTilde>\n";
+    std::cerr << "usage: " << argv[0] << " <nStep> <M> <P> <kIter> <laplExplHExpo>\n";
     return 1;
   }
   //mpi-helper from dune
@@ -117,6 +117,7 @@ int main(int argc, char* argv[])
   {std::stringstream ss; ss << argv[2]; ss >> M; }
   {std::stringstream ss; ss << argv[3]; ss >> P; }
 
+#if 0
   Heat::LaplTilde laplTilde;
   {std::stringstream ss ; ss << argv[5] ; ss >> laplTilde.mode; }
   laplTilde.fac = 1.0;
@@ -129,10 +130,30 @@ int main(int argc, char* argv[])
       laplTilde.mode -= 2;
       laplTilde.fac = tend/nStep;
   }
+#endif
+  unsigned laplHExpo(0);
+  {std::stringstream ss ; ss << argv[5] ; ss >> laplHExpo; }
 
   unsigned nInter(10);
   double laplExplFac(0.0) ; //1.0/nInter);
-  Heat heat(nInter, nu, alpha, v0, src, useLapl0, addConstRobin, laplTilde, laplExplFac);
+  switch(laplHExpo) 
+  {
+    case 0:
+      laplExplFac = 0.0;
+      break;
+    case 1: // h
+      laplExplFac = 1.0/nInter;
+      break;
+    case 2: // h^2
+      laplExplFac = 1.0/nInter;
+      laplExplFac *= laplExplFac;
+      break;
+    case 3: // sqrt(h) 
+      laplExplFac = 1.0/nInter;
+      laplExplFac = std::sqrt(laplExplFac);
+      break;
+  }
+  Heat heat(nInter, nu, alpha, v0, src, useLapl0, addConstRobin, laplExplFac);//, laplTilde
   Heat::VectorType y0;
   heat.init(y0); 
   if(addConstRobin) {
