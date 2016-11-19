@@ -8,20 +8,20 @@ for k in $kv; do
 rm -rf kiter_${k}
 mkdir kiter_${k}
 cd kiter_${k}
-ln -s ../../sdc_quad_weights/
+ln -s ../../../../sdc_quad_weights/
 for M in $Mv; do
 for P in $Pv; do
 nTest=1
 n=1
 while test $nTest -ge 0; do
-  ../../release/src/heat_sdc $n $M $P $k > log_${n}_${M}_${P}
+  ../../../../release/src/heat_sdc $n $M $P $k 1 > log_${n}_${M}_${P}
   nTest=$(($nTest-1))
   n=$(($n*2))
 done
 nTest=8
 n=5
 while test $nTest -ge 0; do
-  ../../release/src/heat_sdc $n $M $P $k > log_${n}_${M}_${P}
+  ../../../../release/src/heat_sdc $n $M $P $k 1 > log_${n}_${M}_${P}
   nTest=$(($nTest-1))
   n=$(($n*2))
 done

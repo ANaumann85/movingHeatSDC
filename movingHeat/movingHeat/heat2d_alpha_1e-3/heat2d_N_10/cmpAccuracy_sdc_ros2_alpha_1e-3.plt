@@ -23,6 +23,7 @@ print sprintf("kiter: %d\n", k_iter)
 mrFo='mrsdc/kiter_%d/accuracy_M_%s_P_%s.dat'
 mrLapl0Fo='mrsdc_lapl0/kiter_%d/accuracy_M_%s_P_%s.dat'
 mrLaplTildeHFo='mrsdc_laplTilde_h/kiter_%d/accuracy_M_%s_P_%s.dat'
+mrLaplTildeSqrtHFo='mrsdc_laplTilde_sqrtH/kiter_%d/accuracy_M_%s_P_%s.dat'
 mrLaplTildeH2Fo='mrsdc_laplTilde_h2/kiter_%d/accuracy_M_%s_P_%s.dat'
 sdcFo='sdc/kiter_%d/accuracy_M_%s.dat'
 sdcLapl0Fo='sdc_lapl0/kiter_%d/accuracy_M_%s.dat'
@@ -32,6 +33,8 @@ plot for [M in "2 3"] for [P in "2 3 6 8"] sprintf(mrFo,k_iter,M,P) u (20.0/$1):
 plot for [M in "2 3"] for [P in "2 3 6 8"] sprintf(mrLapl0Fo,k_iter,M,P) u (20.0/$1):3 w lp lc rgbcolor word(sdcCol,P+0) pt (M+0) title sprintf('mrsdc-M%s-P%s-kiter%d-Lapl_{0}', M,P,k_iter), ros2File u (20.0/$1):3 w l lc rgbcolor 'orange' t "ros2", for [M in "2 3"] sprintf(sdcLapl0Fo,k_iter,M) u (20.0/$1):3 w lp lc rgbcolor word(sdcCol,1) pt (M+0) title sprintf('sdc-M%s-kiter%d-Lapl_{0}', M,k_iter)
 
 plot for [M in "2 3"] for [P in "2 3 6 8"] sprintf(mrLaplTildeHFo,k_iter,M,P) u (20.0/$1):3 w lp lc rgbcolor word(sdcCol,P+0) pt (M+0) title sprintf('mrsdc-M%s-P%s-kiter%d-Lapl\~h', M,P,k_iter), ros2File u (20.0/$1):3 w l lc rgbcolor 'orange' t "ros2", for [M in "2 3"] sprintf(sdcLapl0Fo,k_iter,M) u (20.0/$1):3 w lp lc rgbcolor word(sdcCol,1) pt (M+0) title sprintf('sdc-M%s-kiter%d-Lapl_{0}', M,k_iter)
+
+plot for [M in "2 3"] for [P in "2 3 6 8"] sprintf(mrLaplTildeSqrtHFo,k_iter,M,P) u (20.0/$1):3 w lp lc rgbcolor word(sdcCol,P+0) pt (M+0) title sprintf('mrsdc-M%s-P%s-kiter%d-Lapl\~h^{1/2}', M,P,k_iter), ros2File u (20.0/$1):3 w l lc rgbcolor 'orange' t "ros2", for [M in "2 3"] sprintf(sdcLapl0Fo,k_iter,M) u (20.0/$1):3 w lp lc rgbcolor word(sdcCol,1) pt (M+0) title sprintf('sdc-M%s-kiter%d-Lapl_{0}', M,k_iter)
 
 plot for [M in "2 3"] for [P in "2 3 6 8"] sprintf(mrLaplTildeH2Fo,k_iter,M,P) u (20.0/$1):3 w lp lc rgbcolor word(sdcCol,P+0) pt (M+0) title sprintf('mrsdc-M%s-P%s-kiter%d-Lapl\~h^2', M,P,k_iter), ros2File u (20.0/$1):3 w l lc rgbcolor 'orange' t "ros2", for [M in "2 3"] sprintf(sdcLapl0Fo,k_iter,M) u (20.0/$1):3 w lp lc rgbcolor word(sdcCol,1) pt (M+0) title sprintf('sdc-M%s-kiter%d-Lapl_{0}', M,k_iter)
 }
@@ -46,6 +49,7 @@ print sprintf("kiter: %d\n", k_iter)
 
 mrFo='mrsdc/kiter_%d/accuracy_M_%s_P_%s.dat'
 mrLapl0Fo='mrsdc_lapl0/kiter_%d/accuracy_M_%s_P_%s.dat'
+mrLaplTildeSqrtHFo='mrsdc_laplTilde_sqrtH/kiter_%d/accuracy_M_%s_P_%s.dat'
 mrLaplTildeHFo='mrsdc_laplTilde_h/kiter_%d/accuracy_M_%s_P_%s.dat'
 mrLaplTildeH2Fo='mrsdc_laplTilde_h2/kiter_%d/accuracy_M_%s_P_%s.dat'
 sdcFo='sdc/kiter_%d/accuracy_M_%s.dat'
@@ -56,6 +60,8 @@ plot for [M in "2 3"] for [P in "2 3 6 8"] sprintf(mrFo,k_iter,M,P) u 5:3 w lp l
 plot for [M in "2 3"] for [P in "2 3 6 8"] sprintf(mrLapl0Fo,k_iter,M,P) u 5:3 w lp lc rgbcolor word(sdcCol,P+0) pt (M+1) title sprintf('mrsdc-M%s-P%s-kiter%d-Lapl_{0}', M,P, k_iter), "ros2/accuracy.dat" u 5:3 w l lc rgbcolor 'orange' lw 4 t "ros2", for [M in "2 3"] sprintf(sdcLapl0Fo,k_iter,M) u 5:3 w lp lc rgbcolor word(sdcCol,1) pt (M+1) title sprintf('sdc-M%s-kiter%d-Lapl_{0}', M, k_iter),
 
 plot for [M in "2 3"] for [P in "2 3 6 8"] sprintf(mrLaplTildeHFo,k_iter,M,P) u 5:3 w lp lc rgbcolor word(sdcCol,P+0) pt (M+1) title sprintf('mrsdc-M%s-P%s-kiter%d-Lapl\~h', M,P, k_iter), "ros2/accuracy.dat" u 5:3 w l lc rgbcolor 'orange' lw 4 t "ros2", for [M in "2 3"] sprintf(sdcLapl0Fo,k_iter,M) u 5:3 w lp lc rgbcolor word(sdcCol,1) pt (M+1) title sprintf('sdc-M%s-kiter%d-Lapl_{0}', M, k_iter),
+
+plot for [M in "2 3"] for [P in "2 3 6 8"] sprintf(mrLaplTildeSqrtHFo,k_iter,M,P) u 5:3 w lp lc rgbcolor word(sdcCol,P+0) pt (M+1) title sprintf('mrsdc-M%s-P%s-kiter%d-Lapl\~h^{1/2}', M,P, k_iter), "ros2/accuracy.dat" u 5:3 w l lc rgbcolor 'orange' lw 4 t "ros2", for [M in "2 3"] sprintf(sdcLapl0Fo,k_iter,M) u 5:3 w lp lc rgbcolor word(sdcCol,1) pt (M+1) title sprintf('sdc-M%s-kiter%d-Lapl_{0}', M, k_iter),
 
 plot for [M in "2 3"] for [P in "2 3 6 8"] sprintf(mrLaplTildeH2Fo,k_iter,M,P) u 5:3 w lp lc rgbcolor word(sdcCol,P+0) pt (M+1) title sprintf('mrsdc-M%s-P%s-kiter%d-Lapl\~h^2', M,P, k_iter), "ros2/accuracy.dat" u 5:3 w l lc rgbcolor 'orange' lw 4 t "ros2", for [M in "2 3"] sprintf(sdcLapl0Fo,k_iter,M) u 5:3 w lp lc rgbcolor word(sdcCol,1) pt (M+1) title sprintf('sdc-M%s-kiter%d-Lapl_{0}', M, k_iter),
 
