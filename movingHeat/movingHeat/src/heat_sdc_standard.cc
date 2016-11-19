@@ -65,15 +65,40 @@ void solve(Heat& heat, Heat::VectorType& y0, unsigned k_iter, unsigned nStep, un
 
 int main(int argc, char* argv[])
 {
-  if(argc < 4) {
-    std::cerr << "usage: " << argv[0] << " <nStep> <M> <kIter>\n";
+  if(argc < 5) {
+    std::cerr << "usage: " << argv[0] << " <nStep> <M> <P> <kIter> <laplExplHExpo>\n";
     return 1;
   }
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
   double nu(1.0e-3), alpha(1.0e-3), v0(5.0), src(0.0);
   bool useLapl0(false), addConstRobin(false);
-  Heat heat(20, nu, alpha, v0, src, useLapl0, addConstRobin);
+  unsigned laplHExpo(0);
+  {std::stringstream ss ; ss << argv[4] ; ss >> laplHExpo; }
+
+  unsigned nInter(10);
+  double laplExplFac(0.0) ; //1.0/nInter);
+  switch(laplHExpo) 
+  {
+    case 0:
+      laplExplFac = 0.0;
+      break;
+    case 1: // h
+      laplExplFac = 1.0/nInter;
+      break;
+    case 2: // h^2
+      laplExplFac = 1.0/nInter;
+      laplExplFac *= laplExplFac;
+      break;
+    case 3: // sqrt(h) 
+      laplExplFac = 1.0/nInter;
+      laplExplFac = std::sqrt(laplExplFac);
+      break;
+    case 100:
+      laplExplFac = 1.0;
+      break;
+  }
+  Heat heat(nInter, nu, alpha, v0, src, useLapl0, addConstRobin, laplExplFac);
   Heat::VectorType y0;
   heat.init(y0); 
   if(addConstRobin) {
