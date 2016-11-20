@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
   Heat heat(10, nu, al, 0.0);
   typedef MRSdc<Heat::VectorType, 3,2> Method;
   Method::Init init([&heat](Heat::VectorType& d) { heat.init(d); d=0.0; });
-  Method sdc(init, 5, "radau_right", "radau_right");
+  Method sdc(init, 5, "radau_right", "radau_right", 1.0);
   Heat::VectorType y0;
   heat.init(y0); y0 = 0.0;
 

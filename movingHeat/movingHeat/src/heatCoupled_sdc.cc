@@ -26,11 +26,11 @@ namespace std
 }
 
 template<int M, int P>
-void solve(HeatCoupled& heat, unsigned k_iter, unsigned nStep)
+void solve(HeatCoupled& heat, unsigned k_iter, double thetaFast, unsigned nStep)
 {
   typedef MRSdc<HeatCoupled::VectorType, M,P> Method;
   typename Method::Init init([&heat](HeatCoupled::VectorType& d) { heat.init(d); });
-  Method sdc(init, k_iter, "radau_right", "radau_right");
+  Method sdc(init, k_iter, "radau_right", "radau_right", thetaFast);
   HeatCoupled::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
   heat.init(y0);
@@ -50,65 +50,65 @@ void solve(HeatCoupled& heat, unsigned k_iter, unsigned nStep)
 }
 
 template<int M>
-void solve(HeatCoupled& heat, unsigned k_iter, unsigned nStep, unsigned P)
+void solve(HeatCoupled& heat, unsigned k_iter, double thetaFast, unsigned nStep, unsigned P)
 {
  switch(P) 
  {
    case 1:
-     solve<M,1>(heat, k_iter, nStep);
+     solve<M,1>(heat, k_iter, thetaFast, nStep);
      break;
    case 2:
-     solve<M,2>(heat, k_iter, nStep);
+     solve<M,2>(heat, k_iter, thetaFast, nStep);
      break;
    case 3:
-     solve<M,3>(heat, k_iter, nStep);
+     solve<M,3>(heat, k_iter, thetaFast, nStep);
      break;
    case 4:
-     solve<M,4>(heat, k_iter, nStep);
+     solve<M,4>(heat, k_iter, thetaFast, nStep);
      break;
    case 5:
-     solve<M,5>(heat, k_iter, nStep);
+     solve<M,5>(heat, k_iter, thetaFast, nStep);
      break;
    case 6:
-     solve<M,6>(heat, k_iter, nStep);
+     solve<M,6>(heat, k_iter, thetaFast, nStep);
      break;
    case 7:
-     solve<M,7>(heat, k_iter, nStep);
+     solve<M,7>(heat, k_iter, thetaFast, nStep);
      break;
    case 8:
-     solve<M,8>(heat, k_iter, nStep);
+     solve<M,8>(heat, k_iter, thetaFast, nStep);
      break;
    default:
      throw std::runtime_error("not supported");
  } 
 }
 
-void solve(HeatCoupled& heat, unsigned k_iter, unsigned nStep, unsigned M, unsigned P)
+void solve(HeatCoupled& heat, unsigned k_iter, double thetaFast, unsigned nStep, unsigned M, unsigned P)
 {
-	switch(M) {
+  switch(M) {
    case 1:
-     solve<1>(heat, k_iter, nStep, P);
+     solve<1>(heat, k_iter, thetaFast, nStep, P);
      break;
    case 2:
-     solve<2>(heat, k_iter, nStep, P);
+     solve<2>(heat, k_iter, thetaFast, nStep, P);
      break;
    case 3:
-     solve<3>(heat, k_iter, nStep, P);
+     solve<3>(heat, k_iter, thetaFast, nStep, P);
      break;
    case 4:
-     solve<4>(heat, k_iter, nStep, P);
+     solve<4>(heat, k_iter, thetaFast, nStep, P);
      break;
    case 5:
-     solve<5>(heat, k_iter, nStep, P);
+     solve<5>(heat, k_iter, thetaFast, nStep, P);
      break;
    case 6:
-     solve<6>(heat, k_iter, nStep, P);
+     solve<6>(heat, k_iter, thetaFast, nStep, P);
      break;
    case 7:
-     solve<7>(heat, k_iter, nStep, P);
+     solve<7>(heat, k_iter, thetaFast, nStep, P);
      break;
    case 8:
-     solve<8>(heat, k_iter, nStep, P);
+     solve<8>(heat, k_iter, thetaFast, nStep, P);
      break;
   }
 }
@@ -128,6 +128,7 @@ int main(int argc, char* argv[])
   HeatCoupled heat(20, nu, alpha, v0, src, useLapl0, addConstRobin, laplTilde);
   //heat.setbAlph(1e-2);
 
+  double thetaFast(1.0);
   unsigned nStep(40), kIter(2);
   {std::stringstream ss; ss << argv[1]; ss >> nStep; }
   {std::stringstream ss; ss << argv[4]; ss >> kIter; }
@@ -135,7 +136,7 @@ int main(int argc, char* argv[])
   {std::stringstream ss; ss << argv[2]; ss >> M; }
   {std::stringstream ss; ss << argv[3]; ss >> P; }
 
-  solve(heat, kIter, nStep, M,P);
+  solve(heat, kIter, thetaFast, nStep, M,P);
   return 0;
 }
 

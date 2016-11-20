@@ -15,11 +15,11 @@ namespace Dune
 }
 
 template<int M, int P>
-void solve(Heat& heat, Heat::VectorType& y0, unsigned k_iter, unsigned nStep, double tend)
+void solve(Heat& heat, Heat::VectorType& y0, unsigned k_iter, double thetaFast, unsigned nStep, double tend)
 {
   typedef MRSdc<Heat::VectorType, M,P> Method;
   typename Method::Init init([&heat](Heat::VectorType& d) { heat.init(d); });
-  Method sdc(init, k_iter, "radau_right", "radau_right");
+  Method sdc(init, k_iter, "radau_right", "radau_right", thetaFast);
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
   //heat.init(y0); y0 = heat.getBVal();
 
@@ -35,65 +35,65 @@ void solve(Heat& heat, Heat::VectorType& y0, unsigned k_iter, unsigned nStep, do
 }
 
 template<int M>
-void solve(Heat& heat, Heat::VectorType& y0, unsigned k_iter, unsigned nStep, unsigned P, double tend)
+void solve(Heat& heat, Heat::VectorType& y0, unsigned k_iter, double thetaFast, unsigned nStep, unsigned P, double tend)
 {
   switch(P) 
   {
     case 1:
-      solve<M,1>(heat, y0, k_iter, nStep, tend);
+      solve<M,1>(heat, y0, k_iter, thetaFast, nStep, tend);
       break;
     case 2:
-      solve<M,2>(heat, y0, k_iter, nStep, tend);
+      solve<M,2>(heat, y0, k_iter, thetaFast, nStep, tend);
       break;
     case 3:
-      solve<M,3>(heat, y0, k_iter, nStep, tend);
+      solve<M,3>(heat, y0, k_iter, thetaFast, nStep, tend);
       break;
     case 4:
-      solve<M,4>(heat, y0, k_iter, nStep, tend);
+      solve<M,4>(heat, y0, k_iter, thetaFast, nStep, tend);
       break;
     case 5:
-      solve<M,5>(heat, y0, k_iter, nStep, tend);
+      solve<M,5>(heat, y0, k_iter, thetaFast, nStep, tend);
       break;
     case 6:
-      solve<M,6>(heat, y0, k_iter, nStep, tend);
+      solve<M,6>(heat, y0, k_iter, thetaFast, nStep, tend);
       break;
     case 7:
-      solve<M,7>(heat, y0, k_iter, nStep, tend);
+      solve<M,7>(heat, y0, k_iter, thetaFast, nStep, tend);
       break;
     case 8:
-      solve<M,8>(heat, y0, k_iter, nStep, tend);
+      solve<M,8>(heat, y0, k_iter, thetaFast, nStep, tend);
       break;
     default:
       throw std::runtime_error("not supported");
   } 
 }
 
-void solve(Heat& heat, Heat::VectorType& y0, unsigned k_iter, unsigned nStep, unsigned M, unsigned P, double tend)
+void solve(Heat& heat, Heat::VectorType& y0, unsigned k_iter, double thetaFast, unsigned nStep, unsigned M, unsigned P, double tend)
 {
   switch(M) {
     case 1:
-      solve<1>(heat, y0, k_iter, nStep, P, tend);
+      solve<1>(heat, y0, k_iter, thetaFast, nStep, P, tend);
       break;
     case 2:
-      solve<2>(heat, y0, k_iter, nStep, P, tend);
+      solve<2>(heat, y0, k_iter, thetaFast, nStep, P, tend);
       break;
     case 3:
-      solve<3>(heat, y0, k_iter, nStep, P, tend);
+      solve<3>(heat, y0, k_iter, thetaFast, nStep, P, tend);
       break;
     case 4:
-      solve<4>(heat, y0, k_iter, nStep, P, tend);
+      solve<4>(heat, y0, k_iter, thetaFast, nStep, P, tend);
       break;
     case 5:
-      solve<5>(heat, y0, k_iter, nStep, P, tend);
+      solve<5>(heat, y0, k_iter, thetaFast, nStep, P, tend);
       break;
     case 6:
-      solve<6>(heat, y0, k_iter, nStep, P, tend);
+      solve<6>(heat, y0, k_iter, thetaFast, nStep, P, tend);
       break;
     case 7:
-      solve<7>(heat, y0, k_iter, nStep, P, tend);
+      solve<7>(heat, y0, k_iter, thetaFast, nStep, P, tend);
       break;
     case 8:
-      solve<8>(heat, y0, k_iter, nStep, P, tend);
+      solve<8>(heat, y0, k_iter, thetaFast, nStep, P, tend);
       break;
   }
 }
@@ -110,6 +110,7 @@ int main(int argc, char* argv[])
   double nu(1.0e-3), alpha(1.0e-3), v0(5.0), src(0.0);
   bool useLapl0(false), addConstRobin(false);
 
+  double thetaFast(1.0);
   unsigned nStep(40), kIter(2);
   {std::stringstream ss; ss << argv[1]; ss >> nStep; }
   {std::stringstream ss; ss << argv[4]; ss >> kIter; }
@@ -163,7 +164,7 @@ int main(int argc, char* argv[])
     y0 = 0.0;
   }
 
-  solve(heat, y0, kIter, nStep, M,P, tend);
+  solve(heat, y0, kIter, thetaFast, nStep, M,P, tend);
   return 0;
 }
 

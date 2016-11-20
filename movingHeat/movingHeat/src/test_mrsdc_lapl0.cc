@@ -18,11 +18,11 @@ namespace Dune
 }
 
 template<int M, int P>
-Heat::VectorType solve(Heat& heat, unsigned k_iter, unsigned nStep)
+Heat::VectorType solve(Heat& heat, unsigned k_iter, double thetaFast, unsigned nStep)
 {
   typedef MRSdc<Heat::VectorType, M,P> Method;
   typename Method::Init init([&heat](Heat::VectorType& d) { heat.init(d); });
-  Method sdc(init, k_iter, "radau_right", "radau_right");
+  Method sdc(init, k_iter, "radau_right", "radau_right", thetaFast);
   Heat::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
   heat.init(y0); y0 = 0.0;
@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
   //mpi-helper from dune
   MPIHelper::instance(argc, argv);
   Heat heat(10, 1.0e-3, 1.0e-3, 5.0, 0.0, true); //true=lapl0
-  auto res=solve<3,8>(heat, 2, 10);
+  auto res=solve<3,8>(heat, 2, 1.0, 10);
   //printSolution(res, "refSol.dat");
   Heat::VectorType ref(res.size());
   getRefSol(ref);

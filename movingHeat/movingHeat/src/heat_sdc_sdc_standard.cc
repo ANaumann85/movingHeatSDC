@@ -16,11 +16,11 @@ namespace Dune
 }
 
 template<int M, int P>
-void solveMRSDC(Heat& heat, unsigned k_iter, unsigned nStep)
+void solveMRSDC(Heat& heat, unsigned k_iter, double thetaFast, unsigned nStep)
 {
   typedef MRSdc<Heat::VectorType, M,P> Method;
   typename Method::Init init([&heat](Heat::VectorType& d) { heat.init(d); });
-  Method sdc(init, k_iter, "radau_right", "radau_right");
+  Method sdc(init, k_iter, "radau_right", "radau_right", thetaFast);
   Heat::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
   heat.init(y0); y0 = 0.0;
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
   unsigned nStep(40);
   {std::stringstream ss; ss << argv[1]; ss >> nStep; }
 
-  solveMRSDC<M,P>(heat, kIter, nStep);
+  solveMRSDC<M,P>(heat, kIter, 1.0, nStep);
   solveIMEX<M>(heat, kIter, nStep);
   return 0;
 }

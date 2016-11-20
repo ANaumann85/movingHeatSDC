@@ -31,7 +31,7 @@ void solveMRSDC(HeatCoupled& heat, unsigned k_iter, unsigned nStep)
 {
   typedef MRSdc<HeatCoupled::VectorType, M,P> Method;
   typename Method::Init init([&heat](HeatCoupled::VectorType& d) { heat.init(d); });
-  Method sdc(init, k_iter, "radau_right", "radau_right");
+  Method sdc(init, k_iter, "radau_right", "radau_right", 1.0);
   HeatCoupled::VectorType y0;
   //heat.init(y0, [](auto x) { return (x[0]-0.5)*(x[0]-0.5)*(x[1]-2)*(x[1]-2); });
   heat.init(y0); //y0 = 0.0;
