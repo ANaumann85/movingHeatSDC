@@ -8,7 +8,6 @@
 #include <cmath>
 
 #include "linspace.h"
-//#include "ColMat.h"
 
 template<typename VT >
 struct Matrix
@@ -75,23 +74,130 @@ namespace std
 	}
 }
 
-static const int M =3;
-static const int P =2;
+double tend(1.0);
+unsigned nIter(1), nStepSDC(1);
+std::string nodeName("radau_right");
+
+template<unsigned M, typename InitFu>
+void solveSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu)
+{
+			Sdc<Model::VectorType, M > sdc(initFu, nIter, nodeName);
+			sdc.solve(model, uSDC, 0.0, tend, nStepSDC);
+}
+
+template<typename InitFu>
+void solveSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu, unsigned M)
+{
+	switch(M) {
+		case 2:
+			solveSDC<2>(model, uSDC, initFu);
+			break;
+		case 3:
+			solveSDC<3>(model, uSDC, initFu);
+			break;
+		case 4:
+			solveSDC<4>(model, uSDC, initFu);
+			break;
+		case 5:
+			solveSDC<5>(model, uSDC, initFu);
+			break;
+		case 6:
+			solveSDC<6>(model, uSDC, initFu);
+			break;
+		case 7:
+			solveSDC<7>(model, uSDC, initFu);
+			break;
+		case 8:
+			solveSDC<8>(model, uSDC, initFu);
+			break;
+	}
+}
+
+template<unsigned M, unsigned P, typename InitFu>
+void solveMRSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu)
+{
+	double thetaFast(1.0);
+	MRSdc<Model::VectorType, M, P > mrsdc(initFu, nIter, nodeName, nodeName, thetaFast);
+	mrsdc.solve(model, uSDC, 0.0, tend, nStepSDC);
+}
+
+template<unsigned P, typename InitFu>
+void solveMRSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu, unsigned M)
+{
+	switch(M) {
+		case 2:
+			solveMRSDC<2,P>(model, uSDC, initFu);
+			break;
+		case 3:
+			solveMRSDC<3,P>(model, uSDC, initFu);
+			break;
+		case 4:
+			solveMRSDC<4,P>(model, uSDC, initFu);
+			break;
+		case 5:
+			solveMRSDC<5,P>(model, uSDC, initFu);
+			break;
+		case 6:
+			solveMRSDC<6,P>(model, uSDC, initFu);
+			break;
+		case 7:
+			solveMRSDC<7,P>(model, uSDC, initFu);
+			break;
+		case 8:
+			solveMRSDC<8,P>(model, uSDC, initFu);
+			break;
+	}
+}
+
+template<typename InitFu>
+void solveMRSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu, unsigned M, unsigned P)
+{
+	switch(P) {
+		case 2:
+			solveMRSDC<2>(model, uSDC, initFu, M);
+			break;
+		case 3:
+			solveMRSDC<3>(model, uSDC, initFu, M);
+			break;
+		case 4:
+			solveMRSDC<4>(model, uSDC, initFu, M);
+			break;
+		case 5:
+			solveMRSDC<5>(model, uSDC, initFu, M);
+			break;
+		case 6:
+			solveMRSDC<6>(model, uSDC, initFu, M);
+			break;
+		case 7:
+			solveMRSDC<7>(model, uSDC, initFu, M);
+			break;
+		case 8:
+			solveMRSDC<8>(model, uSDC, initFu, M);
+			break;
+	}
+}
+	
 int main(int argc, char* argv[])
 {
-	unsigned nStepSDC(1), nIter(1);
-	double thetaFast(1.0);
+	if(argc < 5) {
+		std::cout << "usage: " << argv[0] << "<M> <P> <nStepSDC> <nIter>\n";
+		return 1;
+	}
+	unsigned M(3), P(2);
+	{ std::stringstream ss; ss << argv[1] ; ss >> M; }
+	{ std::stringstream ss; ss << argv[2] ; ss >> P; }
+	{ std::stringstream ss; ss << argv[3] ; ss >> nStepSDC; }
+	{ std::stringstream ss; ss << argv[4] ; ss >> nIter; }
+	
 
   auto alpha_vec=linspace(0.0, 30, 60);
   auto nu_vec=linspace(0.0, 100, 200);
 
-	double tend(1.0);
 	unsigned nStepRef(100);
 	Model::VectorType u0;
 	for(auto& d:u0) d=0.0;
 	u0[0]=1.0;
 
-	std::string nodeName("radau_right");
 	Matrix<Model::VectorType> refSol(alpha_vec.size(), nu_vec.size());
 	Matrix<Model::VectorType> mrsdcSol(alpha_vec.size(), nu_vec.size());
 	Matrix<Model::VectorType> sdcSol(alpha_vec.size(), nu_vec.size());
@@ -108,14 +214,12 @@ int main(int argc, char* argv[])
 			ros2.solve(model, uRos2, 0.0, tend, nStepRef);
 			refSol(i,j) = uRos2;
 
-			MRSdc<Model::VectorType, M, P > mrsdc(initFu, nIter, nodeName, nodeName, thetaFast);
 			Model::VectorType uMRSDC; uMRSDC =u0;
-			mrsdc.solve(model, uMRSDC, 0.0, tend, nStepSDC);
+			solveMRSDC(model, uMRSDC, initFu, M, P);
 			mrsdcSol(i,j) = uMRSDC;
 
-			Sdc<Model::VectorType, M > sdc(initFu, nIter, nodeName);
 			Model::VectorType uSDC; uSDC =u0;
-			sdc.solve(model, uSDC, 0.0, tend, nStepSDC);
+			solveSDC(model, uSDC, initFu, M);
 			sdcSol(i,j) = uSDC;
 
 			axpy(-1.0, uRos2, uMRSDC);
