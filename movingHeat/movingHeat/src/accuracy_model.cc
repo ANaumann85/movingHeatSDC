@@ -79,14 +79,14 @@ unsigned nIter(1), nStepSDC(1);
 std::string nodeName("radau_right");
 
 template<unsigned M, typename InitFu>
-void solveSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu)
+void solveSDC(Model& model, Model::VectorType& uSDC, const InitFu& initFu)
 {
 			Sdc<Model::VectorType, M > sdc(initFu, nIter, nodeName);
 			sdc.solve(model, uSDC, 0.0, tend, nStepSDC);
 }
 
 template<typename InitFu>
-void solveSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu, unsigned M)
+void solveSDC(Model& model, Model::VectorType& uSDC, const InitFu& initFu, unsigned M)
 {
 	switch(M) {
 		case 2:
@@ -114,15 +114,18 @@ void solveSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu, unsigned M)
 }
 
 template<unsigned M, unsigned P, typename InitFu>
-void solveMRSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu)
+void solveMRSDC(Model& model, Model::VectorType& uSDC, const InitFu& initFu)
 {
+	typedef MRSdc<Model::VectorType, M, P > Method;
 	double thetaFast(1.0);
-	MRSdc<Model::VectorType, M, P > mrsdc(initFu, nIter, nodeName, nodeName, thetaFast);
+	typename Method::Init subInit = initFu;
+	//MRSdc<Model::VectorType, M, P > mrsdc(initFu, nIter, nodeName, nodeName, thetaFast);
+	Method mrsdc(subInit, nIter, nodeName, nodeName, thetaFast);
 	mrsdc.solve(model, uSDC, 0.0, tend, nStepSDC);
 }
 
 template<unsigned P, typename InitFu>
-void solveMRSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu, unsigned M)
+void solveMRSDC(Model& model, Model::VectorType& uSDC, const InitFu& initFu, unsigned M)
 {
 	switch(M) {
 		case 2:
@@ -150,7 +153,7 @@ void solveMRSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu, unsigned 
 }
 
 template<typename InitFu>
-void solveMRSDC(Model& model, Model::VectorType& uSDC, InitFu& initFu, unsigned M, unsigned P)
+void solveMRSDC(Model& model, Model::VectorType& uSDC, const InitFu& initFu, unsigned M, unsigned P)
 {
 	switch(P) {
 		case 2:
