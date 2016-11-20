@@ -23,12 +23,13 @@ struct MRSdc
 
 	MultirateCollocation<M, P> coll;
 	unsigned nIter;
+  double thetaFast;
 
 	const Init& init;
 
-	MRSdc(const Init& init, unsigned nIter, std::string mQuad, std::string pQuad):
+	MRSdc(const Init& init, unsigned nIter, std::string mQuad, std::string pQuad, double thetaFast /*=1.0*/):
 		coll(mQuad, pQuad),
-		nIter(nIter),
+		nIter(nIter), thetaFast(thetaFast),
 		init(init)
 	{
 		init(fVal); init(rhs);
@@ -223,8 +224,8 @@ struct MRSdc
 				axpy(coll.coll_sub[m].delta_m[p], fuStar, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)
 				axpy(-coll.coll_sub[m].delta_m[p], fus[m], rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)
 
-				axpy(coll.coll_sub[m].delta_m[p], fue[m][p-1], rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})
-				axpy(-coll.coll_sub[m].delta_m[p], fuPm1Old, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})
+				axpy(thetaFast*coll.coll_sub[m].delta_m[p], fue[m][p-1], rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})
+				axpy(-thetaFast*coll.coll_sub[m].delta_m[p], fuPm1Old, rhs); //rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})
 
 				axpy(1.0, I_p_pp1[m][p], rhs);//rhs=M u^{k+1}_{m,p-1}+dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p}
 				f.MinvV(rhs, ue[m][p]); //ue[m][p]=u^{k+1}_{m,p-1}+M^{-1}(dt_{m,p}f(t_m, u^*_m)-dt_{m,p}f(t_m,u^k_m)+dt_{m,p}g(t_{m,p-1}, u^{k+1}_{m,p-1})-dt_{m,p}g(t_{m,p-1}, u^k_{m,p-1})+I^{p+1}_{m,p});
