@@ -38,6 +38,7 @@ target_link_dune_default_libraries("test_grid_level")
 target_link_dune_default_libraries("test_coarse_lapl")
 
 #add_executable(stability_model_sdc stability_model_sdc.cc)
+add_executable(accuracy_model accuracy_model.cc)
 add_executable(heatCoupled_ros2 heatCoupled_ros2.cc)
 target_link_libraries(heatCoupled_ros2 heat)
 
