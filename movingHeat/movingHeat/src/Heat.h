@@ -166,10 +166,13 @@ class Heat
   void fastGrid(double t, const VectorType& yIn, VectorType& out) const;
   void fastRect(double t, const VectorType& yIn, VectorType& out) const;
   void fastFull(double t, const VectorType& yIn, VectorType& out) const;
-  void fastAdd(double t, const VectorType& yIn, VectorType& out) const
-  //{ fastRect(t, yIn, out); }
+  void fastAdd(double t, const VectorType& yIn, VectorType& out) const  
   { 
+#ifdef HEAT_USE_FAST_RECT
+    fastRect(t, yIn, out)
+#else
     fastGrid(t, yIn, out); 
+#endif
     /*if(useLaplTilde)
       laplTilde.umv(yIn, out);*/
     if(useLaplExpl)
