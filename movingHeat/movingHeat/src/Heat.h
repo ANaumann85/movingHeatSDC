@@ -169,7 +169,7 @@ class Heat
   void fastAdd(double t, const VectorType& yIn, VectorType& out) const  
   { 
 #ifdef HEAT_USE_FAST_RECT
-    fastRect(t, yIn, out)
+    fastRect(t, yIn, out);
 #else
     fastGrid(t, yIn, out); 
 #endif
