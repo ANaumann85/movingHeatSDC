@@ -81,7 +81,7 @@ class Heat
   VectorType constRobB;
 
   typedef UMFPack<MatrixType > MSolver;
-  std::shared_ptr<MSolver> mSolver;
+  std::shared_ptr<MSolver> mSolver, mmaJSolver;
 
   typedef VTKSequenceWriter< GridView > PvdWriter;
   typedef VTKSequenceWriter< GridView_MV > PvdWriter_MV;
@@ -135,18 +135,19 @@ class Heat
     mMaJ.axpy( -a, lapl); 
     if(addConstRobin) 
       mMaJ.axpy(-a, constRobM); 
+    mmaJSolver = make_shared<MSolver>(mMaJ);
     /*if(useLaplTilde)
       mMaJ.axpy(a, laplTilde);*/
   }
 
   //solves x, such that (M-aJ)x=rhs
-  //TODO: move construction to updateMatrix and reuse
   template<typename V >
   void solveMaJ(V& rhs, V& x)
   {
-    UMFPack<MatrixType > cg(mMaJ);
+    //UMFPack<MatrixType > cg(mMaJ);
     InverseOperatorResult statistics;
-    cg.apply(x, rhs, statistics);
+    //cg.apply(x, rhs, statistics);
+    mmaJSolver->apply(x, rhs, statistics);
   }
 
   //computes out = J*yIn+B(t)*yIn+b(t)
