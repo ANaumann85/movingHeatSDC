@@ -17,6 +17,7 @@ namespace std
   { for(unsigned i(0); i < s; ++i) axpy(a, x[i], y[i]); }
 }
 
+bool constant_jacobian(const HeatCoupled& ) { return true; }
 int main(int argc, char* argv[])
 {
   if(argc < 2) {

@@ -180,6 +180,7 @@ void solveMRSDC(Model& model, Model::VectorType& uSDC, const InitFu& initFu, uns
 	}
 }
 	
+bool constant_jacobian(const Model& ) { return true; } 
 int main(int argc, char* argv[])
 {
 	if(argc < 5) {

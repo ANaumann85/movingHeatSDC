@@ -10,7 +10,6 @@ class Ros2
   template<typename F>
   void onestep(F& f,  Vec& y0, double t0, double dt)
   {
-    f.updateMatrix(t0, dt*gamma);
     f(t0, y0, rhs);
     f.solveMaJ(rhs, k1);
     //r=f(t0+dt, y0+dt*k1)-2*M*k2
@@ -37,7 +36,12 @@ class Ros2
   void solve(F& f, Vec& y0, double t0, double te, unsigned nStep, bool write=false)
   {
     double dt=(te-t0)/nStep;
+    const bool hasConstJacobian(constant_jacobian(f));
+    if(hasConstJacobian)
+      f.updateMatrix(t0, dt*gamma);
     for(unsigned i(0); i < nStep; ++i, t0+=dt) {
+      if(!hasConstJacobian)
+        f.updateMatrix(t0, dt*gamma);
       onestep(f, y0, t0, dt);
       if(write)
         f.writeResult(t0+dt);

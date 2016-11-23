@@ -11,6 +11,7 @@ namespace Dune
   { y.axpy(a, x); }
 }
 
+bool constant_jacobian(const Heat& ) { return true; } 
 int main(int argc, char* argv[])
 {
   if(argc < 2) {
