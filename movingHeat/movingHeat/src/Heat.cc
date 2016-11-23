@@ -394,7 +394,7 @@ void Heat::fillMatricesZeroLapl()
 void Heat::fastRect(double t, const VectorType& yIn, VectorType& out) const
 {
   const double center = 2.25-0.1*t;
-  auto rect = [center](const auto& x) { return std::abs(center-x[1]) <= 0.25 ? 1.0 : 0.0 ; };
+  auto rect = [center](const auto& x) { double d=(center-x[1])/0.25; return  std::abs(d) <= 1.0 ? cos(d*M_PI/2) : 0.0 ; };
   //add the neumann part
   fastBoundary(yIn, [&](double uh, const auto& posGlobal) { return rect(posGlobal)*alpha*(v0-uh); }, out);
 }
@@ -418,7 +418,7 @@ void Heat::fastBoundary(const VectorType& yIn, const F& flux, VectorType& out) c
       //std::cout << "bd center:" << bdEl.geometry().center() << " " << inter.geometry().center() << " " << inter.boundary() << " " << inter.type() <<  std::endl;
       if(inter.boundary() && (std::abs(inter.geometry().center()[0]) < 1.0e-10)) {
         //std::cout << "bd center:" << bdEl.geometry().center() << " " << inter.geometry().center() << " " << inter.boundary() << " " << inter.type() <<  std::endl;
-        const int qOrder = 2;
+        const int qOrder = 2*dim+1+3; //+3 for more points in rectangular mode
         auto quadRule = QuadratureRules<double, dim-1>::rule(inter.type(), qOrder);
         const auto& localFiniteElement = localView.tree().finiteElement();
         for(const auto& qPos : quadRule) {

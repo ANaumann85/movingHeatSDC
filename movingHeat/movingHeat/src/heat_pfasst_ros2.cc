@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
   MPIHelper::instance(argc, argv);
   double nu(1.0e-3), alpha(1.0e-3), v0(5.0), src(0.0);
   bool useLapl0(false), addConstRobin(false);
-  Heat heat(10, nu, alpha, v0, src, useLapl0, addConstRobin);
+  Heat heat(20, nu, alpha, v0, src, useLapl0, addConstRobin);
   Heat::VectorType y0;
   heat.init(y0); 
   if(addConstRobin) {
