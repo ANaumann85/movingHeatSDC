@@ -135,7 +135,7 @@ class Heat
     mMaJ.axpy( -a, lapl); 
     if(addConstRobin) 
       mMaJ.axpy(-a, constRobM); 
-    mmaJSolver = make_shared<MSolver>(mMaJ);
+    //mmaJSolver = make_shared<MSolver>(mMaJ);
     /*if(useLaplTilde)
       mMaJ.axpy(a, laplTilde);*/
   }
@@ -144,10 +144,17 @@ class Heat
   template<typename V >
   void solveMaJ(V& rhs, V& x)
   {
-    //UMFPack<MatrixType > cg(mMaJ);
-    InverseOperatorResult statistics;
-    //cg.apply(x, rhs, statistics);
+#if 1
+    //std::cout << "build ilu with cg\n";
+    MatrixAdapter<MatrixType,VectorType,VectorType> linearOperator(mMaJ);
+    SeqILU0<MatrixType,VectorType,VectorType> preconditioner(mMaJ,1.0);
+    CGSolver<VectorType> cg(linearOperator, preconditioner, 1e-10, 500,0);
+#else
+    UMFPack<MatrixType > cg(mMaJ);
     mmaJSolver->apply(x, rhs, statistics);
+#endif
+    InverseOperatorResult statistics;
+    cg.apply(x, rhs, statistics);
   }
 
   //computes out = J*yIn+B(t)*yIn+b(t)
