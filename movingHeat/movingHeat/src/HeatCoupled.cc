@@ -127,6 +127,7 @@ void HeatCoupled::buildMatrices(double h)
     laplTilde = lapl[0];
     laplTilde *= h;
   }
+  fillMovingExchangeMass();
 }
 
 void HeatCoupled::setConstRobin()
@@ -165,6 +166,49 @@ void HeatCoupled::setConstRobin()
             for(unsigned j(0); j < localFiniteElement.size(); ++j) {
               const auto col = localIndexSet.index(j);
               constRobM[row][col] += -qPos.weight()*bAlph*shapeFunctionValues[j]*shapeFunctionValues[i]*det;
+            }
+          }
+          //std::cout << std::endl;
+        }
+
+      }
+    }
+  }
+}
+
+void HeatCoupled::fillMovingExchangeMass()
+{
+  movingExchangeMass = mass[1]; movingExchangeMass = 0.0;
+
+  auto localView = basis_mv.localView();
+  auto localIndexSet = basis_mv.localIndexSet();
+  const double alpha = -this->alpha;
+  for (const auto& bdEl : elements(gridView_mv))
+  {
+    localView.bind(bdEl);
+    localIndexSet.bind(localView);
+    for(const auto& inter : intersections(gridView_mv, bdEl))
+    {
+      //std::cout << "bd center:" << bdEl.geometry().center() << " " << inter.geometry().center() << " " << inter.boundary() << " " << inter.type() <<  std::endl;
+      if(inter.boundary() && (std::abs(inter.geometry().center()[0]) < 1.0e-6)) {
+        //std::cout << "bd center:" << bdEl.geometry().center() << " " << inter.geometry().center() << " " << inter.boundary() << " " << inter.type() <<  std::endl;
+        const int qOrder = 2; //just for consistency...
+        auto quadRule = QuadratureRules<double, dim-1>::rule(inter.type(), qOrder);
+        const auto& localFiniteElement = localView.tree().finiteElement();
+        for(const auto& qPos : quadRule) {
+          //std::cout << "qPos:" << qPos.position(); // <<std::endl;
+          const double det = inter.geometry().integrationElement(qPos.position());
+          std::vector<FieldVector<double,1> > shapeFunctionValues;
+          localFiniteElement.localBasis().evaluateFunction(inter.geometryInInside().global(qPos.position()), shapeFunctionValues);
+          //std::cout << "\ninInside.type():" <<inter.geometryInInside().type() ;
+          //std::cout << "\nqGlobal:" << inter.geometryInInside().global(qPos.position()) ;
+          //std::cout << "shapeVals:[";
+          for(unsigned i(0); i < localFiniteElement.size(); ++i) {
+            //std::cout << shapeFunctionValues[i] << " ";
+            const auto row = localIndexSet.index(i);
+            for(unsigned j(0); j < localFiniteElement.size(); ++j) {
+              const auto col = localIndexSet.index(j);
+              movingExchangeMass[row][col] += qPos.weight()*alpha*shapeFunctionValues[j]*shapeFunctionValues[i]*det;
             }
           }
           //std::cout << std::endl;
@@ -497,12 +541,17 @@ void HeatCoupled::fastGrid(double t, const VectorType& yIn, VectorType& out) con
         vh += mortarValues[j]*yIn[1][r];
       }
       const double fVal0 = (vh-uh)*alpha+sourceVal;
-      const double fVal1 = -(vh-uh)*alpha+sourceVal;
       // Loop over all shape functions of the test space
       for (size_t j=0; j<testFiniteElement.size(); j++)
       {
         int testIdx = indexSet0.subIndex(intersection.inside(),j,dim);
         out[0][testIdx] += integrationElement*quad[l].weight()*testValues[j]*fVal0;
+      }
+      double fVal1 ; 
+      if(movingExchangeMass.N() > 0) {
+        fVal1 = uh*alpha+sourceVal;
+      } else { 
+        fVal1 = -(vh-uh)*alpha+sourceVal;
       }
       for (size_t j=0; j<mortarFiniteElement.size(); j++)
       {

@@ -82,6 +82,7 @@ class HeatCoupled
   MatrixType constRobM;
   std::array<MatrixType, 2> mMaJ;
   VectorType constRobB;
+  MatrixType movingExchangeMass;
 
   typedef UMFPack<MatrixType > MSolver;
   std::array<std::shared_ptr<MSolver>, 2> mSolver;
@@ -98,6 +99,7 @@ class HeatCoupled
     
   void fillMatrices();
   void fillMatricesZeroLapl();
+  void fillMovingExchangeMass();
   void setLaplZero();
   void buildMatrices(double h);
   void setConstRobin();
@@ -124,6 +126,8 @@ class HeatCoupled
       mMaJ[0].axpy(-a, constRobM); 
     if(useLaplTilde)
       mMaJ[0].axpy(-a, laplTilde);
+    if(movingExchangeMass.N() > 0)
+      mMaJ[1].axpy(-a, movingExchangeMass);
   }
 
   //solves x, such that (M-aJ)x=rhs
@@ -148,6 +152,9 @@ class HeatCoupled
     if(addConstRobin) {
       out[0] += constRobB[0];
       constRobM.umv(yIn[0], out[0]);
+    }
+    if(movingExchangeMass.N() > 0) {
+      movingExchangeMass.umv(yIn[1], out[1]);
     }
   }
 
@@ -191,6 +198,8 @@ class HeatCoupled
     } 
     if(useLaplTilde)
       laplTilde.umv(yIn[0], out[0]);
+    if(movingExchangeMass.N() > 0)
+      movingExchangeMass.umv(yIn[1], out[1]);
   }
 
   void slowSrc(double , VectorType& out) const
