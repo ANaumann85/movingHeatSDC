@@ -78,7 +78,7 @@ class HeatCoupled
   Basis_MV basis_mv;
 
   std::array<MatrixType, 2> mass, lapl, lapl0;
-  MatrixType laplTilde;
+  MatrixType laplTilde0, laplTilde1;
   MatrixType constRobM;
   std::array<MatrixType, 2> mMaJ;
   VectorType constRobB;
@@ -96,6 +96,7 @@ class HeatCoupled
   double bAlph, bVal;
   unsigned nInter;
   bool useLapl0, addConstRobin, useLaplTilde;
+  bool useSlowExpl;
     
   void fillMatrices();
   void fillMatricesZeroLapl();
@@ -124,8 +125,10 @@ class HeatCoupled
     }
     if(addConstRobin) 
       mMaJ[0].axpy(-a, constRobM); 
-    if(useLaplTilde)
-      mMaJ[0].axpy(-a, laplTilde);
+    if(useLaplTilde) {
+      mMaJ[0].axpy(-a, laplTilde0);
+      mMaJ[1].axpy(-a, laplTilde1);
+    }
     if(movingExchangeMass.N() > 0)
       mMaJ[1].axpy(-a, movingExchangeMass);
   }
@@ -148,7 +151,7 @@ class HeatCoupled
     for(unsigned i(0); i < 2; ++i) {
       lapl[i].mv(yIn[i], out[i]);
     }
-    fastAdd(t, yIn, out);
+    fastAdd(t, yIn, out, 3);
     if(addConstRobin) {
       out[0] += constRobB[0];
       constRobM.umv(yIn[0], out[0]);
@@ -159,14 +162,15 @@ class HeatCoupled
   }
 
   //adds the fast term, i.e. out += B(t)*yIn+b(t)
-  void fastGrid(double t, const VectorType& yIn, VectorType& out) const;
+  void fastGrid(double t, const VectorType& yIn, VectorType& out, unsigned tag) const;
 #if 0
   void fastRect(double t, const VectorType& yIn, VectorType& out) const;
   void fastFull(double t, const VectorType& yIn, VectorType& out) const;
 #endif
-  void fastAdd(double t, const VectorType& yIn, VectorType& out) const
+  //tag & 1 ? add first , tag & 2 ? add second
+  void fastAdd(double t, const VectorType& yIn, VectorType& out, unsigned tag) const
   //{ fastRect(t, yIn, out); }
-  { fastGrid(t, yIn, out); }
+  { fastGrid(t, yIn, out, tag); }
   //{ fastGridZeroLapl(t, yIn, out); }
   //{ fastFull(t, yIn, out); }
 
@@ -178,13 +182,15 @@ class HeatCoupled
   //sets the fast term, i.e. out = B(t)*yIn+b(t)
   void fast(double t, const VectorType& yIn, VectorType& out) const
   { 
-    out[0] = 0.0, out[1] = 0.0; fastAdd(t, yIn, out); 
+    out[0] = 0.0, out[1] = 0.0; 
+    fastAdd(t, yIn, out, useSlowExpl ? 1 : 3); 
     if(addConstRobin) {
       out[0] += constRobB[0]; 
       //constRobM.umv(yIn, out);
     }
     if(useLaplTilde) {
-      laplTilde.mmv(yIn[0], out[0]);
+      laplTilde0.umv(yIn[0], out[0]);
+      laplTilde1.umv(yIn[1], out[1]);
     }
   }
 
@@ -196,10 +202,14 @@ class HeatCoupled
     if(addConstRobin) { 
       constRobM.umv(yIn[0], out[0]); 
     } 
-    if(useLaplTilde)
-      laplTilde.umv(yIn[0], out[0]);
+    if(useLaplTilde) {
+      laplTilde0.mmv(yIn[0], out[0]);
+      laplTilde1.mmv(yIn[1], out[1]);
+    }
     if(movingExchangeMass.N() > 0)
       movingExchangeMass.umv(yIn[1], out[1]);
+    if(useSlowExpl)
+      fastAdd(t, yIn, out, 2);
   }
 
   void slowSrc(double , VectorType& out) const
@@ -216,6 +226,17 @@ class HeatCoupled
 #else
     out = 0.0;
 #endif
+  }
+
+  //the explicit slow part.. at most the source part of the moving heat equation
+  void slowExpl(double t, const VectorType& yIn, VectorType& out) const
+  {
+    out[0] = 0.0;
+    out[1] =0.0;
+    if(useSlowExpl) {
+      std::cout << "use slow expl\n";
+      fastAdd(t, yIn, out, 2);
+    }
   }
 
   //computes out = M*in

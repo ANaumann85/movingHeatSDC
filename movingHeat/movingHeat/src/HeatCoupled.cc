@@ -72,7 +72,7 @@ HeatCoupled::HeatCoupled(int nInter, double nu, double alpha, double v0, double 
   basis(gridView), basis_mv(gridView_mv),
   nu(nu), alpha(alpha), v0(v0), sourceVal(source), 
   bAlph(10.0), bVal(1.0), nInter(nInter), 
-  useLapl0(useLapl0), addConstRobin(addConstRobin)
+  useLapl0(useLapl0), addConstRobin(addConstRobin),useSlowExpl(false)
 { 
   double h(1.0/nInter);
   switch(useLaplTilde) {
@@ -124,10 +124,13 @@ void HeatCoupled::buildMatrices(double h)
   if(addConstRobin)
     setConstRobin();
   if(useLaplTilde) {
-    laplTilde = lapl[0];
-    laplTilde *= h;
+    laplTilde0 = lapl[0];
+    laplTilde0 *= h;
+    laplTilde1 = lapl[1];
+    //laplTilde1 *= h*0.25;
+    laplTilde1 *= 0.0;
   }
-  fillMovingExchangeMass();
+  //fillMovingExchangeMass();
 }
 
 void HeatCoupled::setConstRobin()
@@ -468,8 +471,21 @@ void HeatCoupled::fastBoundary(const VectorType& yIn, const F& flux, VectorType&
 }
 #endif
 
-void HeatCoupled::fastGrid(double t, const VectorType& yIn, VectorType& out) const
+void HeatCoupled::fastGrid(double t, const VectorType& yIn, VectorType& out, unsigned tag) const
 {
+#if 0
+  switch(tag) {
+    case 1:
+      std::cout << "only 0\n";
+      break;
+    case 2:
+      std::cout << "only 1\n";
+      break;
+    case 3:
+      std::cout << "both\n";
+      break;
+  }
+#endif
   //const double center = 2.25-0.1*t;
   //const double dY = -0.1*t;
   const double dY = -sin(M_PI/10.0*t)*1.75;
@@ -542,21 +558,25 @@ void HeatCoupled::fastGrid(double t, const VectorType& yIn, VectorType& out) con
       }
       const double fVal0 = (vh-uh)*alpha+sourceVal;
       // Loop over all shape functions of the test space
-      for (size_t j=0; j<testFiniteElement.size(); j++)
-      {
-        int testIdx = indexSet0.subIndex(intersection.inside(),j,dim);
-        out[0][testIdx] += integrationElement*quad[l].weight()*testValues[j]*fVal0;
-      }
+      if((tag & 1) > 0) {
+        for (size_t j=0; j<testFiniteElement.size(); j++)
+        {
+          int testIdx = indexSet0.subIndex(intersection.inside(),j,dim);
+          out[0][testIdx] += integrationElement*quad[l].weight()*testValues[j]*fVal0;
+        }
+      } 
       double fVal1 ; 
       if(movingExchangeMass.N() > 0) {
         fVal1 = uh*alpha+sourceVal;
       } else { 
         fVal1 = -(vh-uh)*alpha+sourceVal;
       }
-      for (size_t j=0; j<mortarFiniteElement.size(); j++)
-      {
-        int testIdx = indexSet1.subIndex(intersection.outside(),j,dim);
-        out[1][testIdx] += integrationElement*quad[l].weight()*mortarValues[j]*fVal1;
+      if((tag & 2) > 0) {
+        for (size_t j=0; j<mortarFiniteElement.size(); j++)
+        {
+          int testIdx = indexSet1.subIndex(intersection.outside(),j,dim);
+          out[1][testIdx] += integrationElement*quad[l].weight()*mortarValues[j]*fVal1;
+        }
       }
 
     }
