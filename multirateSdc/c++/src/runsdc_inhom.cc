@@ -15,9 +15,6 @@ struct Problem
 	inline void fast(double t, const Vec& in, Vec& out) const
 	{ out[0] = sin(t); }
 
-  inline void slowSrc(double, Vec& out) const
-  { out[0] =0.0; }
-
   inline void slowExpl(double, const Vec& , Vec& out) const
   { out[0] = 0.0; }
 

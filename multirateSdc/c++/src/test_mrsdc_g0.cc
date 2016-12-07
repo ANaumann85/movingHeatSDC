@@ -48,9 +48,6 @@ struct Problem
 	inline void slowImpl(double t, const Vec& in, Vec& out) const
 	{ out[0] = nu*in[0]; }
 
-	inline void slowSrc(double t, Vec& dest) const
-	{ dest[0] = 0.0; }
-
 	inline void updateMatrix(double t, double a)
 	{ fac = 1.0/(1.0-a*nu); }
 

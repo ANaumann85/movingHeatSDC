@@ -108,8 +108,6 @@ struct Model
 	}
 	
 	inline void init(A& ) const {}
-  inline void slowSrc(double, Vec& out) const
-  { for(auto& d : out) d =0.0; }
 
   inline void slowExpl(double, const Vec& , Vec& out) const
   { for(auto& d : out) d =0.0; }

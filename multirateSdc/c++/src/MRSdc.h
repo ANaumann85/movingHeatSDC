@@ -142,8 +142,6 @@ struct MRSdc
     for(unsigned m(0); m < M; ++m)
     {
       f.Mv(u0_step, rhs);//rhs=Mu^0_{m}
-      f.slowSrc(coll.coll.nodes[m], fVal);
-      axpy(coll.coll.delta_m[m], fVal, rhs);
       axpy(coll.coll.delta_m[m], slowExplVal, rhs);
       //compute u^*_{m+1}, w.r. (M-dtm*J(t_{m+1}))u^*_{m+1}=Mu^0_{m}
       f.updateMatrix(coll.coll.nodes[m], coll.coll.delta_m[m]);
