@@ -9,9 +9,9 @@
 \newcommand{\ve}[1]{\mathbf{#1}}
 \newcommand{\todo}[1]{\textcolor{red}{[TODO -- #1]}}
 
-\bibliographystyle{plain}
+%\bibliographystyle{plain}
 
-\bibliography{refs}
+%\bibliography{refs}
 \begin{document}
 \section*{Multi-rate spectral deferred corrections}
 Consider a single time step $[T_{n}, T_{n+1}]$.
@@ -166,33 +166,35 @@ so that
 \subsection*{Multi-rate SDC sweeps}
 Consider an initial value problem
 \begin{equation}
-	\dot{u}(t) = f(u(t)) + g(u(t))
+	\dot{u}(t) = f^I(u(t))+f^E(u(t)) + g(u(t))
 \end{equation}
-where we want to integrate $f$ implicitly with a large time step and $g$ explicitly with a small time step.
+where we want to integrate $f=f^I+f^E$ with a large time step and $g$ explicitly with a small time step. Analogous to the IMEX-sdc method, we split the slow parts in an implicit part $f^I$ and an explicit part $f^E$.
 As before, denote as $\ve{u}^s$ a vector with approximate solutions at the standard nodes and as $\ve{u}^{e}$ the vector with approximate solutions at the embedded nodes.
 The predictor computes the initial set of values
 \begin{itemize}
 	\item Compute standard step
 	\begin{equation*}
-		u^*_{m} = u^0_{m-1} + \Delta t_m f(u^*_{m})
+		u^*_{m} = u^0_{m-1} + \Delta t_m \left(f^I(u^*_{m})+f^E(u^0_{m-1})\right)
 	\end{equation*}
 	\item Compute $P$ embedded steps
 	\begin{equation*}
-		u^0_{m-1,p} = u^0_{m-1,p-1} + \Delta t_{m,p} f(u^*_{m}) + \Delta t_{m,p} g(u^0_{m-1,p-1})
+		u^0_{m-1,p} = u^0_{m-1,p-1} + \Delta t_{m,p} \left(f^I(u^*_{m})+f^E(u_{m-1})\right) + \Delta t_{m,p} g(u^0_{m-1,p-1})
 	\end{equation*}
 	\item Set $u^0_{m} = u^0_{m-1,P}$ for use as initial value in next standard step.
 \end{itemize}
 
-Given values $f(u^k_m)$ and $g(u^k_{m,p})$, the multi-rate SDC sweep then consists of
+Given values $f^I(u^k_m)$, $f^E(u^k_m)$ and $g(u^k_{m,p})$, the multi-rate SDC sweep then consists of
 \begin{itemize}
 \item Compute standard step
 	\begin{equation}
-		u^{*}_{m} = u^{k+1}_{m-1} + \Delta t_m \left( f(u^{*}_{m}) - f(u^k_{m}) \right) + I_{m-1}^{m} \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_m) \right)
+	\begin{aligned}
+		u^{*}_{m} = & u^{k+1}_{m-1} + \Delta t_m \left( f^I(u^{*}_{m}) - f^I(u^k_{m}) + f^E(u^{k+1}_{m-1})-f^E(u^{k}_{m-1}) \right) \cr + & I_{m-1}^{m} \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_m) \right)
+    \end{aligned}
 	\end{equation}
 \item Compute $P$ embedded steps
 	\begin{equation}
 	\begin{aligned}
-		u_{m-1,p}^{k+1} = u_{m-1,p-1}^{k+1} &+ \Delta t_{m,p} \left( f(u^{*}_{m}) - f(u^k_{m}) \right) \\
+		u_{m-1,p}^{k+1} = u_{m-1,p-1}^{k+1} &+ \Delta t_{m,p} \left( f^I(u^{*}_{m}) - f^I(u^k_{m}) + f^E(u^{k+1}_{m-1})-f^E(u^{k}_{m-1}) \right) \\
 			& + \Delta t_{m,p} \left( g(u^{k+1}_{m-1,p-1}) - g(u^k_{m-1,p-1}) \right) \\
 			& + I_{m-1,p-1}^{p}  \left( f(\ve{u}^{s,k}) , g(\ve{u}^{e,k}_{m-1}) \right) 
 	\end{aligned}
@@ -208,7 +210,7 @@ Given values $f(u^k_m)$ and $g(u^k_{m,p})$, the multi-rate SDC sweep then consis
         \SetKwInOut{Input}{input}
          \SetKwInOut{Output}{output}
          \Input{$u_0$}
-         \Output{$f(u^0_m)$ and $g(u^0_{m,p})$ for $m=1,\ldots,M$ and $P=1,\ldots,P$.}
+         \Output{$f^I(u^0_m)$, $f^E(u^0_m)$ and $g(u^0_{m,p})$ for $m=1,\ldots,M$ and $P=1,\ldots,P$.}
          $u^0_0 \leftarrow u_0$\\
          \For{$m=1, M$}{
          	Solve $u^* = u^0_{m-1} + \Delta t_m f(u^*)$ \\
@@ -219,7 +221,7 @@ Given values $f(u^k_m)$ and $g(u^k_{m,p})$, the multi-rate SDC sweep then consis
 			Evaluate $g(u^0_{m-1,p})$
 		}
 		$u^0_m \leftarrow u^0_{m-1,P}$ \\
-		Evaluate $f(u^0_m)$
+		Evaluate $f^I(u^0_m)$ and $f^E(u^0_m)$
          }
 \end{algorithm2e}
 %
@@ -229,21 +231,24 @@ Given values $f(u^k_m)$ and $g(u^k_{m,p})$, the multi-rate SDC sweep then consis
 	\caption{Multi-rate SDC prediction sweep.\todo{initial value for first embedded step is not correct... explicit terms cancel out}}
         \SetKwInOut{Input}{input}
          \SetKwInOut{Output}{output}
-         \Input{$u_0$ and $f(u^k_m)$, $g(u^k_{m,p})$ for $m=1,\ldots,M$ and $p=1,\ldots,P$.}
+         \Input{$u_0$ and $f^I(u^k_m)$, $f^E(u^k_m)$, $g(u^k_{m,p})$ for $m=1,\ldots,M$ and $p=1,\ldots,P$.}
          \Output{updated values $f(u^{k+1}_m)$, $g(u^{k+1}_{m,p})$}
          Compute $I_{m-1}^{m}$, $m=1, \ldots, M$\\
          Compute $I_{m-1,p-1}^{p}$, $m=1,\ldots,M$; $p=1,\ldots,P$ \\
          $u^{k+1}_0 \leftarrow u_0$ \\
          \For{$m=1,M$}{
-         	Solve $u^* = u^{k+1}_{m-1} + \Delta t_m \left( f(u^{*}_{m}) - f(u^k_{m}) \right) + I_{m-1}^{m}$ \\
-		$f^* \leftarrow f(u^*)$\\
+         	Solve $u^* = u^{k+1}_{m-1} + \Delta t_m \left( f^I(u^{*}_{m}) - f^I(u^k_{m})+f^E(u^{k+1}_{m-1})-f^E(u^k_{m-1}) \right) + I_{m-1}^{m}$ \\
+		$f^* \leftarrow f^I(u^*)-f^I(u^k_m)+f^E(u^{k+1}_{m-1})-f^E(u^{k}_{m-1})$\\
 		$u^{k+1}_{m-1,0} \leftarrow u^{k+1}_{m-1}$\\
 		\For{$p=1,P$}{
-			$u_{m-1,p}^{k+1} = u_{m-1,p-1}^{k+1} + \Delta t_{m,p} \left( f(u^{*}) - f(u^k_{m}) \right) + \Delta t_{m,p} \left( g(u^{k+1}_{m-1,p-1}) - g(u^k_{m-1,p-1}) \right)  + I_{m,p-1}^{p}$\\
-			Evaluate $g(u^{k+1}_{m-1,p})$\\
+			$ 
+			 \begin{aligned}
+			u_{m-1,p}^{k+1} =& u_{m-1,p-1}^{k+1} + \Delta t_{m,p} f^* \cr +&  \Delta t_{m,p} \left( g(u^{k+1}_{m-1,p-1}) - g(u^k_{m-1,p-1}) \right)  + I_{m,p-1}^{p}
+			\end{aligned}$\\
+			Evaluate $g(u^{k+1}_{m-1,p})$
 		}
 		$u^{k+1}_m \leftarrow u^{k+1}_{m-1,P}$\\
-		Evaluate $f(u^{k+1}_m)$\\
+		Evaluate $f^I(u^{k+1}_m)$, $f^E(u^{k+1}_m)$
          }
 \end{algorithm2e}
 %
@@ -281,6 +286,12 @@ After the $u_{m,p}$ are computed, the value for the next standard step is obtain
 	u_{m} := u_{m,P-1}.
 \end{equation}
 \todo{hm... how does this help?}
+\end{remark}
+%
+%
+%
+\begin{remark}
+ In case of vanishing fast part, i.e. $g=0$, we obtain the classical IMEX-SDC.
 \end{remark}
 %
 %
