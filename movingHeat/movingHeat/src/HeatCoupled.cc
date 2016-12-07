@@ -72,7 +72,7 @@ HeatCoupled::HeatCoupled(int nInter, double nu, double alpha, double v0, double 
   basis(gridView), basis_mv(gridView_mv),
   nu(nu), alpha(alpha), v0(v0), sourceVal(source), 
   bAlph(10.0), bVal(1.0), nInter(nInter), 
-  useLapl0(useLapl0), addConstRobin(addConstRobin),useSlowExpl(false)
+  useLapl0(useLapl0), addConstRobin(addConstRobin),useSlowExpl(true)
 { 
   double h(1.0/nInter);
   switch(useLaplTilde) {

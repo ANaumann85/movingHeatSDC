@@ -144,14 +144,14 @@ class Heat
   template<typename V >
   void solveMaJ(V& rhs, V& x)
   {
-#if 1
+#if 0
     //std::cout << "build ilu with cg\n";
     MatrixAdapter<MatrixType,VectorType,VectorType> linearOperator(mMaJ);
     SeqILU0<MatrixType,VectorType,VectorType> preconditioner(mMaJ,1.0);
     CGSolver<VectorType> cg(linearOperator, preconditioner, 1e-10, 500,0);
 #else
     UMFPack<MatrixType > cg(mMaJ);
-    mmaJSolver->apply(x, rhs, statistics);
+    //mmaJSolver->apply(x, rhs, statistics);
 #endif
     InverseOperatorResult statistics;
     cg.apply(x, rhs, statistics);

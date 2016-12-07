@@ -35,6 +35,7 @@ using namespace Dune;
  *  M \dot{U} = Lu + B(t)*u+b(t)
  */
 #define WITH_SLOW_SRC
+//#define WITH_G0_MODE
 class HeatCoupled
 {
   static const int dim = 2;
@@ -183,6 +184,7 @@ class HeatCoupled
   void fast(double t, const VectorType& yIn, VectorType& out) const
   { 
     out[0] = 0.0, out[1] = 0.0; 
+#ifndef WITH_G0_MODE
     fastAdd(t, yIn, out, useSlowExpl ? 1 : 3); 
     if(addConstRobin) {
       out[0] += constRobB[0]; 
@@ -192,6 +194,7 @@ class HeatCoupled
       laplTilde0.umv(yIn[0], out[0]);
       laplTilde1.umv(yIn[1], out[1]);
     }
+#endif
   }
 
   //compute the slow term, i.e. out = L*yIn
@@ -199,6 +202,7 @@ class HeatCoupled
   { 
     for(unsigned i(0); i < 2; ++i)
       lapl[i].mv(yIn[i], out[i]); 
+#ifndef WITH_G0_MODE
     if(addConstRobin) { 
       constRobM.umv(yIn[0], out[0]); 
     } 
@@ -210,21 +214,8 @@ class HeatCoupled
       movingExchangeMass.umv(yIn[1], out[1]);
     if(useSlowExpl)
       fastAdd(t, yIn, out, 2);
-  }
-
-  void slowSrc(double , VectorType& out) const
-  { 
-#ifdef WITH_SLOW_SRC
-    if(addConstRobin)  {
-      out[0] = constRobB[0]; 
-      out[1] = constRobB[1];
-    }
-    else {
-      out[0] = 0.0;
-      out[1] = 0.0;
-    }
 #else
-    out = 0.0;
+      fastAdd(t, yIn, out, 3);
 #endif
   }
 
@@ -233,10 +224,23 @@ class HeatCoupled
   {
     out[0] = 0.0;
     out[1] =0.0;
+#ifndef WITH_G0_MODE
     if(useSlowExpl) {
       std::cout << "use slow expl\n";
       fastAdd(t, yIn, out, 2);
     }
+    if(addConstRobin)  {
+      out[0] += constRobB[0]; 
+      out[1] += constRobB[1];
+    }
+#else
+    fastAdd(t, yIn, out, 3);
+#endif
+  }
+  void slowImpl(double t, const VectorType& yIn, VectorType& out) const
+  {
+    for(unsigned i(0); i < 2; ++i)
+      lapl[i].mv(yIn[i], out[i]); 
   }
 
   //computes out = M*in
