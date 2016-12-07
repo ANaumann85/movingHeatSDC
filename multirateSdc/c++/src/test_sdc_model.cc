@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 	cout.precision(15); cout << scientific;
 	unsigned kIter(6);
 	typedef MRSdc<Model::Vec, 3, 2> Method;
-	Method sdc([](Model::Vec& ) {}, kIter, "radau_right", "radau_right");
+	Method sdc([](Model::Vec& ) {}, kIter, "radau_right", "radau_right", 1.0);
 	sdc.solve(problem, u0, t0, te, nStep);
 	for(auto& d:u0) printf(" %25.20f",d); cout << endl;
 	//array<double, 5 > pySol({0.99207383188965780896,   -0.00360178492349851097 ,  0.00044055218247540922 ,  -0.00319568211431540657 ,  -0.00128755226472033351});

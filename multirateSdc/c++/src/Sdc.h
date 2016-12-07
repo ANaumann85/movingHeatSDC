@@ -135,6 +135,7 @@ struct Sdc
 				axpy(-coll.coll.delta_m[m], fuSlow[m], rhs); //use fuSlow
 				axpy(1.0, I_m_mp1[m], rhs);
 			}
+
 			f.solveMaJ(rhs, us[m]);
 			f.slow(coll.coll.nodes[m], us[m], fuSlow[m]); //update fuSlow
 		}

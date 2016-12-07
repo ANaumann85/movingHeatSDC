@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
   Model heat(1.0, nu, al, 0.0);
   typedef MRSdc<Model::VectorType, 3,2> Method;
   Method::Init init([&heat](Model::VectorType& d) { heat.init(d); for(auto& e:d) e=0.0; });
-  Method sdc(init, 6, "radau_right", "radau_right");
+  Method sdc(init, 6, "radau_right", "radau_right", 1.0);
   Model::VectorType y0;
   heat.init(y0); 
   for(auto& d:y0) d=0.0;

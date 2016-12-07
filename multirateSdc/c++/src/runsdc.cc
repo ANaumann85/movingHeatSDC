@@ -15,6 +15,15 @@ struct Problem
 	inline void fast(double t, const Vec& in, Vec& out)
 	{ out[0] = l2*in[0]; }
 
+  inline void slowSrc(double, Vec& out) const
+  { out[0] =0.0; }
+
+  inline void slowExpl(double, const Vec& , Vec& out) const
+  { out[0] = 0.0; }
+
+  inline void slowImpl(double, const Vec& in, Vec& out) const
+  { out[0] = l1*in[0]; }
+
 	inline void slow(double t, const Vec& in, Vec& out)
 	{ out[0] = l1*in[0]; }
 
@@ -71,7 +80,7 @@ int main(int argc, char* argv[])
 
 	unsigned kIter(12);
 	typedef MRSdc<Problem::Vec, 5, 4> Method;
-	Method sdc([](Problem::Vec& ) {}, kIter, "radau_right", "equi_noleft");
+	Method sdc([](Problem::Vec& ) {}, kIter, "radau_right", "equi_noleft", 1.0);
 	std::cout.precision(8);
 #if 0
 	double dt=(te-t0)/nStep;

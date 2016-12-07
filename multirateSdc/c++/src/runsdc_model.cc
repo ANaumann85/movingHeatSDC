@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 #if 1
 	unsigned kIter(6);
 	typedef MRSdc<Model::Vec, 3, 2> Method;
-	Method sdc([](Model::Vec& ) {}, kIter, "radau_right", "radau_right");
+	Method sdc([](Model::Vec& ) {}, kIter, "radau_right", "radau_right", 1.0);
 	std::cout.precision(20);
 	double errOld;
 	sdc.solve(problem, u0, t0, te, nStep);
