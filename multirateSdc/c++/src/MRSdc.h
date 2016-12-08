@@ -52,7 +52,6 @@ struct MRSdc
     for(unsigned m(0); m < M; ++m) {
       const double t = coll.coll.nodes[m];
       f.slow(t, u[m], fu[m]);
-      axpy(1.0, fVal, fu[m]);
     }
   }
 
