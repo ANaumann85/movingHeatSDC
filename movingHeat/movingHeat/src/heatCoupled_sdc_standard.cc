@@ -23,6 +23,24 @@ namespace std
   template< typename A, unsigned long s >
   inline void setValue(array<A, s>& x, const double& v)
   { for(auto& d : x) setValue(d, v); }
+
+  template< typename A, unsigned long s >
+  inline array<A, s> operator-(const array<A, s>& l, const array<A, s>& r)
+  { 
+    array<A, s> ret(l);
+    for(unsigned i(0); i < s; ++i) 
+      ret[i] -= r[i]; 
+    return ret;
+  }
+
+  template< typename A, unsigned long s >
+  double norm(const array<A, s>& x)
+  {
+    double ret(x[0].infinity_norm());
+    for(unsigned i(1); i < s; ++i)
+      ret = max(ret, x[i].infinity_norm());
+    return ret;
+  }
 }
 
 template<int M>

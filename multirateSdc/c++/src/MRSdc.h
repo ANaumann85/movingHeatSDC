@@ -267,37 +267,50 @@ struct MRSdc
     for(unsigned s(0); s < nStep; ++s) { //, t0+=dt
       double t0_ = t0+dt*s;
       predict(f, u0, t0_, t0_+dt);
+			std::cout << "[residual subresidual](0): " << residual(u0, f) << " " << sub_residual(u0, f) << std::endl;
       for(unsigned k(0); k < nIter; ++k) {
         sweep(f, u0, t0_, t0_+dt, false);
+        std::cout << "[residual subresidual](" << k+1 << "): " << residual(u0, f) << " " << sub_residual(u0, f) << std::endl;
       }
       u0 = us[M-1];
     }
   }
 
-  double residual(const Vec& u0)
+  template<typename F >
+  double residual(const Vec& u0, const F& f)
   {
-    double ret=norm(us[0]-u0-I_m_mp1[0]);
+    Vec mInvI;
+    init(mInvI);
+    f.MinvV(I_m_mp1[0], mInvI);
+    double ret=norm(us[0]-u0-mInvI);
     for(unsigned m(1); m < M; ++m) {
-      ret = std::max(ret, norm(us[m]-us[m-1]-I_m_mp1[m]));
+			f.MinvV(I_m_mp1[m], mInvI);
+			ret = std::max(ret, norm(us[m]-us[m-1]-mInvI));
     }
     return ret;
   }
 
-  double sub_residual(const Vec& u0)
+  template<typename F >
+  double sub_residual(const Vec& u0, const F& f)
   {
+    Vec mInvI;
+    init(mInvI);
     double ret(0.0);
-    ret = sub_residual_m(u0, ue[0], 0);
+    ret = sub_residual_m(u0, ue[0], 0, f, mInvI);
     for(unsigned m(1); m < M; ++m) {
-      ret = std::max(ret, sub_residual_m(ue[m-1][P-1], ue[m], m));
+      ret = std::max(ret, sub_residual_m(ue[m-1][P-1], ue[m], m, f, mInvI));
     }
     return ret;
   }
 
-  double sub_residual_m(const Vec& u0, const std::array<Vec, P>& uem, unsigned m)
+  template<typename F >
+  double sub_residual_m(const Vec& u0, const std::array<Vec, P>& uem, unsigned m, const F& f, Vec& mInvI)
   {
-    double ret(norm(uem[0] - u0 - I_p_pp1[m][0]));
+    f.MinvV(I_p_pp1[m][0], mInvI);
+    double ret(norm(uem[0] - u0 - mInvI));
     for(unsigned p(1); p < P; ++p) {
-      ret = std::max(ret, norm(uem[p] - uem[p-1] - I_p_pp1[m][p]));
+      f.MinvV(I_p_pp1[m][p], mInvI);
+      ret = std::max(ret, norm(uem[p] - uem[p-1] - mInvI));
     }
     return ret;
   }

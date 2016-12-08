@@ -72,7 +72,7 @@ HeatCoupled::HeatCoupled(int nInter, double nu, double alpha, double v0, double 
   basis(gridView), basis_mv(gridView_mv),
   nu(nu), alpha(alpha), v0(v0), sourceVal(source), 
   bAlph(10.0), bVal(1.0), nInter(nInter), 
-  useLapl0(useLapl0), addConstRobin(addConstRobin),useSlowExpl(true)
+  useLapl0(useLapl0), addConstRobin(addConstRobin),useSlowExpl(false)
 { 
   double h(1.0/nInter);
   switch(useLaplTilde) {
@@ -679,7 +679,7 @@ void HeatCoupled::fastGridZeroLapl(double t, const VectorType& yIn, VectorType& 
 
 void HeatCoupled::addFastMatrix(double t, MatrixType& dest) const
 {
-#if 0
+#if 1
   //const double center = 2.25-0.1*t;
   const double dY = -0.1*t;
   //move grid_mv by dY (indirectly through geometrygrid)
@@ -759,7 +759,7 @@ void HeatCoupled::addFastMatrix(double t, MatrixType& dest) const
 
   }
   if(useLapl0) {
-    dest += lapl0;
+    dest += lapl0[0];
 
   }
 #else

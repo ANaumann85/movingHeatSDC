@@ -9,6 +9,7 @@ add_executable(testCollocation src/testCollocation.cc)
 add_executable(cmp_sdc_inhom src/cmp_sdc_inhom.cc)
 add_executable(runsdc_model src/runsdc_model.cc)
 add_executable(test_sdc_model src/test_sdc_model.cc)
+add_executable(test_mrsdc_g0 src/test_mrsdc_g0.cc)
 
 add_executable(runsdc_standard src/runsdc_standard.cc)
 add_executable(stability_model_sdc src/stability_model_sdc.cc)

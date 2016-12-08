@@ -153,18 +153,25 @@ struct Sdc
 		for(unsigned s(0); s < nStep; ++s) { //, t0+=dt
 			double t0_ = t0+dt*s;
 			predict(f, u0, t0_, t0_+dt);
+			std::cout << "residual(0): " << residual(u0, f) << std::endl;
 			for(unsigned k(0); k < nIter; ++k) {
 				sweep(f, u0, t0_, t0_+dt, false);
+				std::cout << "residual(" << k+1 << "): " << residual(u0, f) << std::endl;
 			}
 			u0 = us[M-1];
 		}
 	}
 
-	double residual(const Vec& u0)
+	template<typename F >
+	double residual(const Vec& u0, const F& f)
 	{
-		double ret=norm(us[0]-u0-I_m_mp1[0]);
+		Vec mInvI;
+		init(mInvI);
+		f.MinvV(I_m_mp1[0], mInvI);
+		double ret=norm(us[0]-u0-mInvI);
 		for(unsigned m(1); m < M; ++m) {
-			ret = std::max(ret, norm(us[m]-us[m-1]-I_m_mp1[m]));
+			f.MinvV(I_m_mp1[m], mInvI);
+			ret = std::max(ret, norm(us[m]-us[m-1]-mInvI));
 		}
 		return ret;
 	}

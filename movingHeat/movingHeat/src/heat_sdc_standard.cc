@@ -12,6 +12,39 @@ namespace Dune
   template< typename A, typename B >
   inline void setValue(BlockVector<A, B>& x, const double& v)
   { x=v; }
+
+  template< typename A, typename B >
+  inline BlockVector<A,B> operator-(const BlockVector<A, B>& l, const BlockVector<A, B>& r)
+  {
+    BlockVector<A,B> ret(l);
+    ret -=r;
+    return ret;
+  }
+  
+  template< typename A, typename B >
+  double norm(const BlockVector<A,B>& x)
+  { return x.infinity_norm(); }
+}
+
+namespace std 
+{
+  template< typename A, unsigned long s >
+  inline array<A, s> operator-(const array<A, s>& l, const array<A, s>& r)
+  { 
+    array<A, s> ret(l);
+    for(unsigned i(0); i < s; ++i) 
+      ret[i] -= r[i]; 
+    return ret;
+  }
+
+  template< typename A, unsigned long s >
+  double norm(const array<A, s>& x)
+  {
+    double ret(x[0].infinity_norm());
+    for(unsigned i(1); i < s; ++i)
+      ret = max(ret, x[i].infinity_norm());
+    return ret;
+  }
 }
 
 template<int M>
@@ -76,7 +109,7 @@ int main(int argc, char* argv[])
   unsigned laplHExpo(0);
   {std::stringstream ss ; ss << argv[4] ; ss >> laplHExpo; }
 
-  unsigned nInter(10);
+  unsigned nInter(20);
   double laplExplFac(0.0) ; //1.0/nInter);
   switch(laplHExpo) 
   {
