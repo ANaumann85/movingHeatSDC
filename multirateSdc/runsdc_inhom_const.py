@@ -5,7 +5,7 @@ import numpy as np
 import unittest
 import copy
 
-nu1 = -2.0
+nu1 = -4.0
 nu2 = -0.1
 nu = nu1+nu2
 b=10.0
@@ -60,8 +60,9 @@ for nK in nKVec:
       us0_=us[-1]
 
     uex = u0*np.exp(nu*tend) + b/nu*(np.exp(nu*tend)-1)
-    err =  abs(uex - u[-1])
-    print "mrsdc:", err,uex, u[-1]
+    errM =  abs(uex - u[-1])
+    #print "mrsdc:", nK, errM,uex, u[-1]
 
-    err =  abs(uex - us[-1])
-    print "imex: ",err.flatten(),uex, us[-1]
+    errS =  abs(uex - us[-1])
+    #print "imex: ", nK,errS.flatten(),uex, us[-1]
+    print "err:", nK, errM.flatten(), errS.flatten()
