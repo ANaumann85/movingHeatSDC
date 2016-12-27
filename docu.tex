@@ -380,7 +380,10 @@ For the embedded step, this gives us
 \end{align}
 \end{subequations}
 Note that since the $f^I$ and $f^E$ terms do not depend on $p$, we can simply move them in front of the sum.
-To use St. Martin's trick, replace the $\Delta t_{m,p}$ with the entries from the QR factorisation.
+To use St. Martin's trick, replace the $\Delta t_{m,p}$ with the entries from the LU factorisation.
+\todo{Because we set $u^{k+1}_m$ as the final value from the embedded sweep, I don't see how we can rewrite this as zero-to-node? Might have to settle for using St. Martin's trick for embedded sweep only.}
+
+\todo{Have we tried using Picard (i.e $\theta=0$) in standard sweep but $\theta = 1.0$ in embedded sweeps?}
 
 \section*{Scalar test problem}
 We consider the following simplified test problem to study stability and accuracy
