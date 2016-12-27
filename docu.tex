@@ -20,7 +20,7 @@ Denote as $l_m$, $m=1, \ldots, M$ the Lagrange polynomials satisfying
 \begin{equation}
 	l_m(t_j) = \delta_{m,j} \ \text{for} \ m,j=1, \ldots, M.
 \end{equation}
-In each sub step $[t_m, t_{m+1}]$ with length $\Delta t_{m+1}=t_{m+1}-t_m$, place a set of embedded nodes $t_{m,p}$, $m=1,\ldots,M$, $p=1,\ldots,P$ with $t_{m} \leq t_{m,1} < \ldots < t_{m,P} \leq t_{m}$.
+In each sub step $[t_{m-1}, t_{m}]$ with length $\Delta t_{m}=t_{m}-t_{m-1}$, place a set of embedded nodes $t_{m,p}$, $m=1,\ldots,M$, $p=1,\ldots,P$ with $t_{m-1} \leq t_{m,1} < \ldots < t_{m,P} \leq t_{m}$.
 Denote as $l_{m,p}$ the Lagrange polynomials for an embedded set of quadrature nodes satisfying
 \begin{equation}
 	l_{m,p}(t_{m,q}) = \delta_{p,q} \ \text{for} \ p,q=1,\ldots,P.
@@ -31,13 +31,13 @@ Nodes and weights associated with an embedded quadrature rule are called \textbf
 \end{remark}
 Note that there are $M$ many standard nodes, polynomials and weights and $M \times P$ many embedded nodes, polynomials and weights.
 \begin{remark}
-We assume that for both standard and embedded quadrature rules, the right endpoint is a quadrature nodes, so that $t_{M} = T_{n+1}$ and $t_{m,P} = t_{m+1}$.
+We assume that for both standard and embedded quadrature rules, the right endpoint is a quadrature nodes, so that $t_{M} = T_{n+1}$ and $t_{m,P} = t_{m}$.
 \end{remark}
 \begin{remark}
-However, to allow for Radau-type rules, we do \textbf{not} require that the left endpoint matches the first quadrature nodes and typically we will have $T_n < t_1$ as well as $t_{m} < t_{m,1}$.
+However, to allow for Radau-type rules, we do \textbf{not} require that the left endpoint matches the first quadrature nodes and typically we will have $T_n < t_1$ as well as $t_{m-1} < t_{m,1}$.
 To simplify notation, we use the following conventions
 \begin{equation}
-	t_0 := T_n \ \text{and} \ t_{m,0} := t_{m}.
+	t_0 := T_n \ \text{and} \ t_{m,0} := t_{m-1}.
 \end{equation}
 \end{remark}
 
@@ -79,6 +79,25 @@ Verified by \texttt{test\_weights\_match}.
 \caption{Quadrature weights for integrals over standard or embedded sub steps depending on whether function values are given at standard or embedded nodes.}
 \end{table}
 
+Furthermore, in case we want to use the ``zero-to-node'' update formulation, we also define the following weights
+\begin{equation}
+	q_{m,j} := \int_{T_{n}}^{t_m} l_j(s)~ds.
+\end{equation}
+Simple addition shows that
+\begin{equation}
+	q_{m,j} = \sum_{n=1}^{m} s_{n,j}.
+\end{equation}
+We also define the following embedded weights
+\begin{equation}
+	q_{m,p,q} := \int_{t_{m-1}}^{t_{m,p}} l_{m,q}(s)~ds = \int_{t_{m,0}}^{t_{m,p}} l_{m,q}(s)~ds
+\end{equation}
+and note that
+\begin{equation}
+	q_{m,p,q} = \sum_{r=1}^{p} s_{m,r,q}.
+\end{equation}
+%
+% Quadrature nodes
+%
 \subsection*{Quadrature rules.}
 Denote as $\ve{u}^{s}$ (``standard'') a vector with $M$ approximate solutions at the standard nodes and as $\ve{u}^{e}$ (``embedded'') a vector composed of $M$ vectors $\ve{u}^{e}_{m}$, $m=1,\ldots,M$ with each $\ve{u}^{e}_{m}$ containing $P$ approximate solutions at the embedded nodes $t_{m,p}$, $p=1, \ldots, P$.
 We will need the following three integration operators:
@@ -228,7 +247,7 @@ Given values $f^I(u^k_m)$, $f^E(u^k_m)$ and $g(u^k_{m,p})$, the multi-rate SDC s
 %
 %
 \begin{algorithm2e}
-	\caption{Multi-rate SDC prediction sweep.\todo{initial value for first embedded step is not correct... explicit terms cancel out}}
+	\caption{Multi-rate SDC sweep.\todo{initial value for first embedded step is not correct... explicit terms cancel out}}
         \SetKwInOut{Input}{input}
          \SetKwInOut{Output}{output}
          \Input{$u_0$ and $f^I(u^k_m)$, $f^E(u^k_m)$, $g(u^k_{m,p})$ for $m=1,\ldots,M$ and $p=1,\ldots,P$.}
@@ -350,8 +369,18 @@ with weights
 \todo{effect??}
 
 \subsection*{Zero-to-node formulation}
-Recursively applying the node-to-node collocation equations provides the zero-to-node formulation for both standard and embedded quadrature rules
-...
+Recursively applying the node-to-node collocation equations provides the zero-to-node formulation for both standard and embedded quadrature rules.
+For the embedded step, this gives us
+\begin{subequations}
+\begin{align}
+	u^{k+1}_{m-1,p} &= u^{k+1}_{m-1,0} + \left( f^{I}(u^{*}_{m}) - f^{I}(u^k_m)  \right)  \sum_{r=1}^{p} \Delta t_{m,p} \\
+				& \quad +  \left( f^{E}(u^{k+1}_{m-1}) - f^{E}(u^k_{m-1}) \right) \sum_{r=1}^{p} \Delta t_{m,p} \\
+				& \quad + \sum_{r=1}^{p} \Delta t_{m,p} \left( g(u^{k+1}_{m-1,r-1}) - g(u^k_{m-1,r-1}) \right) \\
+				& \quad + \sum_{r=1}^{p} I_{m-1,r-1}^{r}\left( f(\ve{u}^{s}) , g(\ve{u}^{e}_m) \right)
+\end{align}
+\end{subequations}
+Note that since the $f^I$ and $f^E$ terms do not depend on $p$, we can simply move them in front of the sum.
+To use St. Martin's trick, replace the $\Delta t_{m,p}$ with the entries from the QR factorisation.
 
 \section*{Scalar test problem}
 We consider the following simplified test problem to study stability and accuracy
