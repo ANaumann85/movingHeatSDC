@@ -13,7 +13,17 @@ class sdc_step():
     self.I_p_pp1 = np.zeros((M,P,problem.dim))
     self.prob    = problem
     self.dt      = tend-tstart
-    self.theta   = theta
+    try:
+      # if theta is a single number
+      self.theta_standard = float(theta)
+      self.theta_embedded = float(theta)
+    except:
+      # if theta is vector, use first value for standard, second for embedded
+      try:
+        self.theta_standard = float(theta[0])
+        self.theta_embedded = float(theta[1])
+      except:
+        raise
 
   '''
   '''
@@ -188,7 +198,7 @@ class sdc_step():
         else:
           t            = self.coll.coll_sub[m].nodes[p-1]
           ### NOTE: the non-copy version corresponds to setting this term to zero
-          f2_term      = self.theta*(fu_sub[m,p-1,:] - fu_pm1_old)
+          f2_term      = self.theta_embedded*(fu_sub[m,p-1,:] - fu_pm1_old)
           usub_mm1     = usub[m,p-1,:]
         
         usub[m,p,:]  = usub_mm1 + self.coll.coll_sub[m].delta_m[p]*( fu_star - fu[m,:] + f2_term) + self.I_p_pp1[m,p,:]
