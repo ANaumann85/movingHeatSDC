@@ -74,6 +74,28 @@ class test_sdc_step(unittest.TestCase):
     assert err<1e-14, ("Collocation solution not invariant under standard node SDC sweep with lambda_2=0. Error: %5.3e" % err)
 
   '''
+  Standard collocation solution has to be invariant under SDC sweep across standard nodes for theta < 1
+  '''
+  def test_sweep_coll_standard_invariant_theta(self):
+    self.setUp(lambda_2=0.0)
+    u0         = np.random.rand(1)
+    self.sdc = sdc_step(self.M, self.P, 0.0, 1.0, self.prob, theta = np.random.rand(2))
+
+    ucoll               = self.sdc.get_collocation_solution(u0)
+    ucoll_sub           = np.zeros((self.M,self.P,1))
+    fucoll, fucoll_sub  = self.sdc.evaluate_f(ucoll, ucoll_sub)
+
+    # store for comparison after sweep
+    u_                  = copy.deepcopy(ucoll)
+    usub_               = copy.deepcopy(ucoll_sub)
+    
+    fucoll_sub_ = np.zeros((self.M,self.P,1))
+    
+    self.sdc.sweep(u0, ucoll, ucoll_sub, fucoll, fucoll_sub)
+    err = np.linalg.norm((ucoll - u_).flatten(), np.inf)
+    assert err<1e-14, ("Collocation solution not invariant under standard node SDC sweep with theta for lambda_2=0. Error: %5.3e" % err)
+  
+  '''
   Standard collocation solution must have zero residual
   '''
   def test_collocation_residual(self):
