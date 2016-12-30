@@ -385,7 +385,37 @@ To use St. Martin's trick, replace the $\Delta t_{m,p}$ with the entries from th
 
 \todo{Have we tried using Picard (i.e $\theta=0$) in standard sweep but $\theta = 1.0$ in embedded sweeps?}
 
-\section*{Scalar test problem}
+\subsection*{Sweep convergence}
+Analogous to Martin Weiser, we apply the MRSDC method on Dahlquists equation. For our method, we have to use the modified equation
+\begin{align}
+ \dot{u}=&\lambda_1 u + \lambda_2 u
+\end{align}
+with $f^I(u)=\lambda_1 u$, $f^E(u)=0$ and $g(u)=\lambda_2 u$. (\todo{what about $f^E(u)=\lambda_3u$?}) 
+For given $u^k_{m}$ and $u^{k}_{m,p}$, we obtain the expressions
+\begin{align*}
+ u^*_m=&\frac{1}{1-\lambda_1\Delta t_m }\left(u^{k+1}_{m-1}-\lambda_1\Delta t_m u^{k}_m+ I_{m-1}^m\right) \cr
+ f^*_m =&\frac{\lambda_1}{1-\lambda_1\Delta t_m }\left(u^{k+1}_{m-1}-\lambda_1\Delta t_m u^{k}_m+ I_{m-1}^m\right) \cr
+ I_{m-1}^m =& \lambda_1 \sum_{j=1}^M s_{m,j} u^{k}_j + \lambda_2 \sum_{p=1}^{P} \hat{s}_{m,p} u^{k}_{m,p}
+\end{align*}
+for the provisional value $u^*_m$ and 
+\begin{align*}
+ u^{k+1}_{m-1,p}=&u^{k}_{m-1,p-1} +  \frac{\lambda_1\Delta t_{m,p}}{1-\lambda_1\Delta t_m }\left(u^{k+1}_{m-1}-\lambda_1\Delta t_m u^{k}_m+ I_{m-1}^m\right) \cr
+   +&\lambda_2 \Delta t_{m,p}\left(u^{k+1}_{m-1,p-1}-u^{k}_{m-1,p-1}\right) + I_{m,p-1}^p \cr
+ I_{m,p-1}^p =& \lambda_1 \sum_{j=1}^M \tilde{s}_{m,p,j} u^k_j + \lambda_2 \sum_{q=1}^P s_{m,p,q} u^k_{m,q} %\\
+ %\sum_{p=1}^P I_{m,p-1}^p =&\lambda_1 \sum_j^M s_{m,j} u^k_j + \lambda_2 \sum_p^P \hat{s}_{m,p} u^k_{m,p}
+\end{align*}
+for the embedded values $u_{m,p}$. Now, we collect the embedded values by iteration 
+\begin{align*}
+ u^{k+1}_{m-1,p}-\frac{\lambda_1 \Delta t_{m,p}}{1-\lambda_1 \Delta t_{m}}u^{k+1}_{m-1}-\lambda_2\Delta t_{m,p} u^{k+1}_{m-1,p-1}=&u^{k}_{m-1,p-1} +  \frac{\lambda_1\Delta t_{m,p}}{1-\lambda_1\Delta t_m }\left(-\lambda_1\Delta t_m u^{k}_m+ I_{m-1}^m\right) \cr
+   +&\lambda_2 \Delta t_{m,p}\left(-u^{k}_{m-1,p-1}\right) + I_{m,p-1}^p
+\end{align*}
+Due to the relation $u^{k+1}_{m}=u^{k+1}_{m-1,P}$, we replace all occurances of $u^{k}_m$ by $u^{k}_{m+1,P}$ and obtain an iterative scheme for the embedded values
+\begin{align*}
+ u^{k+1}_{m-1,p}-\frac{\lambda_1 \Delta t_{m,p}}{1-\lambda_1 \Delta t_{m}}u^{k+1}_{m,P}-\lambda_2\Delta t_{m,p} u^{k+1}_{m-1,p-1}=&u^{k}_{m-1,p-1} -  \frac{\lambda_1\Delta t_{m,p}}{1-\lambda_1\Delta t_m }\lambda_1\Delta t_m u^{k}_{m-1,P} \cr
+   +&\frac{\lambda_1\Delta t_{m,p}}{1-\lambda_1\Delta t_m }I_{m-1}^m\cr
+   +&\lambda_2 \Delta t_{m,p}\left(-u^{k}_{m-1,p-1}\right) + I_{m,p-1}^p
+\end{align*}
+\section*{Two component test problem}
 We consider the following simplified test problem to study stability and accuracy
 \begin{equation}
 	\begin{pmatrix} \dot{y}_1 \\ \dot{y}_2 \end{pmatrix} = \nu \begin{pmatrix} y_1 \\ y_2 \end{pmatrix} + \begin{pmatrix} a \left( y_1 - y_2 \right) \\ -a (y_1 - y_2) \end{pmatrix}
