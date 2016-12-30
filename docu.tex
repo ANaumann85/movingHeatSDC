@@ -411,10 +411,11 @@ for the embedded values $u_{m,p}$. Now, we collect the embedded values by iterat
 \end{align*}
 Due to the relation $u^{k+1}_{m}=u^{k+1}_{m-1,P}$, we replace all occurances of $u^{k}_m$ by $u^{k}_{m+1,P}$ and obtain an iterative scheme for the embedded values
 \begin{align*}
- u^{k+1}_{m-1,p}-\frac{\lambda_1 \Delta t_{m,p}}{1-\lambda_1 \Delta t_{m}}u^{k+1}_{m,P}-\lambda_2\Delta t_{m,p} u^{k+1}_{m-1,p-1}=&u^{k}_{m-1,p-1} -  \frac{\lambda_1\Delta t_{m,p}}{1-\lambda_1\Delta t_m }\lambda_1\Delta t_m u^{k}_{m-1,P} \cr
+ u^{k+1}_{m-1,p}-\frac{\lambda_1 \Delta t_{m,p}}{1-\lambda_1 \Delta t_{m}}u^{k+1}_{m-2,P}-\lambda_2\Delta t_{m,p} u^{k+1}_{m-1,p-1}=&u^{k}_{m-1,p-1} -  \frac{\lambda_1\Delta t_{m,p}}{1-\lambda_1\Delta t_m }\lambda_1\Delta t_m u^{k}_{m-1,P} \cr
    +&\frac{\lambda_1\Delta t_{m,p}}{1-\lambda_1\Delta t_m }I_{m-1}^m\cr
    +&\lambda_2 \Delta t_{m,p}\left(-u^{k}_{m-1,p-1}\right) + I_{m,p-1}^p
 \end{align*}
+\todo{Build vector, write as $\mathbf{u}^{k+1}=G\mathbf{u}^k+d$}
 \section*{Two component test problem}
 We consider the following simplified test problem to study stability and accuracy
 \begin{equation}
