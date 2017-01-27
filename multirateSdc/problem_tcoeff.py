@@ -2,8 +2,9 @@ import numpy as np
 
 class problem_tcoeff():
 
-  def __init__(self, nu):
+  def __init__(self, nu, a):
     self.nu  = nu
+    self.a   = a
     self.dim = 1
     
   def f1(self, u):
@@ -13,4 +14,4 @@ class problem_tcoeff():
     return b/(1.0 - self.nu*a)
 
   def f2(self, u_, t):
-    return np.cos(t)*u_
+    return self.a*np.cos(t)*u_
