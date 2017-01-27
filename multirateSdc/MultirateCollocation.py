@@ -80,7 +80,15 @@ class multirateCollocation(object):
       intvalue += Smat[p,j]*fu_sub[j,:]
     return intvalue
   
-
+  '''
+  Takes function values at sub-level collocation nodes and computes approximation of integral from beginning of sub-step to node p.
+  '''
+  def integrate_0_p_sub(self, fu_sub, m, p):
+    intvalue = np.zeros(self.dim)
+    for q in range(p+1):
+      intvalue += self.integrate_p_pp1_sub(fu_sub, m, q)
+    return intvalue
+    
   '''
   Takes function values at collocation nodes and computes approximation of integral between two nodes.
   Corresponds to first term in opeator I_m_mp1.

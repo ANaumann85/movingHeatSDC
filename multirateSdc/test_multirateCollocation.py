@@ -115,6 +115,27 @@ class test_problem(unittest.TestCase):
         err     =  np.linalg.norm(intval - intex, np.inf)
         assert err<1e-14, ("Function integrate_p_pp1_sub failed to integrate linear function excatly. Error: %5.3e" % err)
 
+  # Linear function given at embedded nodes is integrated exactly over embedded sub steps
+  def test_integrate_0_p_sub_linear(self):
+    dim       = np.random.randint(1,10)
+    mc_coll   = multirateCollocation(self.M, self.P, self.tleft, self.tright, dim)
+    slope     = np.random.rand(dim)
+    intercept = np.random.rand(dim)
+    for m in range(self.M):
+      fu = np.zeros((self.P,dim))
+      for d in range(dim):
+        fu[:,d]      = slope[d]*mc_coll.coll_sub[m].nodes + intercept[d]
+      for p in range(self.P):
+        # integrate from beginning of sub-step to node p
+        ta = mc_coll.coll_sub[m].tleft
+        tb   = mc_coll.coll_sub[m].nodes[p]
+        intval = mc_coll.integrate_0_p_sub(fu, m, p)
+        intex  = np.zeros(dim)
+        for d in range(dim):
+          intex[d] = 0.5*slope[d]*(tb**2-ta**2) + intercept[d]*(tb - ta)
+        err     =  np.linalg.norm(intval - intex, np.inf)
+        assert err<1e-14, ("Function integrate_p_pp1_sub failed to integrate linear function excatly. Error: %5.3e" % err)
+
   # Linear function at standard nodes is integrated exactly over standard sub steps
   def test_integrate_m_mp1_linear(self):
     dim       = np.random.randint(1,10)
