@@ -27,7 +27,7 @@ class test_sdc_step(unittest.TestCase):
     self.sdc.predict(u0, u)
     symb = 1.0
     for m in range(self.M):
-      symb *= 1.0/(1.0 - self.prob.lambda_1*self.sdc.coll.coll.delta_m[m])
+      symb *= 1.0/(1.0 - self.prob.lambda_1*self.sdc.coll.delta_m[m])
       err = np.linalg.norm(u[m,:] - symb*u0, np.inf)
       assert err<1e-14, ("predict for standard nodes did not reproduce implicit Euler. Error: %5.3e" % err)
 
@@ -40,7 +40,7 @@ class test_sdc_step(unittest.TestCase):
     self.sdc.predict(u0, u)
     symb = 1.0
     for m in range(self.M):
-      symb *= (1.0 + self.prob.lambda_2*self.sdc.coll.coll.delta_m[m])
+      symb *= (1.0 + self.prob.lambda_2*self.sdc.coll.delta_m[m])
       err = abs(u[m,:] - symb*u0)
       assert err<1e-14, ("predict for lambda_1 = 0 failed to reproduce explicit Euler. Error: 5.3e" % err)
 
